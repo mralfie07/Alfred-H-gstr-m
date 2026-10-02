@@ -7,12 +7,6 @@
       "skillPath": "skills/animate/SKILL.md",
       "computedHash": "7598d33e7f60dd5c24531eaaa897621cc3bdb48e8050324211627973bc59c4ce"
     },
-    "animate-expo": {
-      "source": "emilkowalski/skills",
-      "sourceType": "github",
-      "skillPath": "skills/animate-expo/SKILL.md",
-      "computedHash": "5de09593d564091f9db60aabede7bed760251e118548272050a247c653c417d2"
-    },
     "animation-vocabulary": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
@@ -25,12 +19,6 @@
       "skillPath": "skills/apple-design/SKILL.md",
       "computedHash": "0190417d092a0df447b000154e39733ea6d97efad6d3bec8a6ce3845aeb88914"
     },
-    "ask-sonner": {
-      "source": "emilkowalski/skills",
-      "sourceType": "github",
-      "skillPath": "skills/ask-sonner/SKILL.md",
-      "computedHash": "8bd257b845985f4b35b603b510a126604176521094af79c4b7347ffeb8a8f7ab"
-    },
     "brandkit": {
       "source": "Leonxlnx/taste-skill",
       "sourceType": "github",
@@ -42,12 +30,6 @@
       "sourceType": "github",
       "skillPath": "skills/taste-skill/SKILL.md",
       "computedHash": "6d838b246d0e35d0b53f4f23f98ba7a1dd561937e64f7d0c7553b0928e376c3e"
-    },
-    "design-taste-frontend-v1": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "skillPath": "skills/taste-skill-v1/SKILL.md",
-      "computedHash": "d704ab912c4d0ca954ffa858983da755ae4cd5cad9ba22554db5557382f5bd34"
     },
     "emil-design-eng": {
       "source": "emilkowalski/skills",
@@ -67,12 +49,6 @@
       "skillPath": "skills/output-skill/SKILL.md",
       "computedHash": "26bd29ce4c5e02c7666b2d503609bf466bd32290822e91f0e984147048dbb924"
     },
-    "gpt-taste": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "skillPath": "skills/gpt-tasteskill/SKILL.md",
-      "computedHash": "cc8f0c601d8240a124e1d11634351a2be7b8a72fd807c75e5b6bf7afcd5ddee0"
-    },
     "high-end-visual-design": {
       "source": "Leonxlnx/taste-skill",
       "sourceType": "github",
@@ -84,12 +60,6 @@
       "sourceType": "github",
       "skillPath": "skills/image-to-code-skill/SKILL.md",
       "computedHash": "58517b03b2a01f4c9ba65861559d03df931400871bbc200978c975b24bb92c73"
-    },
-    "imagegen-frontend-mobile": {
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "github",
-      "skillPath": "skills/imagegen-frontend-mobile/SKILL.md",
-      "computedHash": "9ab7f4f6ce66a3cff02bbf5894e5bd5af50bf5d6ef0adffdc88e8fab772fe44f"
     },
     "imagegen-frontend-web": {
       "source": "Leonxlnx/taste-skill",
@@ -109,17 +79,17 @@
       "skillPath": "skills/improve-animations/SKILL.md",
       "computedHash": "524ea241e41d58bbdd8e288700fe24f5725e2a2f3ae7186ad7cebf9055058356"
     },
-    "industrial-brutalist-ui": {
-      "source": "Leonxlnx/taste-skill",
+    "liquid-theme-a11y": {
+      "source": "benjaminsehl/liquid-skills",
       "sourceType": "github",
-      "skillPath": "skills/brutalist-skill/SKILL.md",
-      "computedHash": "8fc355c4aadb7d29c53ca28bc41be3cd6eea765d121e3737c4dc2d0f90a8effa"
+      "skillPath": "skills/liquid-theme-a11y/SKILL.md",
+      "computedHash": "2b8575d6baa6c6dcd18b24607ffa7b423a107d9561a369cd3e7cee291d28e249"
     },
-    "minimalist-ui": {
-      "source": "Leonxlnx/taste-skill",
+    "liquid-theme-standards": {
+      "source": "benjaminsehl/liquid-skills",
       "sourceType": "github",
-      "skillPath": "skills/minimalist-skill/SKILL.md",
-      "computedHash": "08873a3131d3be27bef9bf3304b310b16b44ca6e3561aebe532797be3443f6bd"
+      "skillPath": "skills/liquid-theme-standards/SKILL.md",
+      "computedHash": "bd00f2a2455861201c66d6b84d6153135e8f62e27326f7563e7a656ba53dada1"
     },
     "mobile-native": {
       "source": "emilkowalski/skills",
@@ -151,17 +121,17 @@
       "skillPath": "skills/review-animations/SKILL.md",
       "computedHash": "b4e5f0f4fe3e2743c85bf7354108f48a0b9d502cb20ef5c4a9c195da91f93736"
     },
-    "stitch-design-taste": {
-      "source": "Leonxlnx/taste-skill",
+    "shopify": {
+      "source": "Shopify/shopify-ai-toolkit",
       "sourceType": "github",
-      "skillPath": "skills/stitch-skill/SKILL.md",
-      "computedHash": "13322f38406cd3abf16ba45e35bdc9b18002d0153a79b4612b97aefc65d5a335"
+      "skillPath": "skills/shopify/SKILL.md",
+      "computedHash": "c645232d9e6a7742be0d72ea3e87fac80baa8ea6da32036dc7599b429776305d"
     },
-    "write-swift": {
-      "source": "emilkowalski/skills",
+    "shopify-liquid-themes": {
+      "source": "benjaminsehl/liquid-skills",
       "sourceType": "github",
-      "skillPath": "skills/write-swift/SKILL.md",
-      "computedHash": "f20bb9cf51dbee1900b264820a12f1d3d378dc4d23ac758e7ba9e644c49a2459"
+      "skillPath": "skills/shopify-liquid-themes/SKILL.md",
+      "computedHash": "ffbd442951b3c06c451d4fa39a7b7cc0dea3618976bdb87508621e7c561eabe7"
     }
   }
 }
