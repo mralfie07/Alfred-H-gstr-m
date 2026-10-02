@@ -84,7 +84,23 @@ Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börja
 - Shopify-plan, domän och lanseringsdatum.
 - Typsnittet i ordmärket och om det finns licens för webben.
 
-## 10. Att rätta i nuvarande butik
+## 10. Higgsfield: arbetsflöde och budget
+- Användaren har (eller köper) Higgsfield **Pro, 29 dollar per månad, 600 krediter**. Köp månadsvis och säg upp när heron är klar.
+- Uppskattad åtgång för heron: ~400 krediter (startbilder ~20, ~20 testklipp ~280, slutversion i 4K i två format ~96).
+- Priser per 8-sekundersklipp (kontrollerade okt 2026): Kling 3.0 Pro utan ljud 14 krediter, MiniMax H3 2K 16, Kling 3.0 4K 48, Seedance 2.5 1080p 96 (utkast i 480p 24).
+- Testa billigt (Kling 3.0 Pro eller Seedance-utkast, gärna i Higgsfields webbapp). Kör 4K först när rörelse och stil sitter, en gång per format.
+- Spara modellerna som referenskaraktärer i Higgsfield så att ansiktena är samma i alla klipp.
+- Kontrollera om Pro-planen fungerar via MCP. Om inte genererar användaren i webbappen och skickar filerna.
+- Färdig video laddas upp i Shopify under Innehåll → Filer (Shopifys CDN).
+
+## 11. Användarens önskemål
+- Ska kännas som en sajt för 100 000 dollar: video-hero, motion som av en riktig motion designer, helt komplett.
+- Ingen AI-generisk känsla. Bilderna och videon ska vara så realistiska att ingen märker att de är AI.
+- Gillar referenserna i `brand/references/` (svävande produkt, jättetext bakom, väljare som byter scen).
+- Vill inte göra av med sin usage i onödan: en fas per session, ny session för varje fas, samla feedback. Grundnivå medium effort, high för koncept och motion.
+- Vill bli tillfrågad innan något byggs eller publiceras som inte ingår i den fas som körs.
+
+## 12. Att rätta i nuvarande butik
 - Annonsraden säger "Welcome to our store".
 - Headern visar "OBJECT 07" som vanlig text i stället för loggan.
 - Priserna står på 0,00 kr.
