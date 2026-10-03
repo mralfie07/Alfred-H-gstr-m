@@ -6,6 +6,8 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - **Namn:** OBJECT 07, est. 2007.
 - **Emblem:** en oval där en fyruddig stjärna skär igenom som en horisont. "07" bryter ut till höger. Sliten ytstruktur som påminner om sten eller marmor. Y2K- och sci-fi-känsla.
 - **Ordmärke:** brett geometriskt typsnitt där O:et ersatts av emblemet. Glest spärrat "EST. 2007" under.
+- **Huvudlogga:** ordmärket med "EST. 2007" (`brand/logo/wordmark-raster.png`) används på hemsidan (header) och på nacketiketten i tröjorna. Emblemet ensamt (`emblem-raster.png`) används där det är trångt, till exempel favicon och mobilmeny.
+- Loggorna finns bara som raster (PNG, ca 1254 × 1254 px). Vektor (SVG) behövs för en skarp header; finns ingen kan den ritas om som SVG i fas 1 och godkännas av användaren.
 - **Färger:** svart och benvitt/sten. Accent: den orange pricken från trycken. Inga fler färger utan att fråga.
 - **Känsla:** mer konst och arkiv än streetwear-merch. Lugnt, tungt, genomtänkt.
 
