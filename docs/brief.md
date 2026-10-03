@@ -65,6 +65,8 @@ Inspiration: `brand/references/ref-zero-point-product-switcher.jpg` och `ref-nik
 - Produktdata via Shopify-kopplingen.
 - Prestanda: komprimerad video med stillbild, lazy loading, `prefers-reduced-motion` respekteras, snabb första visning i mobilen.
 - Kassan styrs av Shopify och kan inte designas om utan Shopify Plus.
+- **Butiken:** OBJECT 07, `egkwr4-wr.myshopify.com`, valuta SEK, land Sverige. Är kopplad via Shopify-kopplingen (verifierat 2026-10-03).
+- **Plan:** provperiod (trial). Temat kan byggas och förhandsgranskas, men butiken måste uppgraderas innan försäljning.
 
 ## 8. Faser och effort
 
@@ -103,5 +105,11 @@ Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börja
 ## 12. Att rätta i nuvarande butik
 - Annonsraden säger "Welcome to our store".
 - Headern visar "OBJECT 07" som vanlig text i stället för loggan.
-- Priserna står på 0,00 kr.
+- ~~Priserna står på 0,00 kr.~~ Fixat: alla produkter kostar 799 kr (2026-10-03).
 - Standardtemat är vitt och krockar med de mörka produktbilderna.
+
+Produktstatus 2026-10-03 (5 produkter, alla aktiva, 799 kr):
+- OBJECT #001 finns två gånger (`object-001`, `object-1`) och OBJECT #002 tre gånger (`object-002`, `object-2`, `object-3`). Fråga användaren om det är olika färger eller dubbletter innan något ändras.
+- Inga storlekar: varje produkt har bara varianten "Default Title". Storlekar ska läggas till som varianter.
+- Lagersaldo 0 på alla.
+- Inga beskrivningar (material, passform, tvättråd saknas).
