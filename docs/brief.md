@@ -6,6 +6,9 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - **Namn:** OBJECT 07, est. 2007.
 - **Emblem:** en oval där en fyruddig stjärna skär igenom som en horisont. "07" bryter ut till höger. Sliten ytstruktur som påminner om sten eller marmor. Y2K- och sci-fi-känsla.
 - **Ordmärke:** brett geometriskt typsnitt där O:et ersatts av emblemet. Glest spärrat "EST. 2007" under.
+- **Huvudlogga:** ordmärket med "EST. 2007" (`brand/logo/wordmark-raster.png`) används på hemsidan (header) och på nacketiketten i tröjorna. Emblemet ensamt (`emblem-raster.png`) används där det är trångt, till exempel favicon och mobilmeny.
+- **Favicon:** emblemet, bekräftat av användaren. Beskär tätt runt ovalen (emblemet tar bara ca halva bilden nu). Testa i 16–32 px: stenstrukturen och "07" syns knappt i den storleken, så en förenklad version (ren vit oval och stjärna) kan behövas för de minsta storlekarna. Visa användaren innan.
+- Loggorna finns bara som raster (PNG, ca 1254 × 1254 px). Vektor (SVG) behövs för en skarp header; finns ingen kan den ritas om som SVG i fas 1 och godkännas av användaren.
 - **Färger:** svart och benvitt/sten. Accent: den orange pricken från trycken. Inga fler färger utan att fråga.
 - **Känsla:** mer konst och arkiv än streetwear-merch. Lugnt, tungt, genomtänkt.
 
@@ -65,6 +68,8 @@ Inspiration: `brand/references/ref-zero-point-product-switcher.jpg` och `ref-nik
 - Produktdata via Shopify-kopplingen.
 - Prestanda: komprimerad video med stillbild, lazy loading, `prefers-reduced-motion` respekteras, snabb första visning i mobilen.
 - Kassan styrs av Shopify och kan inte designas om utan Shopify Plus.
+- **Butiken:** OBJECT 07, `egkwr4-wr.myshopify.com`, valuta SEK, land Sverige. Är kopplad via Shopify-kopplingen (verifierat 2026-10-03).
+- **Plan:** provperiod (trial). Temat kan byggas och förhandsgranskas, men butiken måste uppgraderas innan försäljning.
 
 ## 8. Faser och effort
 
@@ -103,5 +108,11 @@ Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börja
 ## 12. Att rätta i nuvarande butik
 - Annonsraden säger "Welcome to our store".
 - Headern visar "OBJECT 07" som vanlig text i stället för loggan.
-- Priserna står på 0,00 kr.
+- ~~Priserna står på 0,00 kr.~~ Fixat: alla produkter kostar 799 kr (2026-10-03).
 - Standardtemat är vitt och krockar med de mörka produktbilderna.
+
+Produktstatus 2026-10-03 (5 produkter, alla aktiva, 799 kr):
+- OBJECT #001 finns två gånger (`object-001`, `object-1`) och OBJECT #002 tre gånger (`object-002`, `object-2`, `object-3`). Fråga användaren om det är olika färger eller dubbletter innan något ändras.
+- Inga storlekar: varje produkt har bara varianten "Default Title". Storlekar ska läggas till som varianter.
+- Lagersaldo 0 på alla.
+- Inga beskrivningar (material, passform, tvättråd saknas).
