@@ -4,12 +4,42 @@
   if poster == blank and video != blank
     assign poster = video.preview_image
   endif
+  if poster != blank
+    assign poster_url = poster | image_url: width: 1920
+  else
+    assign poster_url = 'hero-poster.webp' | asset_url
+  endif
+
+  # Phones get ~720p, larger screens ~1080p.
+  assign small_url = ''
+  assign large_url = ''
+  if video != blank
+    # Shopify transcodes uploads into several MP4 heights; pick the best one under each limit.
+    assign small_h = 0
+    assign large_h = 0
+    for source in video.sources
+      if source.mime_type == 'video/mp4'
+        if source.height <= 720 and source.height > small_h
+          assign small_url = source.url
+          assign small_h = source.height
+        endif
+        if source.height <= 1080 and source.height > large_h
+          assign large_url = source.url
+          assign large_h = source.height
+        endif
+      endif
+    endfor
+    if large_url == blank
+      assign large_url = video.sources | where: 'mime_type', 'video/mp4' | map: 'url' | first
+    endif
+  elsif section.settings.theme_video
+    # Shopify trial stores can't upload video files, so the theme ships the film as two assets.
+    assign small_url = 'hero-720.mp4' | asset_url
+    assign large_url = 'hero-1080.mp4' | asset_url
+  endif
 -%}
 <section class="hero" aria-label="{{ section.settings.label | escape }}">
-  {%- if video != blank -%}
-    {%- capture poster_url -%}
-      {%- if poster != blank -%}{{ poster | image_url: width: 1920 }}{%- else -%}{{ 'hero-poster.webp' | asset_url }}{%- endif -%}
-    {%- endcapture -%}
+  {%- if large_url != blank -%}
     <video
       class="hero__media"
       muted
@@ -22,34 +52,10 @@
       data-hero-video
       aria-hidden="true"
     >
-      {%- liquid
-        # Shopify transcodes uploads into several MP4 heights. Phones get ~720p, larger screens ~1080p.
-        assign small = nil
-        assign large = nil
-        assign small_h = 0
-        assign large_h = 0
-        for source in video.sources
-          if source.mime_type == 'video/mp4'
-            if source.height <= 720 and source.height > small_h
-              assign small = source
-              assign small_h = source.height
-            endif
-            if source.height <= 1080 and source.height > large_h
-              assign large = source
-              assign large_h = source.height
-            endif
-          endif
-        endfor
-        if large == nil
-          assign large = video.sources | where: 'mime_type', 'video/mp4' | first
-        endif
-      -%}
-      {%- if small and small.url != large.url -%}
-        <source src="{{ small.url }}" type="video/mp4" media="(max-width: 899px)">
+      {%- if small_url != blank and small_url != large_url -%}
+        <source src="{{ small_url }}" type="video/mp4" media="(max-width: 899px)">
       {%- endif -%}
-      {%- if large -%}
-        <source src="{{ large.url }}" type="video/mp4">
-      {%- endif -%}
+      <source src="{{ large_url }}" type="video/mp4">
     </video>
   {%- elsif poster != blank -%}
     {{
@@ -60,7 +66,7 @@
   {%- else -%}
     <img
       class="hero__media"
-      src="{{ 'hero-poster.webp' | asset_url }}"
+      src="{{ poster_url }}"
       alt=""
       width="1920"
       height="1072"
@@ -159,7 +165,14 @@
       "type": "video",
       "id": "video",
       "label": "Film",
-      "info": "Ladda upp hero-v2-original.mp4 (16:9). Den spelas utan ljud och loopar."
+      "info": "Valfritt. Ersätter temats film (16:9, spelas utan ljud och loopar). Kräver betald plan."
+    },
+    {
+      "type": "checkbox",
+      "id": "theme_video",
+      "label": "Använd filmen som följer med temat",
+      "default": true,
+      "info": "Gäller när ingen film är vald ovan. Provperioden tillåter inte uppladdade filmer."
     },
     {
       "type": "image_picker",
