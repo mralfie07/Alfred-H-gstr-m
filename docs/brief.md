@@ -26,7 +26,9 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - Numreringen "OBJECT #00X" är märkets starkaste idé. Varje plagg presenteras som ett katalogiserat föremål.
 - Priser, storlekar, material och måttguide hämtas från Shopify (läggs in av användaren).
 
-## 3. Koncept: mörkt galleri/arkiv
+## 3. Koncept: ~~mörkt galleri/arkiv~~ ersatt 2026-10-04
+**Användaren valde i fas 1 en klassisk premium mörk streetwear-dropbutik (se PRODUCT.md, docs/concept-round.md). Ribba: Aimé Leon Dore / Kith och Palace / Stüssy. Texten nedan är det ursprungliga konceptet, kvar som historik; numreringen och märkets element används fortfarande som innehåll.**
+
 - Svart bakgrund som smälter ihop med produktfotona.
 - Varje plagg visas som ett utställt föremål med katalognummer och "objektdata" (material, vikt, upplaga).
 - Typografin följer ordmärket: brett och geometriskt, med glest spärrade små versaler.

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Objektväljaren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<style>
+/* Layout: dark drop store. Campaign film leads (ALD/Kith calm), then one graphic product stage
+   where the garment floats on a colour block with its object number set huge behind it (Palace/Stüssy). */
+:root {
+  color-scheme: dark;
+  --ink: #0c0c0b;          /* page ground, warm near-black like the product photo studio */
+  --char: #171615;         /* raised surfaces */
+  --rule: #2c2a27;         /* hairlines */
+  --bone: #ece6dc;         /* print cream, primary text */
+  --stone: #a6a097;        /* secondary text */
+  --terra: #c2714f;        /* the orange dot from the prints, used once per view */
+
+  --block-svart: #9d978d;  /* concrete */
+  --block-bla: #cdbfa6;    /* sand, so faded denim stays readable */
+  --block-camo: #6f7257;   /* olive */
+
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif; /* wdth 125, heavy */
+  --f-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;      /* wdth 112, spaced caps */
+  --f-body: "Archivo", "Helvetica Neue", Arial, sans-serif;    /* wdth 100 */
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 72px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--f-body);
+  font-variation-settings: "wdth" 100;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--bone); color: var(--ink); }
+img, video { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--bone); outline-offset: 3px; }
+
+.ui {
+  font-family: var(--f-ui);
+  font-variation-settings: "wdth" 112; font-stretch: 112%;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+/* Announcement */
+.announce {
+  display: flex; justify-content: center; gap: var(--s-3);
+  padding: var(--s-2) var(--gutter);
+  background: var(--bone); color: var(--ink);
+  font-size: 11px;
+}
+.announce b { font-weight: 700; }
+
+/* Header */
+.header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: var(--s-3) var(--gutter);
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+.header .wordmark { width: clamp(128px, 34vw, 190px); height: auto; justify-self: center; }
+.icon-btn {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  background: none; border: 0; padding: var(--s-2); margin: calc(var(--s-2) * -1);
+  color: var(--bone);
+}
+.icon-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.bag { justify-self: end; }
+.bag-count {
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px;
+  background: var(--bone); color: var(--ink);
+  font-size: 10px; font-weight: 700; letter-spacing: 0; line-height: 18px; text-align: center;
+  font-variant-numeric: tabular-nums;
+  transition: transform .4s var(--ease-out);
+}
+.bag-count.bump { transform: scale(1.35); }
+
+/* Hero film */
+.hero { position: relative; background: var(--char); overflow: hidden; }
+.hero video {
+  width: 100%; aspect-ratio: 9 / 16; max-height: 78svh; object-fit: cover;
+}
+@media (min-width: 900px) { .hero video { aspect-ratio: 16 / 9; max-height: 82vh; } }
+.hero::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top, rgb(12 12 11 / .72), rgb(12 12 11 / 0) 42%);
+}
+.hero-copy {
+  position: absolute; left: var(--gutter); right: var(--gutter); bottom: var(--s-6); z-index: 1;
+  display: grid; gap: var(--s-3);
+}
+.hero-copy .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--terra); margin-right: var(--s-2); vertical-align: 1px; }
+.hero-copy a {
+  justify-self: start; color: var(--bone); text-decoration: underline;
+  text-underline-offset: 6px; text-decoration-thickness: 1px;
+}
+
+/* Drop / object selector */
+.drop { padding: var(--s-7) var(--gutter) var(--s-8); display: grid; gap: var(--s-5); max-width: 1240px; margin: 0 auto; }
+.drop-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); flex-wrap: wrap; }
+.drop-head h2 {
+  margin: 0; font-family: var(--f-display); font-variation-settings: "wdth" 125; font-stretch: 125%; font-weight: 800;
+  font-size: clamp(28px, 7vw, 52px); line-height: .95; letter-spacing: -.02em; text-transform: uppercase;
+  text-wrap: balance;
+}
+.drop-head p { margin: 0; color: var(--stone); }
+
+.objects { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); }
+.objects button {
+  background: none; border: 0; padding: var(--s-4) var(--s-3);
+  font-family: var(--f-display); font-variation-settings: "wdth" 125; font-stretch: 125%; font-weight: 800;
+  font-size: clamp(15px, 4.2vw, 22px); letter-spacing: -.01em; text-transform: uppercase;
+  color: var(--stone); transition: color .3s, background-color .3s;
+}
+.objects button + button { border-left: 1px solid var(--rule); }
+.objects button[aria-checked="true"] { color: var(--ink); background: var(--bone); }
+
+.selector { display: grid; gap: var(--s-5); }
+@media (min-width: 900px) {
+  .selector { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-7); align-items: start; }
+  .info { position: sticky; top: 96px; }
+}
+
+/* Stage */
+.stage {
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+  background: var(--block, var(--block-svart));
+  transition: background-color .6s var(--ease-out);
+  touch-action: pan-y; user-select: none; -webkit-user-select: none;
+}
+.numeral {
+  position: absolute; inset: auto 0 6% 0; text-align: center;
+  font-family: var(--f-display); font-variation-settings: "wdth" 125; font-stretch: 125%; font-weight: 900;
+  font-size: min(46vw, 330px); line-height: .8; letter-spacing: -.04em;
+  color: rgb(12 12 11 / .16);
+  transition: transform .7s var(--ease-out), opacity .4s;
+}
+.numeral.out { transform: translateY(14%); opacity: 0; }
+.garment {
+  position: absolute; inset: 9% 7% 13%; display: grid; place-items: center;
+}
+.garment img {
+  grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain;
+  filter: drop-shadow(0 28px 22px rgb(12 12 11 / .38));
+  opacity: 0; transform: translateY(10px) scale(.97);
+  transition: opacity .45s var(--ease-out), transform .7s var(--ease-out);
+}
+.garment img.on { opacity: 1; transform: none; }
+.garment { animation: float 7s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-6px); } }
+
+.stage-tag {
+  position: absolute; top: var(--s-4); left: var(--s-4);
+  color: var(--ink); font-size: 11px;
+}
+.flip {
+  position: absolute; right: var(--s-4); bottom: var(--s-4);
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  background: var(--ink); color: var(--bone); border: 0; padding: var(--s-3) var(--s-4);
+}
+.flip svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; transition: transform .6s var(--ease-out); }
+.flip[aria-pressed="true"] svg { transform: rotate(180deg); }
+.swipe-hint {
+  position: absolute; left: var(--s-4); bottom: var(--s-4); color: var(--ink); font-size: 10px; opacity: .7;
+}
+
+/* Info */
+.info { display: grid; gap: var(--s-5); }
+.title-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+.title-row h3 {
+  margin: 0; font-family: var(--f-display); font-variation-settings: "wdth" 125; font-stretch: 125%; font-weight: 800;
+  font-size: clamp(24px, 6vw, 34px); line-height: 1; letter-spacing: -.02em; text-transform: uppercase;
+}
+.price { font-variant-numeric: tabular-nums; font-size: 18px; white-space: nowrap; }
+.meta { margin: calc(var(--s-3) * -1) 0 0; color: var(--stone); }
+
+.field { display: grid; gap: var(--s-3); margin: 0; padding: 0; border: 0; }
+.field legend { padding: 0; margin-bottom: var(--s-3); display: flex; gap: var(--s-2); }
+.field legend span { color: var(--stone); }
+
+.swatches { display: flex; gap: var(--s-3); }
+.swatch {
+  width: 52px; height: 52px; padding: 0; border: 1px solid var(--rule);
+  background: var(--sw); background-size: cover; background-position: center;
+  position: relative; transition: border-color .25s;
+}
+.swatch::after {
+  content: ""; position: absolute; inset: -6px; border: 1px solid transparent; transition: border-color .25s;
+}
+.swatch[aria-checked="true"]::after { border-color: var(--bone); }
+.swatch[data-c="svart"] { --sw: #2e2d2b; }
+.swatch[data-c="bla"] { --sw: #6f84a1; }
+.swatch[data-c="camo"] { --sw: url("img/svart-camo-kyss_bak.webp") 52% 42% / 520% auto no-repeat, #2e2d2b; }
+
+.sizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-2); }
+.size {
+  height: 52px; background: none; border: 1px solid var(--rule);
+  font-family: var(--f-ui); font-variation-settings: "wdth" 112; font-stretch: 112%; font-weight: 600; font-size: 14px; letter-spacing: .08em;
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.size:hover { border-color: var(--stone); }
+.size[aria-checked="true"] { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+
+.add {
+  height: 58px; border: 0; background: var(--bone); color: var(--ink);
+  font-family: var(--f-ui); font-variation-settings: "wdth" 112; font-stretch: 112%; font-weight: 700; font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+  transition: opacity .2s, transform .15s;
+}
+.add:active { transform: scale(.985); }
+.add[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.facts { display: grid; gap: var(--s-2); margin: 0; padding: var(--s-4) 0 0; border-top: 1px solid var(--rule); color: var(--stone); font-size: 14px; }
+.facts div { display: flex; justify-content: space-between; gap: var(--s-4); }
+.facts dt { margin: 0; } .facts dd { margin: 0; color: var(--bone); text-align: right; }
+
+/* Signup */
+.signup { border-top: 1px solid var(--rule); padding: var(--s-7) var(--gutter); }
+.signup-inner { max-width: 1240px; margin: 0 auto; display: grid; gap: var(--s-4); }
+.signup h2 {
+  margin: 0; font-family: var(--f-display); font-variation-settings: "wdth" 125; font-stretch: 125%; font-weight: 900;
+  font-size: clamp(30px, 8.4vw, 72px); line-height: .92; letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance;
+}
+.signup p { margin: 0; color: var(--stone); max-width: 52ch; }
+.signup form { display: grid; grid-template-columns: 1fr auto; border: 1px solid var(--bone); max-width: 560px; }
+.signup input {
+  min-width: 0; height: 56px; padding: 0 var(--s-4); border: 0; background: transparent; font-size: 16px;
+}
+.signup input::placeholder { color: var(--stone); }
+.signup input:focus-visible { outline: none; }
+.signup form:focus-within { outline: 2px solid var(--bone); outline-offset: 3px; }
+.signup button { width: 56px; border: 0; background: var(--bone); color: var(--ink); display: grid; place-items: center; }
+.signup button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.form-msg { min-height: 1.5em; font-size: 14px; }
+
+.footer {
+  display: flex; justify-content: space-between; gap: var(--s-4); flex-wrap: wrap;
+  padding: var(--s-5) var(--gutter) var(--s-6); color: var(--stone); font-size: 11px; border-top: 1px solid var(--rule);
+}
+
+/* Toast */
+.toast {
+  position: fixed; left: 50%; bottom: calc(var(--s-5) + env(safe-area-inset-bottom, 0px)); z-index: 30;
+  transform: translate(-50%, 140%); width: min(92vw, 420px);
+  display: flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-4); background: var(--bone); color: var(--ink);
+  box-shadow: 0 18px 40px rgb(0 0 0 / .45);
+  visibility: hidden;
+  transition: transform .55s var(--ease-out), visibility 0s linear .55s;
+}
+.toast.show { transform: translate(-50%, 0); visibility: visible; transition: transform .55s var(--ease-out), visibility 0s; }
+.toast img { width: 48px; height: 48px; object-fit: contain; background: var(--block, var(--block-svart)); }
+.toast small { display: block; color: #4a4741; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="announce ui" role="note"><b>Drop 01</b><span>Nu ute</span><span aria-hidden="true">·</span><span>Begränsad upplaga</span></div>
+
+<header class="header">
+  <button class="icon-btn" type="button" aria-label="Meny">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+  </button>
+  <img class="wordmark" src="img/wordmark.png" alt="OBJECT 07" width="1180" height="140">
+  <button class="icon-btn bag ui" type="button" aria-label="Varukorg, 0 varor" id="bag">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+    <span class="bag-count" id="bag-count">0</span>
+  </button>
+</header>
+
+<main>
+  <section class="hero" aria-label="Kampanjfilm Drop 01">
+    <video id="hero" muted loop playsinline preload="metadata" poster="media/hero-mobile-poster.jpg">
+      <source src="media/hero-desktop.mp4" type="video/mp4" media="(min-width: 900px)">
+      <source src="media/hero-mobile.mp4" type="video/mp4">
+    </video>
+    <div class="hero-copy">
+      <span class="ui"><span class="dot" aria-hidden="true"></span>Drop 01 · OBJECT #001 &amp; #002</span>
+      <a class="ui" href="#droppet">Handla droppet</a>
+    </div>
+  </section>
+
+  <section class="drop" id="droppet" aria-labelledby="drop-title">
+    <div class="drop-head">
+      <h2 id="drop-title">Drop 01</h2>
+      <p class="ui">Två objekt · tre färger · S–XL</p>
+    </div>
+
+    <div class="objects" role="radiogroup" aria-label="Välj objekt">
+      <button type="button" role="radio" aria-checked="false" data-o="001" id="o-001">OBJECT #001</button>
+      <button type="button" role="radio" aria-checked="true" data-o="002" id="o-002">OBJECT #002</button>
+    </div>
+
+    <div class="selector">
+      <div class="stage" id="stage">
+        <span class="numeral" id="numeral" aria-hidden="true">002</span>
+        <div class="garment" id="garment"></div>
+        <span class="stage-tag ui" id="view-tag">Baksida</span>
+        <span class="swipe-hint ui" aria-hidden="true">Svep för färg</span>
+        <button class="flip ui" type="button" id="flip" aria-pressed="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>
+          <span id="flip-label">Visa fram</span>
+        </button>
+      </div>
+
+      <div class="info">
+        <div class="title-row">
+          <h3 id="title">OBJECT #002</h3>
+          <span class="price">799 kr</span>
+        </div>
+        <p class="meta" id="meta">Kyssmotivet på rygg och bröst</p>
+
+        <fieldset class="field">
+          <legend class="ui">Färg <span id="color-name">Svart-camo</span></legend>
+          <div class="swatches" role="radiogroup" aria-label="Färg">
+            <button type="button" class="swatch" role="radio" data-c="svart" aria-checked="false" aria-label="Svart" id="c-svart"></button>
+            <button type="button" class="swatch" role="radio" data-c="bla" aria-checked="false" aria-label="Blå" id="c-bla"></button>
+            <button type="button" class="swatch" role="radio" data-c="camo" aria-checked="true" aria-label="Svart-camo" id="c-camo"></button>
+          </div>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="ui">Storlek <span id="size-name">Välj</span></legend>
+          <div class="sizes" role="radiogroup" aria-label="Storlek">
+            <button type="button" class="size" role="radio" aria-checked="false" id="s-S">S</button>
+            <button type="button" class="size" role="radio" aria-checked="false" id="s-M">M</button>
+            <button type="button" class="size" role="radio" aria-checked="false" id="s-L">L</button>
+            <button type="button" class="size" role="radio" aria-checked="false" id="s-XL">XL</button>
+          </div>
+        </fieldset>
+
+        <button class="add" type="button" id="add" aria-disabled="true">Välj storlek</button>
+
+        <dl class="facts">
+          <div><dt>Passform</dt><dd>Oversized</dd></div>
+          <div><dt>Tyg</dt><dd>Tung acid wash</dd></div>
+          <div><dt>Upplaga</dt><dd>Begränsad, Drop 01</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="signup" aria-labelledby="signup-title">
+    <div class="signup-inner">
+      <h2 id="signup-title">Få nästa droppet först</h2>
+      <p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>
+      <form id="signup" novalidate>
+        <label class="visually-hidden" for="email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">E-postadress</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Din e-postadress">
+        <button type="submit" aria-label="Anmäl dig">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </button>
+      </form>
+      <p class="form-msg" id="form-msg" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer ui">
+  <span>© OBJECT 07 · Est. 2007</span>
+  <span>Prototyp · inget sparas eller köps</span>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <img id="toast-img" src="img/svart-camo-kyss_bak.webp" alt="" width="48" height="48">
+  <div><strong id="toast-title">Lagd i varukorgen</strong><small id="toast-sub"></small></div>
+</div>
+
+<script>
+(() => {
+  const OBJECTS = {
+    "001": { meta: "Kyssen delad över sidsömmen, ett ansikte fram och ett bak", defaultView: "fram" },
+    "002": { meta: "Kyssmotivet på rygg och bröst", defaultView: "bak" }
+  };
+  const COLORS = [
+    { id: "svart", name: "Svart", block: "var(--block-svart)" },
+    { id: "bla", name: "Blå", block: "var(--block-bla)" },
+    { id: "camo", name: "Svart-camo", block: "var(--block-camo)" }
+  ];
+  const file = (o, c, v) => {
+    const color = c === "camo" ? "svart-camo" : c;
+    const motif = o === "001" ? "sidtryck" : "kyss";
+    return `img/${color}-${motif}_${v}.webp`;
+  };
+
+  const state = { o: "002", c: "camo", v: "bak", size: null, count: 0 };
+  const $ = (id) => document.getElementById(id);
+  const stage = $("stage"), garment = $("garment"), numeral = $("numeral");
+
+  // Preload every view so switching never flashes empty.
+  const cache = {};
+  for (const o of ["001", "002"]) for (const c of COLORS) for (const v of ["fram", "bak"]) {
+    const img = new Image(); img.src = file(o, c.id, v); img.decoding = "async"; cache[img.src] = img;
+  }
+
+  let current = null;
+  function showGarment() {
+    const src = file(state.o, state.c, state.v);
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = `OBJECT #${state.o} i ${COLORS.find(c => c.id === state.c).name.toLowerCase()}, ${state.v === "fram" ? "framsida" : "baksida"}`;
+    garment.appendChild(img);
+    requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("on")));
+    if (current) {
+      const old = current; old.classList.remove("on");
+      setTimeout(() => old.remove(), 500);
+    }
+    current = img;
+  }
+
+  function render({ numeralChange = false } = {}) {
+    const color = COLORS.find(c => c.id === state.c);
+    stage.style.setProperty("--block", color.block);
+    document.documentElement.style.setProperty("--block", color.block);
+    $("title").textContent = `OBJECT #${state.o}`;
+    $("meta").textContent = OBJECTS[state.o].meta;
+    $("color-name").textContent = color.name;
+    $("view-tag").textContent = state.v === "fram" ? "Framsida" : "Baksida";
+    $("flip-label").textContent = state.v === "fram" ? "Visa bak" : "Visa fram";
+    $("flip").setAttribute("aria-pressed", String(state.v === "bak"));
+    for (const b of document.querySelectorAll(".objects button")) b.setAttribute("aria-checked", String(b.dataset.o === state.o));
+    for (const b of document.querySelectorAll(".swatch")) b.setAttribute("aria-checked", String(b.dataset.c === state.c));
+    for (const b of document.querySelectorAll(".size")) b.setAttribute("aria-checked", String(b.textContent === state.size));
+    $("size-name").textContent = state.size ?? "Välj";
+    const add = $("add");
+    add.setAttribute("aria-disabled", String(!state.size));
+    add.textContent = state.size ? `Lägg i varukorgen · 799 kr` : "Välj storlek";
+    if (numeralChange) {
+      numeral.classList.add("out");
+      setTimeout(() => { numeral.textContent = state.o; numeral.classList.remove("out"); }, 260);
+    }
+    showGarment();
+  }
+
+  document.querySelectorAll(".objects button").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.o === state.o) return;
+    state.o = b.dataset.o; state.v = OBJECTS[state.o].defaultView;
+    render({ numeralChange: true });
+  }));
+  document.querySelectorAll(".swatch").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.c === state.c) return;
+    state.c = b.dataset.c; render();
+  }));
+  document.querySelectorAll(".size").forEach(b => b.addEventListener("click", () => {
+    state.size = b.textContent; render();
+  }));
+  $("flip").addEventListener("click", () => { state.v = state.v === "fram" ? "bak" : "fram"; render(); });
+
+  // Arrow keys move within each radio group.
+  document.querySelectorAll('[role="radiogroup"]').forEach(group => {
+    group.addEventListener("keydown", e => {
+      if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+      const items = [...group.querySelectorAll('[role="radio"]')];
+      const i = items.indexOf(document.activeElement);
+      if (i < 0) return;
+      const next = items[(i + (e.key === "ArrowRight" ? 1 : items.length - 1)) % items.length];
+      next.focus(); next.click(); e.preventDefault();
+    });
+  });
+
+  // Swipe on the stage changes colour.
+  let x0 = null, y0 = null;
+  stage.addEventListener("pointerdown", e => { if (e.target.closest(".flip")) return; x0 = e.clientX; y0 = e.clientY; });
+  stage.addEventListener("pointerup", e => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+    const i = COLORS.findIndex(c => c.id === state.c);
+    state.c = COLORS[(i + (dx < 0 ? 1 : COLORS.length - 1)) % COLORS.length].id;
+    render();
+  });
+
+  // Add to cart (prototype only).
+  let toastTimer;
+  $("add").addEventListener("click", () => {
+    if (!state.size) { document.getElementById("s-M").focus(); return; }
+    state.count += 1;
+    const count = $("bag-count");
+    count.textContent = state.count;
+    count.classList.add("bump"); setTimeout(() => count.classList.remove("bump"), 400);
+    $("bag").setAttribute("aria-label", `Varukorg, ${state.count} ${state.count === 1 ? "vara" : "varor"}`);
+    const color = COLORS.find(c => c.id === state.c);
+    $("toast-img").src = file(state.o, state.c, OBJECTS[state.o].defaultView);
+    $("toast-sub").textContent = `OBJECT #${state.o} · ${color.name} · ${state.size} · 799 kr`;
+    const t = $("toast"); t.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
+  });
+
+  // Signup (prototype only).
+  $("signup").addEventListener("submit", e => {
+    e.preventDefault();
+    const v = $("email").value.trim();
+    const msg = $("form-msg");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { msg.textContent = "Skriv en giltig e-postadress, till exempel namn@mejl.se."; $("email").focus(); return; }
+    msg.textContent = "Klart. Här skickas ett mejl inför nästa drop (i prototypen sparas inget).";
+    $("email").value = "";
+  });
+
+  // Hero film: autoplay unless the viewer prefers reduced motion.
+  const hero = $("hero");
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    hero.autoplay = true; hero.play().catch(() => {});
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
