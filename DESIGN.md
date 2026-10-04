@@ -50,9 +50,9 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 - **Korset (objektväljaren):** varje kontroll ska synas utan förklaring.
   - **Två separata kollektioner** (användarens beslut 2026-10-04): överst en flikrad, "DROP 01 · TVÅ KOLLEKTIONER", med en flik per objekt. Varje flik har en miniatyr av tröjan i vald färg, och bara numret, stort (`#001`, `#002`, bredd 125 %, vikt 300). Inga beskrivande ord som "sidtryck" eller "kyssmotiv" (användarens beslut). En benvit stapel på 2 px glider under den öppna kollektionen. Den andra fliken börjar på korsets lodräta axel. Sidan öppnar på #001.
   - Den lodräta axeln har etiketten "FÄRG".
-  - Vågrät axel: armarna slutar i pilspetsar, som på en koordinataxel, och pekar bara dit det finns en annan kollektion ("‹ #001" eller "#002 ›"). Svep förbi sista kollektionen leder till anmälan.
+  - Vågrät axel: armarna slutar i pilspetsar, som på en koordinataxel, och pekar bara dit det finns en annan kollektion ("‹ #001" eller "#002 ›").
   - Lodrät axel: färgnamnen, var och en med en ruta av det riktiga tyget (15 px, utskuren ur produktbilderna, `img/swatch-*.webp`; camo är delad diagonalt i tyg och tryck). Den valda glider in under stjärnan med terrakottaprick och benvit ram runt tygrutan. Ovalda färger har benvitt 62 %.
-  - Plagget stort i mitten med objektnumret bakom. Svep i sidled byter kollektion, tryck på plagget vänder det. Axeln ligger ovanför plagget, så att den nedersta färgen alltid går att trycka på.
+  - Plagget stort i mitten med objektnumret bakom. **Svep i sidled vänder plagget** mellan fram och bak, och den andra sidan glider in från svepets håll (60 px). Tryck på plagget vänder det också. Kollektion byts **bara** med knapparna #001 och #002, aldrig med svep (användarens beslut 2026-10-04). Axeln ligger ovanför plagget, så att den nedersta färgen alltid går att trycka på.
   - Under plagget: en växel **Framsida | Baksida** (1 px ram, benvitt block under vald sida).
   - Sedan datarad (objekt · färg · pris), storlekar S–XL och köpknapp.
 - **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram.
@@ -62,7 +62,7 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 - En kurva: `cubic-bezier(.16, 1, .3, 1)`.
 - **Det enda iscensatta ögonblicket är rörelsen i korset:** färglistan glider så att vald färg hamnar under stjärnan (0,6 s). Vid byte av kollektion glider plagget in från svepets håll (110 px, längre än vid färgbyte), numret byts, stjärnan vrider sig 90° (0,7 s) och flikstapeln glider över (0,55 s).
 - **Fram/bak:** plagget tonar direkt över till andra sidan (samma övertoning som vid färgbyte, ingen vändning), och blocket i växeln glider till vald sida (0,55 s). Användaren valde bort en 3D-vändning 2026-10-04.
-- **Visa hur, en gång:** första gången plagget syns och ingen har rört korset lutar det sig mot nästa kollektion som om någon svepte (1,4 s). Samtidigt pekar pilspetsen åt höger, stapeln under flikarna sträcker sig mot #002 och dess miniatyr lyser upp, och sedan ger de ovalda tygrutorna en kort puls i tur och ordning. Det körs inte igen och hoppas över om man redan har tryckt.
+- **Visa hur, en gång:** första gången plagget syns och ingen har rört korset kommer tre steg. Först lutar plagget sig som om någon svepte, och blocket i fram/bak-växeln sträcker sig mot andra sidan (1,4 s). Sedan lyser den andra kollektionens miniatyr upp och flikstapeln sträcker sig dit (1,3 s). Sist ger de ovalda tygrutorna en kort puls i tur och ordning. Det körs inte igen och hoppas över om man redan har tryckt.
 - I vila svävar plagget svagt (7 px, 7 s) och golvskuggan andas med. Inga scrollanimationer utöver visningen ovan.
 - `prefers-reduced-motion`: allt av, heron visas som stillbild.
 

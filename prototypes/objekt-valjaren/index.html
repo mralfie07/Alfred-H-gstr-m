@@ -188,7 +188,7 @@ button { cursor: pointer; }
 .numeral.out-r { opacity: 0; transform: translateX(12%); }
 .garment { position: absolute; inset: 1% 2% 11%; display: grid; place-items: center; cursor: pointer; background: none; border: 0; padding: 0; }
 .garment img {
-  grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain;
+  grid-area: 1 / 1; pointer-events: none; -webkit-user-drag: none; width: 100%; height: 100%; object-fit: contain;
   filter: drop-shadow(0 18px 16px rgb(12 12 11 / .32));
   opacity: 0; transform: translateX(var(--from, 0)) scale(.97);
   transition: opacity .45s var(--ease-out), transform .75s var(--ease-out);
@@ -413,6 +413,7 @@ button { cursor: pointer; }
     const img = document.createElement("img");
     img.src = file(state.o, state.c, state.v);
     img.alt = `OBJECT #${state.o}, ${COLORS.find(c => c.id === state.c).name.toLowerCase()}, ${state.v === "fram" ? "framsida" : "baksida"}`;
+    img.draggable = false;
     img.style.setProperty("--from", from + "px");
     $("garment").appendChild(img);
     requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("on")));
@@ -464,16 +465,16 @@ button { cursor: pointer; }
     showGarment(from);
   }
 
-  function setView(v) {
+  // dir is set for a swipe: the other side slides in from the way the finger went. Taps crossfade.
+  function setView(v, dir = 0) {
     if (v === state.v) return;
     state.v = v;
-    render();
+    render({ from: dir * 60 });
   }
 
   function goObject(dir) {
     const oi = OBJECTS.indexOf(state.o) + dir;
-    if (oi < 0) return;
-    if (oi >= OBJECTS.length) { $("anmal").scrollIntoView({ behavior: "smooth" }); return; }
+    if (oi < 0 || oi >= OBJECTS.length) return;
     state.o = OBJECTS[oi]; state.v = DEFAULT_VIEW[state.o];
     const star = $("star"); star.classList.toggle("turn");
     render({ from: dir * 110, numeral: dir });
@@ -508,16 +509,17 @@ button { cursor: pointer; }
     nxt.focus(); nxt.click(); e.preventDefault();
   }));
 
-  // Horizontal swipe on the garment moves along the object axis.
+  // A horizontal swipe on the garment turns it to the other side. Collections change only with their buttons.
   let x0 = null, y0 = null, moved = false;
   const stage = $("stage");
   stage.addEventListener("pointerdown", e => { x0 = e.clientX; y0 = e.clientY; moved = false; });
+  stage.addEventListener("pointercancel", () => { x0 = null; });
   stage.addEventListener("pointerup", e => {
     if (x0 === null) return;
     const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
     if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
     moved = true; setTimeout(() => moved = false, 50);
-    goObject(dx < 0 ? 1 : -1);
+    setView(state.v === "fram" ? "bak" : "fram", dx < 0 ? 1 : -1);
   });
 
   let toastTimer;
@@ -538,8 +540,9 @@ button { cursor: pointer; }
     msg.textContent = "Klart. Här skickas ett mejl inför nästa drop (i prototypen sparas inget)."; $("email").value = "";
   });
 
-  // One-time demonstration, the first time the garment is in view and untouched: it leans toward the other
-  // collection as if being swiped, the arrowhead and the tab bar point the way, then the other fabrics tick in turn.
+  // One-time demonstration, the first time the garment is in view and untouched, in three beats: the garment
+  // leans as if swiped while the front/back block reaches for the other side; then the other collection's tab
+  // lights up and the bar reaches for it; then the other fabrics tick in turn.
   let engaged = false;
   for (const t of ["click", "keydown"]) $("droppet").addEventListener(t, () => engaged = true, { capture: true });
   function demo() {
@@ -549,19 +552,20 @@ button { cursor: pointer; }
       { transform: "none" }, { transform: "translateX(-38px) rotate(-1.5deg)", offset: .36 },
       { transform: "translateX(6px) rotate(.3deg)", offset: .7 }, { transform: "none" }
     ], { duration: 1400, easing: ease });
-    $("numeral").animate([{ transform: "none" }, { transform: "translateX(-4%)", offset: .36 }, { transform: "none" }], { duration: 1400, easing: ease });
-    const ind = document.querySelector(".coll-ind");
-    ind.animate([{ transform: "none" }, { transform: "translateX(14%) scaleX(1.12)", offset: .36 }, { transform: "none" }], { duration: 1400, easing: ease });
-    document.querySelector(".coll:not([aria-selected='true']) .coll-thumb").animate(
-      [{ opacity: .45, transform: "none" }, { opacity: 1, transform: "translateY(-4px)", offset: .36 }, { opacity: .45, transform: "none" }],
-      { duration: 1400, easing: ease });
-    $("next-obj").querySelector("svg").animate([
-      { transform: "none" }, { transform: "translateX(6px)", offset: .2 }, { transform: "none", offset: .4 },
-      { transform: "translateX(6px)", offset: .6 }, { transform: "none", offset: .8 }
+    const v = state.v === "fram" ? 0 : 100, reach = v ? v - 18 : 18;
+    document.querySelector(".view-ind").animate([
+      { transform: `translateX(${v}%)` }, { transform: `translateX(${reach}%)`, offset: .36 }, { transform: `translateX(${v}%)` }
     ], { duration: 1400, easing: ease });
+    const oi = OBJECTS.indexOf(state.o), d = oi === 0 ? 1 : -1;
+    document.querySelector(".coll-ind").animate([
+      { transform: `translateX(${oi * 100}%)` }, { transform: `translateX(${oi * 100 + d * 14}%) scaleX(1.12)`, offset: .4 }, { transform: `translateX(${oi * 100}%)` }
+    ], { duration: 1300, delay: 1500, easing: ease });
+    document.querySelector(".coll:not([aria-selected='true']) .coll-thumb").animate(
+      [{ opacity: .45, transform: "none" }, { opacity: 1, transform: "translateY(-4px)", offset: .4 }, { opacity: .45, transform: "none" }],
+      { duration: 1300, delay: 1500, easing: ease });
     document.querySelectorAll(".colors button:not([aria-checked='true']) .sw").forEach((sw, i) =>
       sw.animate([{ transform: "none" }, { transform: "scale(1.45)", offset: .4 }, { transform: "none" }],
-        { duration: 560, delay: 1500 + i * 160, easing: EASE }));
+        { duration: 560, delay: 2900 + i * 160, easing: EASE }));
   }
   if (!reduce && "IntersectionObserver" in window) {
     const io = new IntersectionObserver(entries => {
