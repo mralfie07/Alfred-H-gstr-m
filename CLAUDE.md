@@ -18,7 +18,7 @@ Eget Shopify-tema (Liquid) för klädmärket OBJECT 07. Hela briefen med koncept
 - Prototyper att jämföra: `prototype`
 
 ## Material
-- `brand/logo/`: logga (just nu bara raster, vektor ska komma)
+- `brand/logo/`: logga som PNG: ordmärke på svart, ordmärke vitt på transparent bakgrund (`wordmark-white-transparent.png`) och emblemet. Vektor (SVG) saknas.
 - `brand/products/`: produktbilder
 - `brand/references/`: referenssajter, modellbilder från Higgsfield (med vattenmärke, endast referens) och den nuvarande butiken
 - Hero-video: produceras enligt `docs/hero-plan.md`. Fler produktbilder kommer från användaren.
