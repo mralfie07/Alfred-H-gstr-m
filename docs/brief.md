@@ -20,7 +20,7 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
   - **Kyssmotivet** (två ansikten som bildar ett hjärta): bröst + rygg. Filer `1_svart_brost/rygg`, `2_bla_brost/rygg`, `3_svart-camo_brost/rygg`.
   - **Sidtrycket** (ett ansikte i profil): går runt sidan, fram + bak. Filer `4_svart-sidtryck_fram/bak`, `5_bla-sidtryck_fram/bak`, `6_svart-camo-sidtryck_fram/bak`.
   - **Numrering (bekräftad av användaren 2026-10-04):** **OBJECT #001 = sidtrycket**, **OBJECT #002 = kyssmotivet** (bröst + rygg). Varje nummer finns i tre färger: svart, blå, svart-camo. Totalt sex plagg. Shopify har fem produkter och måste städas upp så att det stämmer (fråga användaren innan något ändras).
-  - Enskilda tryckfiler i full storlek ligger i `brand/prints/` (`1_svart_brost.webp` osv.). Saknas fortfarande: `3_svart-camo_rygg` och `6_svart-camo-sidtryck_fram`.
+  - Enskilda tryckfiler i full storlek ligger i `brand/prints/` (`1_svart_brost.webp` osv.). Alla tolv tryckfiler finns (komplett 2026-10-04).
   - **Produktbilder (fram + bak) för alla sex finns i `brand/products/`**, namngivna `<färg>-<motiv>_<fram|bak>.jpg` (färg: `svart`, `bla`, `svart-camo`; motiv: `kyss`, `sidtryck`). Camo-bilderna är ca 1600–1800 px, övriga ca 750–900 px (be om större till sajten). `object-002-sheet.png` visar nacketikett och ärmlapp i närbild.
   - Översikten är för liten som AI-referens. Använd de enskilda PNG-filerna i full upplösning när de finns i `brand/prints/`.
 - Numreringen "OBJECT #00X" är märkets starkaste idé. Varje plagg presenteras som ett katalogiserat föremål.

@@ -23,7 +23,7 @@ Claude genererar via Higgsfield-kopplingen (kontot är Pro, 600 krediter, verifi
 - **Bara killar som modeller.** Nya modeller, inte de från de gamla Higgsfield-bilderna.
 - **Styling:** jeans i stil med Nudie eller Levi's, lite urtvättade, raka eller avslappnade, inte tighta. Skor som passar samma stil (t.ex. enkla läder- eller canvasskor, inget flashigt). Inga synliga varumärken.
 - Klipplistan i briefen ska anpassas: bara män, och de fyra tröjorna ovan fördelade över klippen.
-- **Starta inte genereringen förrän användaren har skickat alla tryckfiler och sagt till.**
+- Alla tryckfiler och produktbilder finns (2026-10-04). **Starta inte genereringen förrän användaren säger till.**
 
 ## Steg
 
