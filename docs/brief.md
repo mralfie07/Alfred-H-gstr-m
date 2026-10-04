@@ -129,6 +129,7 @@ Produktstatus 2026-10-03 (5 produkter, alla aktiva, 799 kr):
 
 ## 13. Beslut om butik och innehåll (användaren, 2026-10-04)
 - **Produktupplägg:** två produkter, **OBJECT #001** (sidtryck) och **OBJECT #002** (kyssmotiv), var och en med färgval svart / blå / svart-camo. Dubbletterna i Shopify ska slås ihop till dessa två (fråga innan något raderas).
+- **Två separata kollektioner:** #001 och #002 ska upplevas och visas som två separata kollektioner, inte bara som två varianter i samma väljare. **Öppen fråga till fas 2:** ska varje kollektion vara en egen Shopify-kollektion där varje färg är en egen produkt, eller en produkt per kollektion med färgval?
 - **Storlekar:** S, M, L, XL. **Pris:** 799 kr.
 - **Språk:** svenska och engelska (Shopify Markets / översättningar, språkväljare i headern).
 - **Nyhetsbrev / drop-anmälan:** ja.
