@@ -137,3 +137,12 @@ Användaren ville ha mer fart. 0,7 s per klipp, huvudbilden (klipp 6) 1,0 s, tot
 |---|---|
 | `brand/hero/hero-desktop-v2.mp4` (1920×1080) | 2,4 MB |
 | `brand/hero/hero-mobile-v2.mp4` (1080×1920) | 2,0 MB |
+
+## Originalformat (2026-10-04, gäller)
+Användaren tyckte att heron var för inzoomad. Orsak: mobilversionen var ett utsnitt på 605 px bredd ur 16:9-klippen, förstorat 1,8 gånger till 1080×1920. Båda versionerna var dessutom hårt komprimerade (CRF 26–27, ca 2,7 Mbit/s mot källans 13–35 Mbit/s).
+Ny export med samma klippning som v2: källans egen upplösning 1928×1076 (16:9), utan skalning eller beskärning, H.264 CRF 18 med `tune film` (ca 10,5 Mbit/s). **Samma fil används i mobil och på dator.** På dator visas hela bilden. I mobil visas en centrerad kvadrat ur samma fil, eftersom hela 16:9-bilden kändes för smal (användaren, 2026-10-04). Alla nio klipp är kontrollerade och modellen och trycken hålls i bild i kvadraten.
+| Fil | Storlek |
+|---|---|
+| `brand/hero/hero-v2-original.mp4` (1928×1076) | 9,0 MB |
+| `brand/hero/hero-v2-original-poster.jpg` | stillbild medan videon laddar |
+De äldre `hero-desktop-*` och `hero-mobile-*` sparas bara som historik.

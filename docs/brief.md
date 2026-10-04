@@ -26,7 +26,9 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - Numreringen "OBJECT #00X" är märkets starkaste idé. Varje plagg presenteras som ett katalogiserat föremål.
 - Priser, storlekar, material och måttguide hämtas från Shopify (läggs in av användaren).
 
-## 3. Koncept: mörkt galleri/arkiv
+## 3. Koncept: ~~mörkt galleri/arkiv~~ ersatt 2026-10-04
+**Användaren valde i fas 1 riktningen Korset (se PRODUCT.md, DESIGN.md, docs/concept-round.md). Ribba för finish: Aimé Leon Dore / Kith och Palace / Stüssy. Texten nedan är det ursprungliga konceptet, kvar som historik; numreringen och märkets element används fortfarande som innehåll.**
+
 - Svart bakgrund som smälter ihop med produktfotona.
 - Varje plagg visas som ett utställt föremål med katalognummer och "objektdata" (material, vikt, upplaga).
 - Typografin följer ordmärket: brett och geometriskt, med glest spärrade små versaler.
@@ -45,7 +47,7 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - Snabba klipp, ungefär 1 sekund per klipp, 10–12 sekunder totalt, sömlös loop.
 - Miljö: brutalistisk betong, hårt solljus, filmkänsla (som modellbilderna i `brand/references/`).
 - Ingen text eller logga i själva videon. Det läggs i kod ovanpå så att det blir skarpt och kan animeras.
-- En version för dator (16:9) och en för mobil (9:16).
+- ~~En version för dator (16:9) och en för mobil (9:16).~~ Ändrat 2026-10-04: en version i originalformat (16:9) för både mobil och dator.
 - Föreslagen klipplista:
   1. Extrem närbild på acid wash-tyget i solljus
   2. Vidbild: modell går mellan betongpelare, liten i bild
@@ -90,7 +92,7 @@ Inspiration: `brand/references/ref-zero-point-product-switcher.jpg` och `ref-nik
 Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börjar.
 
 ## 9. Öppna frågor
-- **AI-märkning:** EU:s AI-förordning kan kräva att realistiskt AI-genererat innehåll märks ut. Kontrollera vad som gäller. Förslag: en diskret rad i sidfoten, till exempel "Kampanjbilder skapade med AI".
+- **AI-märkning:** användaren har valt bort märkning i sidfoten (se avsnitt 13). Bakgrund: EU:s AI-förordning kan kräva att realistiskt AI-genererat innehåll märks ut. Kontrollera vad som gäller. Förslag: en diskret rad i sidfoten, till exempel "Kampanjbilder skapade med AI".
 - Språk (svenska, engelska eller båda) och vilka länder butiken säljer till.
 - Vilka sidor som ska finnas utöver startsida, kollektion och produktsida.
 - Shopify-plan, domän och lanseringsdatum.
@@ -124,3 +126,13 @@ Produktstatus 2026-10-03 (5 produkter, alla aktiva, 799 kr):
 - Inga storlekar: varje produkt har bara varianten "Default Title". Storlekar ska läggas till som varianter.
 - Lagersaldo 0 på alla.
 - Inga beskrivningar (material, passform, tvättråd saknas).
+
+## 13. Beslut om butik och innehåll (användaren, 2026-10-04)
+- **Produktupplägg:** två produkter, **OBJECT #001** (sidtryck) och **OBJECT #002** (kyssmotiv), var och en med färgval svart / blå / svart-camo. Dubbletterna i Shopify ska slås ihop till dessa två (fråga innan något raderas).
+- **Två separata kollektioner:** #001 och #002 ska upplevas och visas som två separata kollektioner, inte bara som två varianter i samma väljare. **Öppen fråga till fas 2:** ska varje kollektion vara en egen Shopify-kollektion där varje färg är en egen produkt, eller en produkt per kollektion med färgval?
+- **Storlekar:** S, M, L, XL. **Pris:** 799 kr.
+- **Språk:** svenska och engelska (Shopify Markets / översättningar, språkväljare i headern).
+- **Nyhetsbrev / drop-anmälan:** ja.
+- **AI-märkning i sidfoten:** nej (användarens beslut).
+- **Sidor, märkets historia, frakt/retur, kontakt:** användaren återkommer. Bygg med tydliga platshållare som kan redigeras i temaredigeraren.
+- **Produktinfo** (material, passform, tvätt, mått): saknas än.
