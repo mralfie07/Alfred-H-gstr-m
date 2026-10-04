@@ -22,7 +22,9 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 - Typsnittet Archivo (variabelt, OFL) ligger i temat: `assets/archivo-variable.woff2`.
 
 ## I butiken
-- **Opublicerat tema "OBJECT 07 – fas 2"** (id `205739983196`), uppladdat 2026-10-04 från commit på `claude/fas-2-tema`. Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=205739983196`. Det är en kopia: ändringar i repot kommer inte in automatiskt förrän temat kopplas till GitHub (punkt 1 nedan).
+- **"OBJECT 07 – fas 2"** (id `205739983196`) publicerades av användaren 2026-10-04. Utan film (stillbild i heron).
+- **"OBJECT 07 – fas 2 med film"** (id `205740474716`), opublicerat, samma tema plus filmen. Ska publiceras i stället för det förra. Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=205740474716`.
+- Shopify-kopplingen får inte skriva till ett publicerat tema. Ändringar når därför butiken antingen som ett nytt opublicerat tema (som här) eller via GitHub-kopplingen (punkt 1 nedan, rekommenderas).
 
 ## Att göra i Shopify innan temat visas
 1. **Koppla temat.** Shopifys GitHub-koppling kräver en gren som bara innehåller temat. Grenen `shopify-theme` är skapad för det (`git subtree split --prefix theme`). Online Store → Teman → Lägg till tema → Anslut från GitHub → grenen `shopify-theme`. Den ska uppdateras efter varje ändring i `theme/` (Claude gör det).
