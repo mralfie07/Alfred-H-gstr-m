@@ -115,3 +115,18 @@ Klipp 9 har startbilden från klipp 1 som `end_image` för sömlös loop.
 
 ## Redigering (steg 5): nätverksproblem
 Molnmiljön blockerar `d8j0ntlcm91z4.cloudfront.net` (Higgsfields resultatfiler), så klippen kan inte laddas ner hit för ffmpeg. Lösningar: (1) användaren lägger till domänen under Allowed domains i miljöns nätverksinställningar, eller (2) redigeringen görs i Higgsfield med workflowet `video-montage`.
+
+**Uppdatering:** användaren har lagt till `d8j0ntlcm91z4.cloudfront.net` i miljöns nätverksinställningar. Nedladdning fungerar nu. ffmpeg installeras med `pip install imageio-ffmpeg` (binären hamnar under `imageio_ffmpeg/binaries/`).
+
+## Granskning av tagning 1 (Claude, bildruta för bildruta)
+- 1, 2, 3, 4, 5, 7, 9: bra. Trycken stabila, inga synliga AI-fel vid 1 bild/s. Klipp 9 slutar nära klipp 1:s första bildruta, loopen fungerar.
+- 6 (camo-ryggen): trycket är stabilt men stämmer inte helt med originalet. Vänster halva blir mest cremefärgad, medan båda ansiktena ska vara camo-fyllda med cremefärgad kant. Troligen för att startbilden blandade fram- och bakbilden.
+- 8 (ansiktet): ett litet brösttryck syns på den svarta tröjan i början (#001 ska inte ha det). Löst i redigeringen genom att använda slutet av klippet, där trycket är utanför bild.
+
+## Redigering v1 (2026-10-04)
+`scripts/hero-cut.sh`. 9 klipp, hårda klipp, 11,4 s, 24 fps, lätt färgkorrigering, inget ljud.
+| Fil | Storlek |
+|---|---|
+| `brand/hero/hero-desktop-v1.mp4` (1920×1080) | 3,6 MB |
+| `brand/hero/hero-mobile-v1.mp4` (1080×1920) | 3,1 MB |
+| `brand/hero/hero-*-v1-poster.jpg` | stillbild medan videon laddar |
