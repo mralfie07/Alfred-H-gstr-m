@@ -22,8 +22,7 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 - Typsnittet Archivo (variabelt, OFL) ligger i temat: `assets/archivo-variable.woff2`.
 
 ## I butiken
-- **"OBJECT 07 – fas 2"** (id `205739983196`) publicerades av användaren 2026-10-04. Utan film (stillbild i heron).
-- **"OBJECT 07 – fas 2 med film"** (id `205740474716`), opublicerat, samma tema plus filmen. Ska publiceras i stället för det förra. Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=205740474716`.
+- **"OBJECT 07 – fas 2 med film"** (id `205740474716`) är butikens publicerade tema sedan 2026-10-04. Det första uppladdade temat (utan film) är borttaget.
 - Shopify-kopplingen får inte skriva till ett publicerat tema. Ändringar når därför butiken antingen som ett nytt opublicerat tema (som här) eller via GitHub-kopplingen (punkt 1 nedan, rekommenderas).
 
 ## Att göra i Shopify innan temat visas
