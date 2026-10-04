@@ -90,7 +90,8 @@ Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börja
 - Typsnittet i ordmärket och om det finns licens för webben.
 
 ## 10. Higgsfield: arbetsflöde och budget
-- Användaren har (eller köper) Higgsfield **Pro, 29 dollar per månad, 600 krediter**. Köp månadsvis och säg upp när heron är klar.
+- Användaren har köpt Higgsfield **Pro, 29 dollar per månad, 600 krediter** (verifierat via kopplingen 2026-10-04). Säg upp förnyelsen när heron är klar.
+- **Produktionsplan för heron: `docs/hero-plan.md`.** Den ersätter uppskattningarna nedan.
 - Uppskattad åtgång för heron: ~400 krediter (startbilder ~20, ~20 testklipp ~280, slutversion i 4K i två format ~96).
 - Priser per 8-sekundersklipp (kontrollerade okt 2026): Kling 3.0 Pro utan ljud 14 krediter, MiniMax H3 2K 16, Kling 3.0 4K 48, Seedance 2.5 1080p 96 (utkast i 480p 24).
 - Testa billigt (Kling 3.0 Pro eller Seedance-utkast, gärna i Higgsfields webbapp). Kör 4K först när rörelse och stil sitter, en gång per format.
