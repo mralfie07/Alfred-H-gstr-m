@@ -4,7 +4,9 @@
 # SEG: klipp, start (s), längd (s), mittpunkt x för mobilbeskärningen (källan är 1928 px bred).
 set -e
 mkdir -p out
-SEG=( "1 0.0 1.2 964" "2 2.0 1.2 964" "3 3.6 1.2 964" "4 1.5 1.2 1054" "5 2.0 1.2 964" "6 3.0 1.6 964" "7 1.5 1.2 964" "8 3.6 1.2 964" "9 3.8 1.2 964" )
+# v1 (1,2 s per klipp): "1 0.0 1.2 964" "2 2.0 1.2 964" "3 3.6 1.2 964" "4 1.5 1.2 1054" "5 2.0 1.2 964" "6 3.0 1.6 964" "7 1.5 1.2 964" "8 3.6 1.2 964" "9 3.8 1.2 964"
+# v2 (0,7 s per klipp, huvudbilden 1,0 s):
+SEG=( "1 0.0 0.7 964" "2 2.3 0.7 964" "3 4.0 0.7 964" "4 1.8 0.7 1054" "5 2.3 0.7 964" "6 3.4 1.0 964" "7 1.8 0.7 964" "8 4.0 0.7 964" "9 4.3 0.7 964" )
 INPUTS=(); FD=""; FM=""; n=0
 # Filmkorn läggs på i webbläsaren (CSS) för att hålla filerna små.
 GRADE="eq=contrast=1.05:saturation=0.9:gamma=0.98"

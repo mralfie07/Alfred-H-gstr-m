@@ -130,3 +130,10 @@ Molnmiljön blockerar `d8j0ntlcm91z4.cloudfront.net` (Higgsfields resultatfiler)
 | `brand/hero/hero-desktop-v1.mp4` (1920×1080) | 3,6 MB |
 | `brand/hero/hero-mobile-v1.mp4` (1080×1920) | 3,1 MB |
 | `brand/hero/hero-*-v1-poster.jpg` | stillbild medan videon laddar |
+
+## Redigering v2 (2026-10-04)
+Användaren ville ha mer fart. 0,7 s per klipp, huvudbilden (klipp 6) 1,0 s, totalt 6,9 s. SEG-värden i `scripts/hero-cut.sh`.
+| Fil | Storlek |
+|---|---|
+| `brand/hero/hero-desktop-v2.mp4` (1920×1080) | 2,4 MB |
+| `brand/hero/hero-mobile-v2.mp4` (1080×1920) | 2,0 MB |
