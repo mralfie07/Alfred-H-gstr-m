@@ -46,7 +46,7 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 
 ## Komponenter
 - **Header:** svart, sticky, ordmärket till vänster, meny och varukorg med räknare till höger. Räknaren syns först när något ligger i korgen.
-- **Hero:** kampanjfilmen (9:16 i mobil, 16:9 på dator, högst 76–80 % av höjden) med en kort rad och en understruken länk nere till vänster. Stillbild när rörelse är avstängd.
+- **Hero:** kampanjfilmen i originalformat, 16:9 i full bredd. Hela bilden visas alltid, aldrig beskuren eller inzoomad, och samma fil används i mobil och på dator (`brand/hero/hero-v2-original.mp4`). I mobil står raden och den understrukna länken under filmen. På dator står de nere till vänster i bilden. Stillbild när rörelse är avstängd.
 - **Korset (objektväljaren):** varje kontroll ska synas utan förklaring. Axlarna har små etiketter, "FÄRG" vid den lodräta och "OBJEKT" vid den vågräta.
   - Vågrät axel: armarna slutar i pilspetsar, som på en koordinataxel. Vänster arm visar "‹ #001", höger "#002 ›". Efter sista objektet står "Nästa drop ›", som leder till anmälan.
   - Lodrät axel: färgnamnen, var och en med en ruta av det riktiga tyget (15 px, utskuren ur produktbilderna, `img/swatch-*.webp`; camo är delad diagonalt i tyg och tryck). Den valda glider in under stjärnan med terrakottaprick och benvit ram runt tygrutan. Ovalda färger har benvitt 62 %.

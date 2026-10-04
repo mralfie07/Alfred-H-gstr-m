@@ -47,7 +47,7 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - Snabba klipp, ungefär 1 sekund per klipp, 10–12 sekunder totalt, sömlös loop.
 - Miljö: brutalistisk betong, hårt solljus, filmkänsla (som modellbilderna i `brand/references/`).
 - Ingen text eller logga i själva videon. Det läggs i kod ovanpå så att det blir skarpt och kan animeras.
-- En version för dator (16:9) och en för mobil (9:16).
+- ~~En version för dator (16:9) och en för mobil (9:16).~~ Ändrat 2026-10-04: en version i originalformat (16:9) för både mobil och dator.
 - Föreslagen klipplista:
   1. Extrem närbild på acid wash-tyget i solljus
   2. Vidbild: modell går mellan betongpelare, liten i bild

@@ -41,7 +41,7 @@ Logg över referenser, media_id och genereringar: `docs/hero-assets.md`.
 ### 2. Startbilder (~70 krediter)
 - En startbild per klipp, 3–4 varianter per klipp med `nano_banana_pro` 2K, 16:9.
 - Referera alltid till karaktär och tröja via elementen, så att ansikte och tryck blir samma i alla bilder.
-- Komponera med motivet centrerat och luft runt, så att samma klipp kan beskäras till 9:16 för mobilen.
+- Komponera med motivet centrerat och luft runt.
 - Visa varianterna för användaren och välj en per klipp. Kontrollera trycket noga mot produktbilden.
 
 ### 3. Videoklipp (~240 krediter)
@@ -50,13 +50,12 @@ Logg över referenser, media_id och genereringar: `docs/hero-assets.md`.
 - Klipp 9 (loopen): använd startbilden från klipp 1 som `end_image` så att loopen blir sömlös.
 - Bara 1–2 s av varje klipp används i redigeringen, så välj den bästa sekunden, inte hela klippet.
 
-### 4. Mobilversion (0–60 krediter)
-- Beskär 16:9-klippen till 9:16 i redigeringen.
-- Generera bara om de klipp som inte fungerar beskurna.
+### 4. Mobilversion (utgått)
+- Beslut 2026-10-04: ingen separat 9:16-version. Utsnittet blev för inzoomat och suddigt, så mobilen visar samma 16:9-fil i originalformat.
 
 ### 5. Redigering (0 krediter, Claude med ffmpeg)
 - Klipp i rytm (ca 1 s per klipp), färgkorrigera så att alla klipp matchar, lägg på filmkorn.
-- Exportera för webben: dator 1920×1080 och mobil 1080×1920, MP4 (H.264) och WebM, ingen ljudspår, plus en stillbild som visas medan videon laddar.
+- Exportera för webben i källans format, 1928×1076, utan skalning eller beskärning: en MP4 (H.264, CRF 18) för både mobil och dator, utan ljudspår, plus en stillbild som visas medan videon laddar. Se `docs/hero-assets.md`, avsnittet Originalformat.
 - Användaren laddar upp till Shopify under Innehåll → Filer.
 
 ## Budget
