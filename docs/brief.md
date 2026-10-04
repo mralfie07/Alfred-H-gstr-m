@@ -90,7 +90,7 @@ Inspiration: `brand/references/ref-zero-point-product-switcher.jpg` och `ref-nik
 Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börjar.
 
 ## 9. Öppna frågor
-- **AI-märkning:** EU:s AI-förordning kan kräva att realistiskt AI-genererat innehåll märks ut. Kontrollera vad som gäller. Förslag: en diskret rad i sidfoten, till exempel "Kampanjbilder skapade med AI".
+- **AI-märkning:** användaren har valt bort märkning i sidfoten (se avsnitt 13). Bakgrund: EU:s AI-förordning kan kräva att realistiskt AI-genererat innehåll märks ut. Kontrollera vad som gäller. Förslag: en diskret rad i sidfoten, till exempel "Kampanjbilder skapade med AI".
 - Språk (svenska, engelska eller båda) och vilka länder butiken säljer till.
 - Vilka sidor som ska finnas utöver startsida, kollektion och produktsida.
 - Shopify-plan, domän och lanseringsdatum.
@@ -124,3 +124,12 @@ Produktstatus 2026-10-03 (5 produkter, alla aktiva, 799 kr):
 - Inga storlekar: varje produkt har bara varianten "Default Title". Storlekar ska läggas till som varianter.
 - Lagersaldo 0 på alla.
 - Inga beskrivningar (material, passform, tvättråd saknas).
+
+## 13. Beslut om butik och innehåll (användaren, 2026-10-04)
+- **Produktupplägg:** två produkter, **OBJECT #001** (sidtryck) och **OBJECT #002** (kyssmotiv), var och en med färgval svart / blå / svart-camo. Dubbletterna i Shopify ska slås ihop till dessa två (fråga innan något raderas).
+- **Storlekar:** S, M, L, XL. **Pris:** 799 kr.
+- **Språk:** svenska och engelska (Shopify Markets / översättningar, språkväljare i headern).
+- **Nyhetsbrev / drop-anmälan:** ja.
+- **AI-märkning i sidfoten:** nej (användarens beslut).
+- **Sidor, märkets historia, frakt/retur, kontakt:** användaren återkommer. Bygg med tydliga platshållare som kan redigeras i temaredigeraren.
+- **Produktinfo** (material, passform, tvätt, mått): saknas än.
