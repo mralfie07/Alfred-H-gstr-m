@@ -75,9 +75,25 @@ Används i prompter som `<<<element_id>>>`.
 | 8 | 7f0127f2-7964-4a94-bdfd-c2beba3e3a45 | ff8ebc2f-7216-4e44-9533-0b3db7e0fea8 | 73c979a5-f0ed-4cde-98ef-c9b5602a2671 |
 | 9 | d7c8f039-74e1-4fe9-b431-a94b262f4288 | b9777398-1431-4197-a3ae-04ab7626a943 | 4fd9f246-c550-44d3-9fea-401b11470e14 |
 
-Väntar på att användaren väljer en variant per klipp.
 
 ## Rättelser
 | Klipp | Från | Ny job_id | Modell | Ändring |
 |---|---|---|---|---|
-| 4 | 741d4c42 (C) | 0a0dd53a-ff26-4089-bb79-2a97912a5757 | nano_banana_2 (backend: nano_banana_flash) | Sidtrycket delat över sidsömmen, ett ansikte fram och ett bak |
+| 4 | 741d4c42 (C) | 0a0dd53a-ff26-4089-bb79-2a97912a5757 | nano_banana_2 (backend: nano_banana_flash) | Sidtrycket delat över sidsömmen (användarens test, inte vald) |
+| 2 | c9872805 (A) | 5d699e38-7c2a-464b-8cfb-17ff22b36213 | nano_banana_pro | Sidtrycket delat över sidsömmen |
+| 4 | f8dedf29 (A) | ae679148-ca09-428c-ad60-c38b6c899ae1 | nano_banana_pro | Sidtrycket delat över sidsömmen |
+| 5 | 5bfed15e (A) | 4bdfa6de-d65c-438b-bbb6-d5e6a8507aa6 | nano_banana_pro | Sidtrycket delat över sidsömmen |
+
+## Valda startbilder (användaren, 2026-10-04)
+Val: 1B, 2A, 3B, 4A, 5A, 6B, 7C, 8C, 9A. Klipp 2, 4 och 5 rättas (sidtrycket); användaren godkänner rättelsen innan steg 3.
+| Klipp | Vald | job_id att använda som startbild |
+|---|---|---|
+| 1 | B | fa1adcc3-fa91-4b73-a96a-64a806828b37 |
+| 2 | A (rättad) | 5d699e38-7c2a-464b-8cfb-17ff22b36213 (original c9872805-6587-4be7-aa4b-2fb7662842ed) |
+| 3 | B | 71f185da-ddc2-4794-a9b5-30afd81e4fa5 |
+| 4 | A (rättad) | ae679148-ca09-428c-ad60-c38b6c899ae1 (original f8dedf29-a4bb-40be-a66c-867ddfa34ae6) |
+| 5 | A (rättad) | 4bdfa6de-d65c-438b-bbb6-d5e6a8507aa6 (original 5bfed15e-8e5c-4804-9e07-a286eea00971) |
+| 6 | B | 19dba6ed-d174-41cd-a105-4a9b1c100e03 |
+| 7 | C | f50ea736-d1ea-4d50-9a13-659221240b56 |
+| 8 | C | 73c979a5-f0ed-4cde-98ef-c9b5602a2671 |
+| 9 | A | d7c8f039-74e1-4fe9-b431-a94b262f4288 |
