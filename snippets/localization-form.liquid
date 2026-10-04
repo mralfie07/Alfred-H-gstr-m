@@ -1,0 +1,34 @@
+{% doc %}
+  Language (SV/EN) and country selects. Only shows the selects that have more than one choice.
+  Submits on change; the arrow button submits without JavaScript.
+
+  @param {string} id - Unique suffix for field ids
+
+  @example
+  {% render 'localization-form', id: 'footer' %}
+{% enddoc %}
+{%- if localization.available_languages.size > 1 or localization.available_countries.size > 1 -%}
+  {%- form 'localization', class: 'localization' -%}
+    {%- if localization.available_languages.size > 1 -%}
+      <label class="visually-hidden" for="Language-{{ id }}">{{ 'localization.language' | t }}</label>
+      <select class="localization__select ui" id="Language-{{ id }}" name="locale_code" onchange="this.form.submit()">
+        {%- for language in localization.available_languages -%}
+          <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {% if language.iso_code == localization.language.iso_code %}selected{% endif %}>
+            {{- language.endonym_name | capitalize -}}
+          </option>
+        {%- endfor -%}
+      </select>
+    {%- endif -%}
+    {%- if localization.available_countries.size > 1 -%}
+      <label class="visually-hidden" for="Country-{{ id }}">{{ 'localization.country' | t }}</label>
+      <select class="localization__select ui" id="Country-{{ id }}" name="country_code" onchange="this.form.submit()">
+        {%- for country in localization.available_countries -%}
+          <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+            {{- country.name }} ({{ country.currency.iso_code }})
+          </option>
+        {%- endfor -%}
+      </select>
+    {%- endif -%}
+    <noscript><button class="button button--ghost" type="submit">{{ 'localization.update' | t }}</button></noscript>
+  {%- endform -%}
+{%- endif -%}

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "OBJECT 07",
+    "theme_version": "0.2.0",
+    "theme_author": "OBJECT 07",
+    "theme_documentation_url": "https://github.com/mralfie07/alfred-h-gstr-m",
+    "theme_support_url": "https://github.com/mralfie07/alfred-h-gstr-m"
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Kvadratisk bild, minst 64 × 64 px. Emblemet ska beskäras tätt runt ovalen."
+      }
+    ]
+  }
+]

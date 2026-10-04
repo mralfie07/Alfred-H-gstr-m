@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "label": "Kampanjfilm Drop 01",
+        "kicker": "Drop 01 · OBJECT #001 & #002",
+        "link_label": "Handla droppet",
+        "link": ""
+      }
+    },
+    "cross": {
+      "type": "object-cross",
+      "blocks": {
+        "object_001": {
+          "type": "object",
+          "settings": {
+            "collection": "object-001",
+            "side": "fram"
+          }
+        },
+        "object_002": {
+          "type": "object",
+          "settings": {
+            "collection": "object-002",
+            "side": "bak"
+          }
+        }
+      },
+      "block_order": ["object_001", "object_002"],
+      "settings": {
+        "kicker": "Drop 01 · två kollektioner",
+        "color_order": "svart,bla,svart-camo",
+        "default_color": "svart-camo"
+      }
+    },
+    "signup": {
+      "type": "drop-signup",
+      "settings": {
+        "heading": "Få nästa droppet först",
+        "text": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>"
+      }
+    }
+  },
+  "order": ["hero", "cross", "signup"]
+}

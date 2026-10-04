@@ -1,0 +1,201 @@
+{%- liquid
+  assign video = section.settings.video
+  assign poster = section.settings.poster
+  if poster == blank and video != blank
+    assign poster = video.preview_image
+  endif
+-%}
+<section class="hero" aria-label="{{ section.settings.label | escape }}">
+  {%- if video != blank -%}
+    {%- capture poster_url -%}
+      {%- if poster != blank -%}{{ poster | image_url: width: 1920 }}{%- else -%}{{ 'hero-poster.webp' | asset_url }}{%- endif -%}
+    {%- endcapture -%}
+    <video
+      class="hero__media"
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="{{ poster_url }}"
+      width="1928"
+      height="1076"
+      data-hero-video
+      aria-hidden="true"
+    >
+      {%- liquid
+        # Shopify transcodes uploads into several MP4 heights. Phones get ~720p, larger screens ~1080p.
+        assign small = nil
+        assign large = nil
+        assign small_h = 0
+        assign large_h = 0
+        for source in video.sources
+          if source.mime_type == 'video/mp4'
+            if source.height <= 720 and source.height > small_h
+              assign small = source
+              assign small_h = source.height
+            endif
+            if source.height <= 1080 and source.height > large_h
+              assign large = source
+              assign large_h = source.height
+            endif
+          endif
+        endfor
+        if large == nil
+          assign large = video.sources | where: 'mime_type', 'video/mp4' | first
+        endif
+      -%}
+      {%- if small and small.url != large.url -%}
+        <source src="{{ small.url }}" type="video/mp4" media="(max-width: 899px)">
+      {%- endif -%}
+      {%- if large -%}
+        <source src="{{ large.url }}" type="video/mp4">
+      {%- endif -%}
+    </video>
+  {%- elsif poster != blank -%}
+    {{
+      poster
+      | image_url: width: 1920
+      | image_tag: class: 'hero__media', widths: '750, 1100, 1500, 1920', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: ''
+    }}
+  {%- else -%}
+    <img
+      class="hero__media"
+      src="{{ 'hero-poster.webp' | asset_url }}"
+      alt=""
+      width="1920"
+      height="1072"
+      loading="eager"
+      fetchpriority="high"
+    >
+  {%- endif -%}
+
+  <div class="hero__copy page-width">
+    {%- if section.settings.kicker != blank -%}
+      <p class="ui">{{ section.settings.kicker }}</p>
+    {%- endif -%}
+    {%- if section.settings.link_label != blank -%}
+      <a class="ui link" href="{{ section.settings.link | default: '#droppet' }}">{{ section.settings.link_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .hero {
+    position: relative;
+    background: var(--char);
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgb(12 12 11 / 0.72), rgb(12 12 11 / 0) 50%);
+
+      @media (min-width: 900px) {
+        background: linear-gradient(to top, rgb(12 12 11 / 0.6), rgb(12 12 11 / 0) 30%);
+      }
+    }
+  }
+
+  /* One 16:9 source for every screen: the whole frame on desktop, a centred square on phones and tablets. */
+  .hero__media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1928 / 1076;
+    object-fit: cover;
+
+    @media (max-width: 899px) {
+      aspect-ratio: 1 / 1;
+      max-height: 72svh;
+    }
+  }
+
+  .hero__copy {
+    position: absolute;
+    inset-inline: 0;
+    bottom: var(--s-4);
+    z-index: 1;
+    display: grid;
+    gap: var(--s-2);
+    justify-items: start;
+
+    @media (min-width: 900px) {
+      bottom: var(--s-6);
+      gap: var(--s-3);
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const video = document.querySelector('[data-hero-video]');
+    if (!video) return;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const play = () => {
+      if (still.matches) {
+        video.pause();
+        return;
+      }
+      video.play().catch(() => {});
+    };
+    play();
+    still.addEventListener('change', play);
+    // Pause when off screen to save battery on phones.
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) play();
+      else video.pause();
+    }).observe(video);
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Hero-film",
+  "tag": "div",
+  "class": "section-hero",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Film",
+      "info": "Ladda upp hero-v2-original.mp4 (16:9). Den spelas utan ljud och loopar."
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Stillbild",
+      "info": "Visas medan filmen laddar och när rörelse är avstängd. Lämna tomt för temats stillbild."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Beskrivning för skärmläsare",
+      "default": "Kampanjfilm Drop 01"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Rad",
+      "default": "Drop 01 · OBJECT #001 & #002"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Länktext",
+      "default": "Handla droppet"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Länk",
+      "info": "Lämna tomt för att länka till korset längre ner."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero-film"
+    }
+  ]
+}
+{% endschema %}

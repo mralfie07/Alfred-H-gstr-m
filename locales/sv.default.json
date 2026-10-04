@@ -1,0 +1,102 @@
+{
+  "accessibility": {
+    "skip_to_content": "Hoppa till innehållet"
+  },
+  "general": {
+    "close": "Stäng",
+    "est": "Est. 2007",
+    "page": "Sida {{ page }}",
+    "pagination": "Sidor"
+  },
+  "header": {
+    "menu": "Meny",
+    "nav_label": "Huvudmeny"
+  },
+  "footer": {
+    "follow": "Följ"
+  },
+  "localization": {
+    "language": "Språk",
+    "country": "Land och valuta",
+    "update": "Byt"
+  },
+  "cart": {
+    "title": "Varukorg",
+    "kicker": "Din order",
+    "summary": "Sammanfattning",
+    "label_one": "Varukorg, 1 vara",
+    "label_other": "Varukorg, {{ count }} varor",
+    "added": "Lagd i varukorgen",
+    "view": "Visa",
+    "view_full": "Visa hela varukorgen",
+    "empty": "Varukorgen är tom.",
+    "continue": "Till droppet",
+    "subtotal": "Delsumma",
+    "taxes_shipping": "Moms ingår. Frakt räknas i kassan.",
+    "checkout": "Till kassan",
+    "note": "Meddelande till oss",
+    "quantity": "Antal",
+    "quantity_for": "Antal för {{ title }}",
+    "decrease": "Minska antal",
+    "increase": "Öka antal",
+    "remove": "Ta bort",
+    "error": "Det gick inte att uppdatera varukorgen. Försök igen."
+  },
+  "collections": {
+    "count": {
+      "one": "{{ count }} färg",
+      "other": "{{ count }} färger"
+    },
+    "empty": "Inga objekt i den här kollektionen än.",
+    "other": "Fler kollektioner",
+    "all_title": "Kollektioner"
+  },
+  "newsletter": {
+    "label": "E-postadress",
+    "placeholder": "Din e-postadress",
+    "submit": "Anmäl dig",
+    "success": "Klart. Du får ett mejl innan nästa objekt släpps.",
+    "error": "Skriv en giltig e-postadress, till exempel namn@mejl.se."
+  },
+  "pages": {
+    "placeholder": "Texten kommer snart.",
+    "not_found": "Objektet finns inte",
+    "not_found_text": "Sidan du letar efter finns inte i arkivet."
+  },
+  "password": {
+    "enter": "Har du lösenordet?",
+    "label": "Lösenord",
+    "submit": "Gå in",
+    "error": "Fel lösenord."
+  },
+  "products": {
+    "add_to_cart": "Lägg i varukorgen",
+    "choose_size": "Välj storlek",
+    "sold_out": "Slutsåld",
+    "front": "Framsida",
+    "back": "Baksida",
+    "size": "Storlek",
+    "gallery": "Bilder",
+    "tax_included": "Moms ingår.",
+    "description_missing": "Material, passform och tvättråd kommer snart."
+  },
+  "search": {
+    "title": "Sök",
+    "label": "Sök i butiken",
+    "submit": "Sök",
+    "results": {
+      "one": "{{ count }} träff för ”{{ terms }}”",
+      "other": "{{ count }} träffar för ”{{ terms }}”"
+    }
+  },
+  "sections": {
+    "cross": {
+      "collections": "Kollektioner",
+      "color": "Färg",
+      "side": "Visa sida",
+      "flip": "Vänd plagget",
+      "details": "Detaljer och mått",
+      "empty": "Välj kollektioner för korset i temaredigeraren."
+    }
+  }
+}

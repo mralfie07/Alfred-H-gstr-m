@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "description": {
+          "type": "description",
+          "settings": { "title": "Om objektet", "open": true }
+        },
+        "size": {
+          "type": "accordion",
+          "settings": {
+            "title": "Storlek och passform",
+            "content": "<p>Oversized passform. Måttguide kommer.</p>"
+          }
+        },
+        "care": {
+          "type": "accordion",
+          "settings": {
+            "title": "Material och skötsel",
+            "content": "<p>Tung t-shirt i acid wash. Material och tvättråd kommer.</p>"
+          }
+        },
+        "shipping": {
+          "type": "accordion",
+          "settings": {
+            "title": "Frakt och retur",
+            "content": "<p>Information om frakt och retur kommer.</p>"
+          }
+        }
+      },
+      "block_order": ["description", "size", "care", "shipping"],
+      "settings": {
+        "kicker": "Drop 01",
+        "back_first": "object-002",
+        "show_gallery": true
+      }
+    }
+  },
+  "order": ["main"]
+}

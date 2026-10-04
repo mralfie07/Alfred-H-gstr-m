@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "kicker": "Drop 01 · Kollektion",
+        "side": "fram",
+        "sibling_prefix": "object-",
+        "back_first": "object-002"
+      }
+    },
+    "signup": {
+      "type": "drop-signup",
+      "settings": {
+        "heading": "Få nästa droppet först",
+        "text": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "signup"
+  ]
+}

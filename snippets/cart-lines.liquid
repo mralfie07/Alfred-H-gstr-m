@@ -1,0 +1,74 @@
+{% doc %}
+  Cart line items with quantity and remove controls. The controls are plain links to /cart/change,
+  so they work without JavaScript; inside the drawer theme.js turns them into in-place updates.
+
+  @param {boolean} [compact] - Smaller images for the drawer
+
+  @example
+  {% render 'cart-lines', compact: true %}
+{% enddoc %}
+<ul class="cart-lines{% if compact %} cart-lines--compact{% endif %}" role="list">
+  {%- for item in cart.items -%}
+    {%- liquid
+      assign line = forloop.index
+      assign less = item.quantity | minus: 1
+      assign more = item.quantity | plus: 1
+      capture details
+        for option in item.options_with_values
+          unless option.value == 'Default Title'
+            echo option.value
+            unless forloop.last
+              echo ' · '
+            endunless
+          endunless
+        endfor
+      endcapture
+    -%}
+    <li class="cart-line">
+      <a class="cart-line__media concrete" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+        {% render 'object-image', product: item.product, side: 'fram', width: 300 %}
+      </a>
+      <div class="cart-line__info">
+        <a class="cart-line__title" href="{{ item.url }}">{{ item.product.title }}</a>
+        {%- if details != blank -%}
+          <span class="cart-line__meta">{{ details }}</span>
+        {%- endif -%}
+        <span class="cart-line__meta">{{ item.final_line_price | money }}</span>
+        {%- for discount in item.line_level_discount_allocations -%}
+          <span class="cart-line__meta">{{ discount.discount_application.title }} (−{{ discount.amount | money }})</span>
+        {%- endfor -%}
+        <div class="cart-line__row">
+          <div class="quantity" role="group" aria-label="{{ 'cart.quantity_for' | t: title: item.product.title | escape }}">
+            <a
+              class="quantity__step"
+              href="{{ routes.cart_change_url }}?line={{ line }}&quantity={{ less }}"
+              data-cart-change
+              data-line="{{ line }}"
+              data-quantity="{{ less }}"
+              aria-label="{{ 'cart.decrease' | t }}"
+            >−</a>
+            <output aria-label="{{ 'cart.quantity' | t }}">{{ item.quantity }}</output>
+            <a
+              class="quantity__step"
+              href="{{ routes.cart_change_url }}?line={{ line }}&quantity={{ more }}"
+              data-cart-change
+              data-line="{{ line }}"
+              data-quantity="{{ more }}"
+              aria-label="{{ 'cart.increase' | t }}"
+            >+</a>
+          </div>
+          <a
+            class="cart-line__remove"
+            href="{{ routes.cart_change_url }}?line={{ line }}&quantity=0"
+            data-cart-change
+            data-line="{{ line }}"
+            data-quantity="0"
+          >
+            {{- 'cart.remove' | t -}}
+            <span class="visually-hidden">{{ item.product.title }}</span>
+          </a>
+        </div>
+      </div>
+    </li>
+  {%- endfor -%}
+</ul>

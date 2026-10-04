@@ -1,0 +1,109 @@
+{%- liquid
+  assign menu = section.settings.menu
+  if cart.item_count == 1
+    assign cart_label = 'cart.label_one' | t
+  else
+    assign cart_label = 'cart.label_other' | t: count: cart.item_count
+  endif
+-%}
+<header class="site-header">
+  <div class="site-header__inner page-width">
+    <a class="site-header__logo" href="{{ routes.root_url }}">
+      {%- if section.settings.logo != blank -%}
+        {{
+          section.settings.logo
+          | image_url: width: 600
+          | image_tag: alt: shop.name, widths: '200, 400, 600', sizes: '190px', loading: 'eager'
+        }}
+      {%- else -%}
+        <img src="{{ 'wordmark.png' | asset_url }}" alt="{{ shop.name }}" width="1180" height="140" loading="eager">
+      {%- endif -%}
+    </a>
+
+    <nav class="site-header__nav" aria-label="{{ 'header.nav_label' | t }}">
+      {%- if menu.links.size > 0 -%}
+        <ul class="site-header__links ui" role="list">
+          {%- for link in menu.links -%}
+            <li>
+              <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <button
+        class="icon-button site-header__menu-button"
+        type="button"
+        data-open-dialog="menu-drawer"
+        aria-haspopup="dialog"
+        aria-label="{{ 'header.menu' | t }}"
+      >
+        {% render 'icon', name: 'menu' %}
+      </button>
+
+      <a
+        class="icon-button"
+        href="{{ routes.cart_url }}"
+        data-open-dialog="cart-drawer"
+        data-cart-label
+        aria-label="{{ cart_label }}"
+      >
+        {% render 'icon', name: 'bag' %}
+        <span class="cart-count" data-cart-count aria-hidden="true" {% if cart.item_count == 0 %}hidden{% endif %}>
+          {{- cart.item_count -}}
+        </span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<dialog class="drawer drawer--full" id="menu-drawer" aria-label="{{ 'header.menu' | t }}">
+  <div class="drawer__inner">
+    <div class="drawer__head">
+      <img
+        class="menu__emblem"
+        src="{{ 'emblem.webp' | asset_url }}"
+        alt=""
+        width="360"
+        height="209"
+        loading="lazy"
+      >
+      <button class="icon-button" type="button" data-close-dialog aria-label="{{ 'general.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+    <div class="drawer__body">
+      <ul class="menu__list" role="list">
+        {%- for link in menu.links -%}
+          <li><a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    <div class="drawer__foot menu__foot">
+      {% render 'localization-form', id: 'menu' %}
+      <span class="ui ui--small muted">{{ 'general.est' | t }}</span>
+    </div>
+  </div>
+</dialog>
+
+{% schema %}
+{
+  "name": "Header",
+  "tag": "div",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logga",
+      "info": "Lämna tomt för att använda ordmärket som följer med temat."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Meny",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

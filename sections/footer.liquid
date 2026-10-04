@@ -1,0 +1,99 @@
+<footer class="site-footer">
+  <div class="page-width">
+    <div class="site-footer__grid">
+      <div>
+        <p class="site-footer__heading ui">{{ shop.name }}</p>
+        {%- if section.settings.text != blank -%}
+          <div class="rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.menu.links.size > 0 -%}
+        <nav aria-label="{{ section.settings.menu.title | escape }}">
+          <p class="site-footer__heading ui">{{ section.settings.menu.title }}</p>
+          <ul class="site-footer__list" role="list">
+            {%- for link in section.settings.menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      {%- liquid
+        assign has_social = false
+        if section.settings.instagram != blank or section.settings.tiktok != blank
+          assign has_social = true
+        endif
+      -%}
+      {%- if has_social or shop.policies.size > 0 -%}
+        <div>
+          {%- if has_social -%}
+            <p class="site-footer__heading ui">{{ 'footer.follow' | t }}</p>
+            <ul class="site-footer__list" role="list">
+              {%- if section.settings.instagram != blank -%}
+                <li><a href="{{ section.settings.instagram }}" rel="noopener" target="_blank">Instagram</a></li>
+              {%- endif -%}
+              {%- if section.settings.tiktok != blank -%}
+                <li><a href="{{ section.settings.tiktok }}" rel="noopener" target="_blank">TikTok</a></li>
+              {%- endif -%}
+            </ul>
+          {%- endif -%}
+          {%- if section.settings.show_policies and shop.policies.size > 0 -%}
+            <ul class="site-footer__list" role="list" {% if has_social %}style="margin-top: var(--s-5)"{% endif %}>
+              {%- for policy in shop.policies -%}
+                <li><a href="{{ policy.url }}">{{ policy.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="site-footer__bottom">
+      {% render 'localization-form', id: 'footer' %}
+      <p class="ui ui--small">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }} &middot; {{ 'general.est' | t }}</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Sidfot",
+  "tag": "div",
+  "class": "section-footer",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Kort text",
+      "default": "<p>Numrerade objekt i begränsade drops.</p>"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Meny",
+      "default": "footer"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Visa policyer (frakt, retur, integritet, villkor)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sociala kanaler"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "tiktok",
+      "label": "TikTok"
+    }
+  ]
+}
+{% endschema %}
