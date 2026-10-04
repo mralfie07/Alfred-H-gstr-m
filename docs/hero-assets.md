@@ -98,7 +98,8 @@ Val: 1B, 2A, 3B, 4A, 5A, 6B, 7C, 8C, 9A. Rättelserna av klipp 2, 4 och 5 **för
 | 8 | C | 73c979a5-f0ed-4cde-98ef-c9b5602a2671 |
 | 9 | A | d7c8f039-74e1-4fe9-b431-a94b262f4288 |
 
-## Videoklipp, tagning 1 (steg 3, `kling3_0` pro, 5 s, utan ljud, 16:9, ~79 krediter)
+## Videoklipp, tagning 1 (steg 3, `kling3_0` pro, 5 s, utan ljud, 1920×1080, ~79 krediter)
+Alla nio klara 2026-10-04. Saldo efter: 453,75 krediter. Resultat-URL: `https://d8j0ntlcm91z4.cloudfront.net/user_3K2qtcUSxMiqVA6BlJ8cAyRxYHB/hf_20261004_1329xx_<job_id>.mp4` (se `jobs_wait`). Väntar på användarens granskning.
 Klipp 9 har startbilden från klipp 1 som `end_image` för sömlös loop.
 | Klipp | job_id | Rörelse |
 |---|---|---|
@@ -111,3 +112,6 @@ Klipp 9 har startbilden från klipp 1 som `end_image` för sömlös loop.
 | 7 | a9caa7dd-cd5a-4a5e-becf-da26a1c28d5c | Går ifrån kameran, kameran följer |
 | 8 | 661e9cae-e954-44db-b42e-ed6ede365dd8 | Långsam inzoomning på ansiktet |
 | 9 | d78fb326-e73d-49ac-a4b6-e5ba21361cfa | Drift över tyget, slutar på klipp 1:s startbild |
+
+## Redigering (steg 5): nätverksproblem
+Molnmiljön blockerar `d8j0ntlcm91z4.cloudfront.net` (Higgsfields resultatfiler), så klippen kan inte laddas ner hit för ffmpeg. Lösningar: (1) användaren lägger till domänen under Allowed domains i miljöns nätverksinställningar, eller (2) redigeringen görs i Higgsfield med workflowet `video-montage`.
