@@ -38,6 +38,8 @@ Saldo efter steget: 594 krediter.
 **Val (2026-10-04):** modell 1, med **navy loafers** i stället för derbyskor. En modell i alla klipp. Klipplistan godkänd.
 
 ## Referenselement i Higgsfield
+**Obs:** beskrivningen i elementen `o07-001-bla` och `o07-001-svart` säger "single face", vilket är fel. Sidtrycket är delat över sidsömmen: ett ansikte på framsidan och ett på baksidan, som möts vid sömmen (se `docs/brief.md`). Skriv alltid ut det i prompten och skicka med tryckfilerna fram + bak som extra referenser.
+
 Används i prompter som `<<<element_id>>>`.
 | Namn | Typ | element_id |
 |---|---|---|
@@ -74,3 +76,8 @@ Används i prompter som `<<<element_id>>>`.
 | 9 | d7c8f039-74e1-4fe9-b431-a94b262f4288 | b9777398-1431-4197-a3ae-04ab7626a943 | 4fd9f246-c550-44d3-9fea-401b11470e14 |
 
 Väntar på att användaren väljer en variant per klipp.
+
+## Rättelser
+| Klipp | Från | Ny job_id | Modell | Ändring |
+|---|---|---|---|---|
+| 4 | 741d4c42 (C) | 0a0dd53a-ff26-4089-bb79-2a97912a5757 | nano_banana_2 (backend: nano_banana_flash) | Sidtrycket delat över sidsömmen, ett ansikte fram och ett bak |
