@@ -46,7 +46,7 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 
 ## Komponenter
 - **Header:** svart, sticky, ordmärket till vänster, meny och varukorg med räknare till höger. Räknaren syns först när något ligger i korgen.
-- **Hero:** kampanjfilmen i originalformat, 16:9 i full bredd. Hela bilden visas alltid, aldrig beskuren eller inzoomad, och samma fil används i mobil och på dator (`brand/hero/hero-v2-original.mp4`). Raden och den understrukna länken står nere till vänster i bilden, ovanpå en mörk toning (även i mobil, aldrig i ett svart fält under filmen). Stillbild när rörelse är avstängd.
+- **Hero:** kampanjfilmen i full bredd från en och samma fil i källans upplösning (`brand/hero/hero-v2-original.mp4`, 16:9). På dator visas hela bilden. I mobil och på surfplatta visas en centrerad kvadrat (ca 56 % av bredden, högst 72 % av skärmhöjden), så att filmen får tyngd utan den kraftiga inzoomningen från det gamla 9:16-utsnittet (användarens beslut 2026-10-04). Raden och den understrukna länken står nere till vänster i bilden, ovanpå en mörk toning (även i mobil, aldrig i ett svart fält under filmen). Stillbild när rörelse är avstängd.
 - **Korset (objektväljaren):** varje kontroll ska synas utan förklaring.
   - **Två separata kollektioner** (användarens beslut 2026-10-04): överst en flikrad, "DROP 01 · TVÅ KOLLEKTIONER", med en flik per objekt. Varje flik har en miniatyr av tröjan i vald färg, och bara numret, stort (`#001`, `#002`, bredd 125 %, vikt 300). Inga beskrivande ord som "sidtryck" eller "kyssmotiv" (användarens beslut). En benvit stapel på 2 px glider under den öppna kollektionen. Den andra fliken börjar på korsets lodräta axel. Sidan öppnar på #001.
   - Den lodräta axeln har etiketten "FÄRG".
