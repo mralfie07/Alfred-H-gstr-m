@@ -14,17 +14,27 @@ Claude genererar via Higgsfield-kopplingen (kontot är Pro, 600 krediter, verifi
 
 4K behövs inte: videon visas i högst 1080p på webben och klippen är 1 s långa. Kör `pro`.
 
+## Beslut (användaren, 2026-10-04)
+- **Fyra tröjor i heron:**
+  1. OBJECT #002 svart-camo, **ryggtrycket** i fokus
+  2. OBJECT #001 blå (sidtryck)
+  3. OBJECT #001 svart (sidtryck)
+  4. OBJECT #002 blå, både rygg- och brösttryck
+- **Bara killar som modeller.** Nya modeller, inte de från de gamla Higgsfield-bilderna.
+- **Styling:** jeans i stil med Nudie eller Levi's, lite urtvättade, raka eller avslappnade, inte tighta. Skor som passar samma stil (t.ex. enkla läder- eller canvasskor, inget flashigt). Inga synliga varumärken.
+- Klipplistan i briefen ska anpassas: bara män, och de fyra tröjorna ovan fördelade över klippen.
+- **Starta inte genereringen förrän användaren har skickat alla tryckfiler och sagt till.**
+
 ## Steg
 
 ### 0. Underlag (0 krediter)
 - Rätt produktbilder för #001 och #002, fram och bak. Hämta från Shopify (fråga vilka av dubbletterna som gäller) eller `brand/products/`.
-- Bekräfta modellerna: kvinnan och mannen i `brand/references/model-00*-*-WATERMARK.png`, eller nya.
+- Modeller: nya killar (se Beslut). De gamla modellbilderna är bara stilreferens för miljö och ljus.
 - Bekräfta klipplistan i briefen.
 
 ### 1. Referenser (0 krediter)
 - Ladda upp produktbilder och modellbilder till Higgsfield.
-- Skapa referenselement med `manage_reference_elements`: `o07-woman`, `o07-man` (character), `o07-tee-001`, `o07-tee-002` (prop), eventuellt `o07-concrete` (environment).
-- Beskär bort vattenmärket innan uppladdning.
+- Skapa först 2–3 nya manliga modeller (visa användaren och låt hen välja), sedan referenselement med `manage_reference_elements`: en per vald modell (character), en per hero-tröja (prop: `o07-001-bla`, `o07-001-svart`, `o07-002-camo`, `o07-002-bla`), eventuellt `o07-concrete` (environment).
 
 ### 2. Startbilder (~70 krediter)
 - En startbild per klipp, 3–4 varianter per klipp med `nano_banana_pro` 2K, 16:9.
