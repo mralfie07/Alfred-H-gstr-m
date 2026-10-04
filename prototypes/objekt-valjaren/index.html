@@ -89,11 +89,16 @@ button { cursor: pointer; }
 .cross-inner { max-width: 560px; margin: 0 auto; display: grid; gap: var(--s-4); }
 
 .axis { position: relative; height: calc(var(--axis-y) + var(--row) * 3 + 20px); }
-.v-line, .h-line { position: absolute; background: var(--bone-dim); pointer-events: none; }
-.v-line { left: 50%; top: 0; width: 1px; height: calc(var(--axis-y) + var(--row) * 1.5); transform: translateX(-.5px); }
-.h-line { top: var(--axis-y); height: 1px; }
-.h-line.l { left: 0; right: calc(50% + 28px); }
-.h-line.r { right: 0; left: calc(50% + 28px); }
+.v-line { position: absolute; left: 50%; top: 0; width: 1px; height: calc(var(--axis-y) + var(--row) * 1.5); transform: translateX(-.5px); background: var(--bone-dim); pointer-events: none; }
+/* Axis captions say what each arm of the cross controls. */
+.cap { position: absolute; margin: 0; color: var(--bone-dim); font-size: 10px; pointer-events: none; }
+.cap.c { top: -2px; right: calc(50% + 12px); }
+.cap.o { left: 0; top: calc(var(--axis-y) + 26px); }
+/* The horizontal arms end in arrowheads: the object axis reads like a coordinate axis. */
+.arm { position: absolute; top: var(--axis-y); height: 0; display: flex; align-items: center; }
+.arm.l { left: 0; right: calc(50% + 28px); }
+.arm.r { right: 0; left: calc(50% + 28px); }
+.arm .line { flex: 1; height: 1px; background: var(--bone-dim); }
 .star {
   position: absolute; left: 50%; top: var(--axis-y); width: 40px; height: 40px;
   transform: translate(-50%, -50%); color: var(--bone);
@@ -103,12 +108,14 @@ button { cursor: pointer; }
 .star svg { width: 100%; height: 100%; fill: currentColor; }
 
 .obj {
-  position: absolute; top: calc(var(--axis-y) - 30px); background: none; border: 0; padding: var(--s-2) 0;
-  color: var(--bone-dim); font-size: 11px; transition: color .25s;
+  flex: none; display: flex; align-items: center; gap: 6px; height: 44px; padding: 0;
+  background: none; border: 0; color: var(--bone); font-size: 11px;
 }
-.obj:hover { color: var(--bone); }
-.obj.prev { left: 0; text-align: left; }
-.obj.next { right: 0; text-align: right; }
+.arm.l .obj { padding-right: var(--s-3); }
+.arm.r .obj { padding-left: var(--s-3); }
+.obj svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.4; transition: transform .45s var(--ease-out); }
+.arm.l .obj:hover svg { transform: translateX(-3px); }
+.arm.r .obj:hover svg { transform: translateX(3px); }
 .obj[hidden] { display: none; }
 
 .colors {
@@ -118,20 +125,28 @@ button { cursor: pointer; }
   transition: transform .6s var(--ease-out);
 }
 .colors button {
-  display: flex; align-items: center; height: var(--row); padding: 0 var(--s-2) 0 0; background: none; border: 0;
-  font-size: clamp(16px, 4.6vw, 21px); font-stretch: 112%; font-weight: 400; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--bone-faint); transition: color .4s var(--ease-out), opacity .4s;
+  display: flex; align-items: center; gap: 10px; height: var(--row); padding: 0 var(--s-2) 0 0; background: none; border: 0;
+  font-size: clamp(16px, 4.4vw, 20px); font-stretch: 112%; font-weight: 400; letter-spacing: .06em; text-transform: uppercase;
+  color: rgb(236 230 220 / .62); transition: color .4s var(--ease-out);
 }
+.colors button:hover { color: var(--bone); }
 .colors button[aria-checked="true"] { color: var(--bone); }
 .colors button::before {
-  content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--terra);
-  margin-left: -23px; margin-right: 15px; opacity: 0; transform: scale(.4); transition: opacity .3s, transform .5s var(--ease-out);
+  content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--terra);
+  margin-left: -23px; margin-right: 5px; opacity: 0; transform: scale(.4); transition: opacity .3s, transform .5s var(--ease-out);
 }
 .colors button[aria-checked="true"]::before { opacity: 1; transform: none; }
+/* A square of the real fabric, cut from the product photos. */
+.sw {
+  flex: none; width: 15px; height: 15px; background: center / cover;
+  box-shadow: 0 0 0 1px var(--bone-faint); transition: box-shadow .4s var(--ease-out), transform .5s var(--ease-out);
+}
+.colors button[aria-checked="true"] .sw { box-shadow: 0 0 0 1px var(--bone); }
+.sw.svart { background-image: url("img/swatch-svart.webp"); }
+.sw.bla { background-image: url("img/swatch-bla.webp"); }
+.sw.camo { background-image: url("img/swatch-camo.webp"); }
 .colors li { transition: transform .6s var(--ease-out); }
 .colors li.above { transform: translateY(-34px); }
-.colors li.above button { opacity: .9; }
-.colors li.below button { opacity: .55; }
 
 /* Garment */
 .stage { position: relative; aspect-ratio: 1 / 1.02; margin-top: calc(var(--row) * -1.2); touch-action: pan-y; user-select: none; -webkit-user-select: none; }
@@ -159,7 +174,22 @@ button { cursor: pointer; }
   animation: shadow 7s ease-in-out infinite;
 }
 @keyframes shadow { 50% { transform: scaleX(.9); opacity: .8; } }
-.view-tag { position: absolute; left: 0; bottom: 2%; color: var(--bone-dim); font-size: 10px; }
+
+/* Front/back: a bone block slides under the chosen side. */
+.view {
+  position: relative; justify-self: center; display: grid; grid-template-columns: 1fr 1fr;
+  width: min(100%, 264px); margin-top: calc(var(--s-3) * -1); border: 1px solid var(--bone-dim);
+}
+.view-ind {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 50%; background: var(--bone);
+  transform: translateX(calc(var(--v, 1) * 100%)); transition: transform .55s var(--ease-out);
+}
+.view button {
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 8px; height: 42px;
+  padding: 0 var(--s-3); background: none; border: 0; color: var(--bone); font-size: 11px;
+  transition: color .45s var(--ease-out);
+}
+.view button[aria-checked="true"] { color: var(--ink); }
 
 /* Info */
 .data { margin: 0; text-align: center; font-size: 12px; color: var(--bone); }
@@ -178,11 +208,6 @@ button { cursor: pointer; }
 }
 .add:active { transform: scale(.985); }
 .add[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
-.steps { display: flex; justify-content: center; gap: var(--s-5); }
-.steps button { background: none; border: 0; padding: var(--s-2); color: var(--bone-dim); }
-.steps button:disabled { opacity: .3; cursor: default; }
-.steps svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-.hint { margin: 0; text-align: center; color: var(--bone-dim); font-size: 10px; }
 
 /* Sign-up */
 .signup { padding: var(--s-7) var(--gutter); }
@@ -248,18 +273,28 @@ button { cursor: pointer; }
     <div class="cross-inner">
       <div class="axis">
         <span class="v-line" aria-hidden="true"></span>
-        <span class="h-line l" aria-hidden="true"></span>
-        <span class="h-line r" aria-hidden="true"></span>
+        <p class="cap c ui" aria-hidden="true">Färg</p>
+        <p class="cap o ui" aria-hidden="true">Objekt</p>
+        <div class="arm l">
+          <button class="obj ui" type="button" id="prev-obj" aria-label="Föregående: OBJECT #001">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg><span id="prev-label">#001</span>
+          </button>
+          <span class="line" aria-hidden="true"></span>
+        </div>
+        <div class="arm r">
+          <span class="line" aria-hidden="true"></span>
+          <button class="obj ui" type="button" id="next-obj" aria-label="Nästa: OBJECT #002">
+            <span id="next-label">#002</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
+          </button>
+        </div>
         <span class="star" id="star" aria-hidden="true">
           <svg viewBox="0 0 40 40"><path d="M20 0 C21.2 13 27 18.8 40 20 C27 21.2 21.2 27 20 40 C18.8 27 13 21.2 0 20 C13 18.8 18.8 13 20 0 Z"/></svg>
         </span>
-        <button class="obj prev ui" type="button" id="prev-obj">OBJECT #001</button>
-        <button class="obj next ui" type="button" id="next-obj">OBJECT #002</button>
 
         <ul class="colors" role="radiogroup" aria-label="Färg" id="colors">
-          <li><button type="button" role="radio" data-c="svart" aria-checked="false" id="c-svart">Svart</button></li>
-          <li><button type="button" role="radio" data-c="bla" aria-checked="false" id="c-bla">Blå</button></li>
-          <li><button type="button" role="radio" data-c="camo" aria-checked="true" id="c-camo">Svart-camo</button></li>
+          <li><button type="button" role="radio" data-c="svart" aria-checked="false" id="c-svart"><span class="sw svart" aria-hidden="true"></span>Svart</button></li>
+          <li><button type="button" role="radio" data-c="bla" aria-checked="false" id="c-bla"><span class="sw bla" aria-hidden="true"></span>Blå</button></li>
+          <li><button type="button" role="radio" data-c="camo" aria-checked="true" id="c-camo"><span class="sw camo" aria-hidden="true"></span>Svart-camo</button></li>
         </ul>
       </div>
 
@@ -269,7 +304,12 @@ button { cursor: pointer; }
           <span class="floor-shadow" aria-hidden="true"></span>
           <button class="garment" type="button" id="garment" aria-label="Vänd plagget"></button>
         </div>
-        <span class="view-tag ui" id="view-tag">Baksida · tryck för att vända</span>
+      </div>
+
+      <div class="view" role="radiogroup" aria-label="Visa sida" id="view">
+        <span class="view-ind" aria-hidden="true"></span>
+        <button class="ui" type="button" role="radio" data-v="fram" aria-checked="false">Framsida</button>
+        <button class="ui" type="button" role="radio" data-v="bak" aria-checked="true">Baksida</button>
       </div>
 
       <p class="data ui" id="data"><span>OBJECT #002</span><span>Svart-camo</span><span>799 kr</span></p>
@@ -282,12 +322,6 @@ button { cursor: pointer; }
       </div>
 
       <button class="add" type="button" id="add" aria-disabled="true">Välj storlek</button>
-
-      <div class="steps">
-        <button type="button" id="step-prev" aria-label="Föregående objekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <button type="button" id="step-next" aria-label="Nästa objekt"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-      </div>
-      <p class="hint ui">Svep i sidled för objekt · tryck på färgen</p>
     </div>
   </section>
 
@@ -328,22 +362,45 @@ button { cursor: pointer; }
 
   const state = { o: "002", c: "camo", v: "bak", size: null, count: 0 };
   const $ = (id) => document.getElementById(id);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const EASE = "cubic-bezier(.16, 1, .3, 1)";
 
   for (const o of OBJECTS) for (const c of COLORS) for (const v of ["fram", "bak"]) { const i = new Image(); i.src = file(o, c.id, v); }
 
-  let current = null;
-  function showGarment(from = 0) {
+  let current = null, turning = false;
+  function showGarment(from = 0, turn = 0) {
     const img = document.createElement("img");
     img.src = file(state.o, state.c, state.v);
     img.alt = `OBJECT #${state.o}, ${COLORS.find(c => c.id === state.c).name.toLowerCase()}, ${state.v === "fram" ? "framsida" : "baksida"}`;
+    const old = current;
+    current = img;
+    if (old) old.getAnimations().forEach(a => a.finish());
+
+    // Front/back: the garment turns on its vertical axis, like a shirt on a hanger.
+    if (turn && !reduce) {
+      const p = "perspective(1400px) ";
+      turning = true; setTimeout(() => turning = false, 560);
+      img.style.transition = "none"; img.classList.add("on");
+      $("garment").appendChild(img);
+      if (old) {
+        old.style.transition = "none";
+        old.animate([{ transform: p + "rotateY(0deg)" }, { transform: p + `rotateY(${90 * turn}deg)` }],
+          { duration: 250, easing: "cubic-bezier(.55, 0, .9, .4)", fill: "forwards" });
+        setTimeout(() => old.remove(), 260);
+      }
+      img.animate([{ transform: p + `rotateY(${-90 * turn}deg)` }, { transform: p + "rotateY(0deg)" }],
+        { duration: 680, delay: old ? 240 : 0, easing: EASE, fill: "backwards" })
+        .finished.then(() => { img.style.transition = ""; }, () => {});
+      return;
+    }
+
     img.style.setProperty("--from", from + "px");
     $("garment").appendChild(img);
     requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("on")));
-    if (current) { const old = current; old.style.setProperty("--from", (-from) + "px"); old.classList.remove("on"); setTimeout(() => old.remove(), 600); }
-    current = img;
+    if (old) { old.style.transition = ""; old.style.setProperty("--from", (-from) + "px"); old.classList.remove("on"); setTimeout(() => old.remove(), 600); }
   }
 
-  function render({ from = 0, numeral = 0 } = {}) {
+  function render({ from = 0, numeral = 0, turn = 0 } = {}) {
     const ci = COLORS.findIndex(c => c.id === state.c);
     const oi = OBJECTS.indexOf(state.o);
     const list = $("colors");
@@ -354,15 +411,16 @@ button { cursor: pointer; }
     });
 
     const prev = $("prev-obj"), next = $("next-obj");
+    const last = oi === OBJECTS.length - 1;
     prev.hidden = oi === 0;
-    prev.textContent = oi > 0 ? `OBJECT #${OBJECTS[oi - 1]}` : "";
-    next.textContent = oi < OBJECTS.length - 1 ? `OBJECT #${OBJECTS[oi + 1]}` : "Nästa drop →";
-    $("step-prev").disabled = oi === 0;
-    $("step-next").disabled = oi === OBJECTS.length - 1;
+    if (oi > 0) { $("prev-label").textContent = `#${OBJECTS[oi - 1]}`; prev.setAttribute("aria-label", `Föregående: OBJECT #${OBJECTS[oi - 1]}`); }
+    $("next-label").textContent = last ? "Nästa drop" : `#${OBJECTS[oi + 1]}`;
+    next.setAttribute("aria-label", last ? "Nästa drop: anmäl dig" : `Nästa: OBJECT #${OBJECTS[oi + 1]}`);
 
     const color = COLORS[ci];
     $("data").innerHTML = `<span>OBJECT #${state.o}</span><span>${color.name}</span><span>799 kr</span>`;
-    $("view-tag").textContent = `${state.v === "fram" ? "Framsida" : "Baksida"} · tryck för att vända`;
+    $("view").style.setProperty("--v", state.v === "fram" ? 0 : 1);
+    for (const b of document.querySelectorAll("#view button")) b.setAttribute("aria-checked", String(b.dataset.v === state.v));
     for (const b of document.querySelectorAll(".size")) b.setAttribute("aria-checked", String(b.textContent === state.size));
     const add = $("add");
     add.setAttribute("aria-disabled", String(!state.size));
@@ -373,7 +431,13 @@ button { cursor: pointer; }
       n.classList.add(numeral > 0 ? "out-l" : "out-r");
       setTimeout(() => { n.textContent = state.o; n.classList.remove("out-l", "out-r"); }, 280);
     }
-    showGarment(from);
+    showGarment(from, turn);
+  }
+
+  function setView(v) {
+    if (v === state.v || turning) return;
+    state.v = v;
+    render({ turn: v === "bak" ? 1 : -1 });
   }
 
   function goObject(dir) {
@@ -387,13 +451,12 @@ button { cursor: pointer; }
 
   $("prev-obj").addEventListener("click", () => goObject(-1));
   $("next-obj").addEventListener("click", () => goObject(1));
-  $("step-prev").addEventListener("click", () => goObject(-1));
-  $("step-next").addEventListener("click", () => goObject(1));
   document.querySelectorAll(".colors button").forEach(b => b.addEventListener("click", () => {
     if (b.dataset.c === state.c) return; state.c = b.dataset.c; render();
   }));
   document.querySelectorAll(".size").forEach(b => b.addEventListener("click", () => { state.size = b.textContent; render(); }));
-  $("garment").addEventListener("click", () => { if (moved) return; state.v = state.v === "fram" ? "bak" : "fram"; render(); });
+  document.querySelectorAll("#view button").forEach(b => b.addEventListener("click", () => setView(b.dataset.v)));
+  $("garment").addEventListener("click", () => { if (moved) return; setView(state.v === "fram" ? "bak" : "fram"); });
 
   document.querySelectorAll('[role="radiogroup"]').forEach(group => group.addEventListener("keydown", e => {
     const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
@@ -434,8 +497,36 @@ button { cursor: pointer; }
     msg.textContent = "Klart. Här skickas ett mejl inför nästa drop (i prototypen sparas inget)."; $("email").value = "";
   });
 
+  // One-time demonstration, the first time the garment is in view and untouched: it leans toward the next
+  // object as if being swiped, the arrowhead points the way, then the other fabrics tick in turn.
+  let engaged = false;
+  for (const t of ["click", "keydown"]) $("droppet").addEventListener(t, () => engaged = true, { capture: true });
+  function demo() {
+    if (engaged || turning) return;
+    const ease = "cubic-bezier(.45, 0, .2, 1)";
+    $("garment").animate([
+      { transform: "none" }, { transform: "translateX(-38px) rotate(-1.5deg)", offset: .36 },
+      { transform: "translateX(6px) rotate(.3deg)", offset: .7 }, { transform: "none" }
+    ], { duration: 1400, easing: ease });
+    $("numeral").animate([{ transform: "none" }, { transform: "translateX(-4%)", offset: .36 }, { transform: "none" }], { duration: 1400, easing: ease });
+    $("next-obj").querySelector("svg").animate([
+      { transform: "none" }, { transform: "translateX(6px)", offset: .2 }, { transform: "none", offset: .4 },
+      { transform: "translateX(6px)", offset: .6 }, { transform: "none", offset: .8 }
+    ], { duration: 1400, easing: ease });
+    document.querySelectorAll(".colors button:not([aria-checked='true']) .sw").forEach((sw, i) =>
+      sw.animate([{ transform: "none" }, { transform: "scale(1.45)", offset: .4 }, { transform: "none" }],
+        { duration: 560, delay: 1500 + i * 160, easing: EASE }));
+  }
+  if (!reduce && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(entries => {
+      if (!entries.some(e => e.isIntersecting)) return;
+      io.disconnect(); setTimeout(demo, 700);
+    }, { threshold: .6 });
+    io.observe($("stage"));
+  }
+
   const hero = $("hero");
-  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { hero.autoplay = true; hero.play().catch(() => {}); }
+  if (!reduce) { hero.autoplay = true; hero.play().catch(() => {}); }
 
   render();
 })();
