@@ -34,3 +34,6 @@ Tre skisser av startsidan i mobil: `.impeccable/mocks/comp-1-standard.jpg`, `com
 - Prototyp: `prototypes/objekt-valjaren/index.html`, publicerad som Artifact https://claude.ai/code/artifact/80dc4e58-44a8-4471-ab04-3c7b86646990
 - Frilagda produktbilder: `brand/products/cutout/*.webp` (Higgsfield bakgrundsborttagning, ca 1 kredit per bild)
 - `DESIGN.md`, `docs/sitemap.md`, `PRODUCT.md`, surface brief i `.impeccable/surfaces/`
+
+## Ändrat val (samma dag)
+Användaren ändrade sig och valde **A – Korset** (`.impeccable/mocks/decision/a-korset.jpg`), som nu är den godkända skissen. Prototypen är ombyggd efter den (Artifact version 3). Kombinationen 2 + 3 gäller inte längre.

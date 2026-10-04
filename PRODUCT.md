@@ -34,7 +34,7 @@ Konsten i trycken. Motiven är handritade linjeansikten: två ansikten som kysse
 - Logga: ordmärket med emblemet som O (huvudlogga, även på nacketiketten) och emblemet ensamt (oval med fyruddig stjärna, "07", stenstruktur) som favicon. Filer i `brand/logo/` (PNG, ingen vektor än).
 - Plaggdetaljer: vävd nacketikett och ärmlapp med "OBJECT 07".
 - Ingen AI-märkning på sajten (användarens beslut).
-- **Stående stilval (2026-10-04):** användaren valde kategorins standard, en klassisk premium mörk streetwear-dropbutik, rakt utförd utan ironi, framför de konceptuella riktningarna (korsmeny, museiarkiv). Ribban sätts av **Aimé Leon Dore / Kith** (kampanjfoto i fokus, lyxig finish, lugnt tempo) och **Palace / Stüssy** (grafisk självklarhet, starka loggor, lekfullhet). Numreringen OBJECT #00X och märkets egna element finns kvar som innehåll, inte som koncept.
+- **Stilval (2026-10-04, ändrat samma dag):** användaren valde först kategorins standard (mörk streetwear-dropbutik) men bytte till riktningen **Korset**: drop-arkivet som ett kors på kampanjens egen betong, objekt längs den vågräta axeln, färgställningar längs den lodräta, emblemets fyruddiga stjärna där de möts, terrakottapricken markerar vald färg. Ribban för finish är fortfarande Aimé Leon Dore / Kith och Palace / Stüssy.
 
 ## Evidence on Hand
 - Produktbilder fram + bak för alla sex plagg: `brand/products/` (svart/blå ca 800 px, camo ca 1700 px).

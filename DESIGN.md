@@ -2,64 +2,69 @@
 
 Designsystemet för OBJECT 07:s Shopify-tema. Skrivet från den byggda prototypen (`prototypes/objekt-valjaren/index.html`, fas 1, 2026-10-04). Produktfakta finns i `PRODUCT.md`, konceptet i `docs/brief.md` och sidstrukturen i `docs/sitemap.md`.
 
-## Riktning
-En klassisk premium mörk streetwear-dropbutik, rakt utförd. Kampanjfilmen och kampanjbilderna leder i ett lugnt, lyxigt tempo (ribba Aimé Leon Dore / Kith). Produkterna visas grafiskt och självklart: plagget svävar på ett färgblock med sitt objektnummer jättestort bakom (ribba Palace / Stüssy). Godkänd skiss: kombination av `.impeccable/mocks/comp-2-editorial.jpg` och `comp-3-grafisk.jpg`.
+## Riktning: Korset
+Droppet visas som ett kors på kampanjens egen betong. **Objekten** (#001, #002, nästa drop) ligger längs den vågräta axeln och **färgställningarna** (svart, blå, svart-camo) längs den lodräta. Emblemets fyruddiga stjärna sitter där axlarna möts, och den valda färgen glider in under stjärnan. Grammatiken kommer från 2007 års korsmenyer, översatt till märkets material: betong, benvitt och en terrakottaprick. Inget blått sken, inga vågor. Godkänd skiss: `.impeccable/mocks/decision/a-korset.jpg`. Ribban för finish är Aimé Leon Dore / Kith och Palace / Stüssy.
 
-Varför mörkt: kunden handlar i mobilen, ofta på kvällen via en länk i bio, och produktfotona är tagna på mörk studiobakgrund. Sajten ska smälta ihop med fotona.
+Varför betong och mörkt: kunden handlar i mobilen, ofta på kvällen via en länk i bio. Betongen är samma vägg som i kampanjfilmen, så filmen och butiken blir samma plats.
 
 ## Färg
-Strategi: återhållsam. Mörk grund, benvitt för text, ett färgblock per färgställning som enda stora färgfält, terrakotta en gång per vy.
+Strategi: återhållsam. Betongytan är det enda stora fältet. Allt annat är benvitt på mörkt, och terrakottan används bara för att markera vald färg.
 
 | Token | Värde | Roll |
 |---|---|---|
-| `--ink` | `#0c0c0b` | Sidans grund (varm nästan-svart, som studiobakgrunden) |
-| `--char` | `#171615` | Upphöjda ytor, bakom video |
-| `--rule` | `#2c2a27` | Hårlinjer, kantlinjer på knappar |
-| `--bone` | `#ece6dc` | Primär text, primära knappar, vald status (trycks gräddvita färg) |
-| `--stone` | `#a6a097` | Sekundär text (7:1 mot `--ink`) |
-| `--terra` | `#c2714f` | Den orange pricken ur trycken. Högst en gång per vy |
-| `--block-svart` | `#9d978d` | Färgblock bakom svart plagg (betong) |
-| `--block-bla` | `#cdbfa6` | Färgblock bakom blått plagg (sand, så denimen syns) |
-| `--block-camo` | `#6f7257` | Färgblock bakom camo-plagg (oliv) |
+| `--ink` | `#0c0c0b` | Header, filmens bakgrund, anmälan, sidfot |
+| `--char` | `#171615` | Bakom video medan den laddar |
+| `--rule` | `#2c2a27` | Hårlinjer på mörk grund |
+| `--bone` | `#ece6dc` | Text, korsets stjärna, primärknapp, vald storlek (trycks gräddvita färg) |
+| `--bone-dim` | benvitt 50 % | Korsets linjer, objektnumret, sekundär text på betong |
+| `--bone-faint` | benvitt 28 % | Ovalda färger på den lodräta axeln |
+| `--stone` | `#b3ada3` | Sekundär text på mörk grund |
+| `--terra` | `#c2714f` | Pricken vid vald färg (ur trycken). Ingen annan användning |
+| `--concrete-veil` | `#0c0c0b` 40 % | Mörk slöja över betongen, så benvit text klarar 4,5:1 |
 
-Text på färgblock är alltid `--ink`. Inga gradienter utom den mörka tonen nertill på heron, som gör texten läsbar.
+Betongtexturen är `img/concrete.webp`, en bild av väggen och golvet ur kampanjklipp 6, avfärgad och varmtonad. Den läggs `center bottom / cover` så att golvet hamnar under plagget.
 
 ## Typografi
-En familj, **Archivo** (variabel, axlarna `wdth` 62–125 och `wght` 100–900, OFL). Self-hostas i temat. Bredden ger släktskapen med det breda geometriska ordmärket.
+En familj, **Archivo** (variabel, `wdth` 62–125, `wght` 100–900, OFL). Self-hostas i temat. Bredden ger släktskapen med det breda geometriska ordmärket. Korset använder lätta vikter, som ordmärket.
 
 | Roll | Inställning | Används till |
 |---|---|---|
-| Display | `wdth` 125, vikt 800–900, versaler, `letter-spacing` −0.02 till −0.04em, `line-height` 0.8–1 | Rubriker, objektnummer, objektväljarens flikar |
-| UI | `wdth` 112, vikt 500–700, versaler, 11–13 px, `letter-spacing` 0.08–0.14em | Etiketter, knappar, annonsrad, meny |
-| Brödtext | `wdth` 100, vikt 400, 16 px, `line-height` 1.5, max 65 tecken | Beskrivningar, formulär |
+| Objektnummer | `font-stretch` 125 %, vikt 300, `min(52vw, 300px)`, `--bone-dim` | Jättenumret bakom plagget |
+| Axel-etiketter | `font-stretch` 112 %, vikt 400, 16–21 px, versaler, `letter-spacing` 0.06em | Färgnamnen på den lodräta axeln |
+| UI | `font-stretch` 112 %, vikt 500, 10–12 px, versaler, `letter-spacing` 0.14em | Objektetiketter, datarad, tips, header |
+| Rubrik | `font-stretch` 125 %, vikt 400, 26–44 px, versaler | Anmälans rubrik |
+| Brödtext | `font-stretch` 100 %, vikt 400, 16 px, `line-height` 1.5, max 65 tecken | Beskrivningar, formulär |
 
-Skala: 11 / 12 / 14 / 16 / 18 / 24–34 (produktnamn) / 28–52 (sektionsrubrik) / 30–72 (anmälan) px. Det jättestora objektnumret bakom plagget är `min(46vw, 330px)` i `--ink` med 16 % opacitet. Rubriker har `text-wrap: balance`. Siffror i priser och antal är `tabular-nums`.
+Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 
 ## Avstånd och form
-- Skala på 4 px: 4, 8, 12, 16, 24, 32, 48, 72.
-- Sidmarginal: `clamp(16px, 4vw, 40px)`. Innehållsbredd högst 1240 px.
-- **Skarpa hörn överallt.** Ingen rundning på knappar, kort eller bilder. Enda undantaget är räknarbubblan på varukorgen.
-- Knappar och val är 52–58 px höga (tumvänliga). Vald status: `--bone`-fyllning med `--ink`-text. Ovald status: 1 px `--rule`-kant.
-- Skuggor bara där något svävar: plaggets `drop-shadow(0 28px 22px)` och aviseringens skugga. Inga kortskuggor.
+- Skala på 4 px: 4, 8, 12, 16, 24, 32, 48, 72. Sidmarginal `clamp(16px, 4vw, 40px)`. Korset är högst 560 px brett och centrerat, betongen går kant i kant.
+- **Skarpa hörn överallt.** Enda undantagen är räknarbubblan på varukorgen och terrakottapricken.
+- Korsets mått: vågrät axel på 104 px höjd, en färgrad är 34 px, linjerna är 1 px `--bone-dim` med ett glapp på 28 px runt stjärnan (40 px).
+- Storleksknappar 56 × 56 px med 1 px kant, köpknappen 58 px hög i full bredd.
+- Skuggor bara där något svävar: plaggets `drop-shadow` och en suddig golvskugga under det.
 
 ## Komponenter
-- **Annonsrad:** benvit list med droppstatus i UI-stil.
-- **Header:** sticky, meny till vänster, ordmärket i mitten och varukorg med räknare till höger. Halvgenomskinlig `--ink` med oskärpa bakom.
-- **Hero:** kampanjfilmen (9:16 i mobil, 16:9 på dator, max 78–82 % av höjden) med en kort rad och en understruken länk nere till vänster. Stillbild när rörelse är avstängd.
-- **Objektväljaren:** flikar för objekten (#001, #002), scen med färgblock, jättenummer, plagg och "Visa fram/bak"-knapp, sedan namn, pris, färgrutor (camo-rutan visar själva camotrycket), storlekar S–XL och knappen "Lägg i varukorgen". Svep på scenen byter färg. På dator: scen till vänster (7/12), info till höger (5/12, sticky).
-- **Anmälan:** jättestor rubrik "Få nästa droppet först", e-postfält med pilknapp i benvit ram.
-- **Avisering:** benvit ruta nertill med miniatyr på färgblock, objekt, färg, storlek och pris.
+- **Header:** svart, sticky, ordmärket till vänster, meny och varukorg med räknare till höger. Räknaren syns först när något ligger i korgen.
+- **Hero:** kampanjfilmen (9:16 i mobil, 16:9 på dator, högst 76–80 % av höjden) med en kort rad och en understruken länk nere till vänster. Stillbild när rörelse är avstängd.
+- **Korset (objektväljaren):**
+  - Vågrät axel: föregående objekt till vänster, nästa till höger. Efter sista objektet står "Nästa drop →", som leder till anmälan.
+  - Lodrät axel: färgnamnen. Den valda glider in under stjärnan med terrakottaprick, tidigare färger ligger ovanför linjen och senare under, svagare.
+  - Plagget stort i mitten med objektnumret bakom. Tryck på plagget vänder det fram och bak. Svep i sidled byter objekt.
+  - Under: datarad (objekt · färg · pris), storlekar S–XL, köpknapp, pilar för objekt och en tipsrad.
+- **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram.
+- **Avisering:** benvit ruta nertill med miniatyr, objekt, färg, storlek och pris.
 
 ## Rörelse
-- En kurva: `cubic-bezier(.16, 1, .3, 1)` (exponentiellt avtagande).
-- **Det enda iscensatta ögonblicket är färg- och objektbytet:** blocket glider till ny färg (0,6 s), plagget tonar in med ett litet lyft (0,45–0,7 s) och numret byts med en glidning uppåt.
-- Plagget svävar mycket svagt i vila (6 px, 7 s). Inga scrollanimationer på varje sektion.
-- `prefers-reduced-motion`: alla animationer av, heron visas som stillbild.
+- En kurva: `cubic-bezier(.16, 1, .3, 1)`.
+- **Det enda iscensatta ögonblicket är rörelsen i korset:** färglistan glider så att vald färg hamnar under stjärnan (0,6 s). Vid objektbyte glider plagget in från svepets håll, numret byts och stjärnan vrider sig 90° (0,7 s).
+- I vila svävar plagget svagt (7 px, 7 s) och golvskuggan andas med. Inga scrollanimationer.
+- `prefers-reduced-motion`: allt av, heron visas som stillbild.
 
 ## Bildspråk
 - Kampanj: 35 mm-film, hårt middagsljus, brutalistisk betong, samma kille i alla bilder (Higgsfield-referenser i `docs/hero-assets.md`).
-- Produkt: frilagda plagg (`brand/products/cutout/*.webp`) på färgblock, fram och bak.
-- Trycket ska alltid synas ordentligt och aldrig beskäras bort.
+- Produkt: frilagda plagg (`brand/products/cutout/*.webp`), fram och bak. Svart, blå och camo fungerar alla mot betongen.
+- Trycket ska alltid synas ordentligt och aldrig beskäras.
 
 ## Webbläsarytor
-Markering är `--bone` mot `--ink`, fokusringen är 2 px `--bone` med 3 px avstånd, och `color-scheme: dark` ger mörka formulärkontroller.
+Markering är `--bone` mot `--ink`, fokusringen är 2 px `--bone` med 3 px avstånd, och `color-scheme: dark`. Piltangenter flyttar mellan färger och storlekar.
