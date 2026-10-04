@@ -20,6 +20,7 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
   - **Kyssmotivet** (två ansikten som bildar ett hjärta): bröst + rygg. Filer `1_svart_brost/rygg`, `2_bla_brost/rygg`, `3_svart-camo_brost/rygg`.
   - **Sidtrycket** (ett ansikte i profil): går runt sidan, fram + bak. Filer `4_svart-sidtryck_fram/bak`, `5_bla-sidtryck_fram/bak`, `6_svart-camo-sidtryck_fram/bak`.
   - Det ger troligen sex plagg. Vilket som är #001, #002 osv. och hur det matchar produkterna i Shopify är inte bekräftat; fråga användaren.
+  - **Produktbilder (fram + bak) för alla sex finns i `brand/products/`**, namngivna `<färg>-<motiv>_<fram|bak>.jpg` (färg: `svart`, `bla`, `svart-camo`; motiv: `kyss`, `sidtryck`). Camo-bilderna är ca 1600–1800 px, övriga ca 750–900 px (be om större till sajten). `object-002-sheet.png` visar nacketikett och ärmlapp i närbild.
   - Översikten är för liten som AI-referens. Använd de enskilda PNG-filerna i full upplösning när de finns i `brand/prints/`.
 - Numreringen "OBJECT #00X" är märkets starkaste idé. Varje plagg presenteras som ett katalogiserat föremål.
 - Priser, storlekar, material och måttguide hämtas från Shopify (läggs in av användaren).
