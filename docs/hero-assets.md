@@ -97,3 +97,17 @@ Val: 1B, 2A, 3B, 4A, 5A, 6B, 7C, 8C, 9A. Rättelserna av klipp 2, 4 och 5 **för
 | 7 | C | f50ea736-d1ea-4d50-9a13-659221240b56 |
 | 8 | C | 73c979a5-f0ed-4cde-98ef-c9b5602a2671 |
 | 9 | A | d7c8f039-74e1-4fe9-b431-a94b262f4288 |
+
+## Videoklipp, tagning 1 (steg 3, `kling3_0` pro, 5 s, utan ljud, 16:9, ~79 krediter)
+Klipp 9 har startbilden från klipp 1 som `end_image` för sömlös loop.
+| Klipp | job_id | Rörelse |
+|---|---|---|
+| 1 | 2845a30a-1b07-481f-86e2-af74197a5ebd | Långsam makro-inzoomning på tyget |
+| 2 | 6a0478b5-9d4a-480b-b809-aa683bf927fe | Går mellan pelare, kameran följer i sidled |
+| 3 | 6e59f77a-d94a-47ca-8da0-ae2a464e63f3 | Vrider huvudet mot kameran, långsam inzoomning |
+| 4 | 281a795f-4ba7-46ac-8e20-490899a31ec2 | Pelarskuggor glider över trycket |
+| 5 | 297ba8e8-800f-4521-81f0-363a2d49e1ca | Inzoomning underifrån, står still |
+| 6 | a4ff9498-1eaa-4350-b42c-f1244b16cf63 | Vrider huvudet över axeln, ryggtrycket syns |
+| 7 | a9caa7dd-cd5a-4a5e-becf-da26a1c28d5c | Går ifrån kameran, kameran följer |
+| 8 | 661e9cae-e954-44db-b42e-ed6ede365dd8 | Långsam inzoomning på ansiktet |
+| 9 | d78fb326-e73d-49ac-a4b6-e5ba21361cfa | Drift över tyget, slutar på klipp 1:s startbild |
