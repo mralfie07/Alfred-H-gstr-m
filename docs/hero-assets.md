@@ -33,4 +33,44 @@ Direktuppladdning (`media_upload` + curl PUT) blockeras av nätverket i molnmilj
 | 2 | Medelhavsutseende, mörkt lockigt hår, ljusa jeans, vita canvasskor | #001 svart (sidtryck) | 0dec2c8e-a329-40c0-965c-39de126ca926 |
 | 3 | Östafrikanskt utseende, kortklippt, mörka jeans, bruna mockakängor | #001 blå (sidtryck) | 4dfec545-0ffa-4eb3-8338-e7a3dd4dd15d |
 
-Väntar på användarens val. Saldo efter steget: 594 krediter.
+Saldo efter steget: 594 krediter.
+
+**Val (2026-10-04):** modell 1, med **navy loafers** i stället för derbyskor. En modell i alla klipp. Klipplistan godkänd.
+
+## Referenselement i Higgsfield
+Används i prompter som `<<<element_id>>>`.
+| Namn | Typ | element_id |
+|---|---|---|
+| o07-model | character | 72d27228-4783-4d20-80c9-1151f5323e40 |
+| o07-002-camo | prop | 7c5e9101-d2fe-4440-93a5-45e3bb7cd728 |
+| o07-001-bla | prop | ca7723a6-f7ba-4c6e-8be7-34808d5801f6 |
+| o07-001-svart | prop | 8d2f71fa-b975-4da7-bb58-5abcaeeca08f |
+| o07-002-bla | prop | 83c48cb1-8d5f-4f4a-bae4-f0316c0b89a0 |
+
+## Godkänd klipplista
+| # | Bild | Tröja |
+|---|---|---|
+| 1 | Närbild på tyget i solljus, kanten på ryggtrycket syns | #002 camo |
+| 2 | Vidbild, går mellan betongpelare, liten i bild | #001 svart |
+| 3 | Halvbild, vrider huvudet mot kameran, brösttryck synligt | #002 blå |
+| 4 | Pelarskuggor glider över sidtrycket | #001 blå |
+| 5 | Underifrån, långsam inzoomning | #001 blå |
+| 6 | Vänder sig om, ryggtrycket (huvudbilden) | #002 camo |
+| 7 | Går ifrån kameran, ryggtryck | #002 blå |
+| 8 | Närbild ansikte, blick in i kameran | #001 svart |
+| 9 | Tyget igen, loopar till klipp 1 | #002 camo |
+
+## Startbilder (steg 2, `nano_banana_pro` 2K 16:9, 3 varianter per klipp, ~54 krediter)
+| Klipp | job_id variant A | B | C |
+|---|---|---|---|
+| 1 | 000e0ea0-f25b-446e-b7e5-f26ad1c1ed9d | fa1adcc3-fa91-4b73-a96a-64a806828b37 | 56800952-db5b-4e6e-a86c-9fbe27cc39ff |
+| 2 | c9872805-6587-4be7-aa4b-2fb7662842ed | 84e888df-79e5-4f99-a6a2-021b4610b0f9 | 1b06fd4b-3e2c-488d-9322-c91f100cc0b9 |
+| 3 | c6830aab-9721-42a2-bcaf-3a326211bcb8 | 71f185da-ddc2-4794-a9b5-30afd81e4fa5 | 65a96b5c-b2f1-46b3-8f15-e4de07decc05 |
+| 4 | f8dedf29-a4bb-40be-a66c-867ddfa34ae6 | cdd68363-e293-460d-b69c-0e5bf552b169 | 741d4c42-8732-4041-99b9-6b69bcc22779 |
+| 5 | 5bfed15e-8e5c-4804-9e07-a286eea00971 | fc212a6f-11ad-4df9-92cd-55b614aeae1a | feb49195-9229-4bad-b46e-279f9ba916ca |
+| 6 | 465e234d-13f9-4c56-bdd3-2ebc48b54ddd | 19dba6ed-d174-41cd-a105-4a9b1c100e03 | 4804df59-4a2c-419b-bc2f-8b0c196c49fe |
+| 7 | dde1876b-f7cf-4cf9-8a66-9272bfacdcb5 | c424c7aa-51b7-4069-9308-941b23f191e4 | f50ea736-d1ea-4d50-9a13-659221240b56 |
+| 8 | 7f0127f2-7964-4a94-bdfd-c2beba3e3a45 | ff8ebc2f-7216-4e44-9533-0b3db7e0fea8 | 73c979a5-f0ed-4cde-98ef-c9b5602a2671 |
+| 9 | d7c8f039-74e1-4fe9-b431-a94b262f4288 | b9777398-1431-4197-a3ae-04ab7626a943 | 4fd9f246-c550-44d3-9fea-401b11470e14 |
+
+Väntar på att användaren väljer en variant per klipp.
