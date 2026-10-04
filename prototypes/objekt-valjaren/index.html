@@ -119,14 +119,13 @@ button { cursor: pointer; }
 .axis { position: relative; z-index: 2; height: calc(var(--axis-y) + var(--row) * 3 + 20px); pointer-events: none; }
 .axis button { pointer-events: auto; }
 .v-line { position: absolute; left: 50%; top: 0; width: 1px; height: calc(var(--axis-y) + var(--row) * 1.5); transform: translateX(-.5px); background: var(--bone-dim); pointer-events: none; }
-/* Axis captions say what each arm of the cross controls. */
+/* The vertical axis is labelled with what it controls. */
 .cap { position: absolute; margin: 0; color: var(--bone-dim); font-size: 10px; pointer-events: none; }
 .cap.c { top: -2px; right: calc(50% + 12px); }
-/* The horizontal arms end in arrowheads: the object axis reads like a coordinate axis. */
-.arm { position: absolute; top: var(--axis-y); height: 0; display: flex; align-items: center; }
-.arm.l { left: 0; right: calc(50% + 28px); }
-.arm.r { right: 0; left: calc(50% + 28px); }
-.arm .line { flex: 1; height: 1px; background: var(--bone-dim); }
+/* The horizontal arms: plain hairlines with a gap around the star. */
+.h-line { position: absolute; top: var(--axis-y); height: 1px; background: var(--bone-dim); pointer-events: none; }
+.h-line.l { left: 0; right: calc(50% + 28px); }
+.h-line.r { right: 0; left: calc(50% + 28px); }
 .star {
   position: absolute; left: 50%; top: var(--axis-y); width: 40px; height: 40px;
   transform: translate(-50%, -50%); color: var(--bone);
@@ -134,17 +133,6 @@ button { cursor: pointer; }
 }
 .star.turn { transform: translate(-50%, -50%) rotate(90deg); }
 .star svg { width: 100%; height: 100%; fill: currentColor; }
-
-.obj {
-  flex: none; display: flex; align-items: center; gap: 6px; height: 44px; padding: 0;
-  background: none; border: 0; color: var(--bone); font-size: 11px;
-}
-.arm.l .obj { padding-right: var(--s-3); }
-.arm.r .obj { padding-left: var(--s-3); }
-.obj svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.4; transition: transform .45s var(--ease-out); }
-.arm.l .obj:hover svg { transform: translateX(-3px); }
-.arm.r .obj:hover svg { transform: translateX(3px); }
-.obj[hidden] { display: none; }
 
 .colors {
   position: absolute; left: calc(50% + 18px); top: calc(var(--axis-y) + 16px);
@@ -315,18 +303,8 @@ button { cursor: pointer; }
       <div class="axis">
         <span class="v-line" aria-hidden="true"></span>
         <p class="cap c ui" aria-hidden="true">Färg</p>
-        <div class="arm l">
-          <button class="obj ui" type="button" id="prev-obj" aria-label="Föregående: OBJECT #001">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg><span id="prev-label">#001</span>
-          </button>
-          <span class="line" aria-hidden="true"></span>
-        </div>
-        <div class="arm r">
-          <span class="line" aria-hidden="true"></span>
-          <button class="obj ui" type="button" id="next-obj" aria-label="Nästa: OBJECT #002">
-            <span id="next-label">#002</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
-          </button>
-        </div>
+        <span class="h-line l" aria-hidden="true"></span>
+        <span class="h-line r" aria-hidden="true"></span>
         <span class="star" id="star" aria-hidden="true">
           <svg viewBox="0 0 40 40"><path d="M20 0 C21.2 13 27 18.8 40 20 C27 21.2 21.2 27 20 40 C18.8 27 13 21.2 0 20 C13 18.8 18.8 13 20 0 Z"/></svg>
         </span>
@@ -441,13 +419,6 @@ button { cursor: pointer; }
     }
     $("panel").setAttribute("aria-labelledby", `tab-${state.o}`);
 
-    // The arms only point where there is another collection.
-    const prev = $("prev-obj"), next = $("next-obj");
-    prev.hidden = oi === 0;
-    next.hidden = oi === OBJECTS.length - 1;
-    if (oi > 0) { $("prev-label").textContent = `#${OBJECTS[oi - 1]}`; prev.setAttribute("aria-label", `Till kollektion OBJECT #${OBJECTS[oi - 1]}`); }
-    if (oi < OBJECTS.length - 1) { $("next-label").textContent = `#${OBJECTS[oi + 1]}`; next.setAttribute("aria-label", `Till kollektion OBJECT #${OBJECTS[oi + 1]}`); }
-
     const color = COLORS[ci];
     $("data").innerHTML = `<span>OBJECT #${state.o}</span><span>${color.name}</span><span>799 kr</span>`;
     $("view").style.setProperty("--v", state.v === "fram" ? 0 : 1);
@@ -491,8 +462,6 @@ button { cursor: pointer; }
     if (oi < 0 || oi >= OBJECTS.length) return;
     goObject(d); $(`tab-${state.o}`).focus(); e.preventDefault();
   });
-  $("prev-obj").addEventListener("click", () => goObject(-1));
-  $("next-obj").addEventListener("click", () => goObject(1));
   document.querySelectorAll(".colors button").forEach(b => b.addEventListener("click", () => {
     if (b.dataset.c === state.c) return; state.c = b.dataset.c; render();
   }));

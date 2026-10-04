@@ -31,7 +31,7 @@ En familj, **Archivo** (variabel, `wdth` 62–125, `wght` 100–900, OFL). Self-
 |---|---|---|
 | Objektnummer | `font-stretch` 125 %, vikt 300, `min(52vw, 300px)`, `--bone-dim` | Jättenumret bakom plagget |
 | Axel-etiketter | `font-stretch` 112 %, vikt 400, 16–20 px, versaler, `letter-spacing` 0.06em | Färgnamnen på den lodräta axeln |
-| UI | `font-stretch` 112 %, vikt 500, 10–12 px, versaler, `letter-spacing` 0.14em | Axeletiketter, pilspetsar, fram/bak-växeln, datarad, header |
+| UI | `font-stretch` 112 %, vikt 500, 10–12 px, versaler, `letter-spacing` 0.14em | Axeletiketter, fram/bak-växeln, datarad, header |
 | Rubrik | `font-stretch` 125 %, vikt 400, 26–44 px, versaler | Anmälans rubrik |
 | Brödtext | `font-stretch` 100 %, vikt 400, 16 px, `line-height` 1.5, max 65 tecken | Beskrivningar, formulär |
 
@@ -50,9 +50,9 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 - **Korset (objektväljaren):** varje kontroll ska synas utan förklaring.
   - **Två separata kollektioner** (användarens beslut 2026-10-04): överst en flikrad, "DROP 01 · TVÅ KOLLEKTIONER", med en flik per objekt. Varje flik har en miniatyr av tröjan i vald färg, och bara numret, stort (`#001`, `#002`, bredd 125 %, vikt 300). Inga beskrivande ord som "sidtryck" eller "kyssmotiv" (användarens beslut). En benvit stapel på 2 px glider under den öppna kollektionen. Den andra fliken börjar på korsets lodräta axel. Sidan öppnar på #001.
   - Den lodräta axeln har etiketten "FÄRG".
-  - Vågrät axel: armarna slutar i pilspetsar, som på en koordinataxel, och pekar bara dit det finns en annan kollektion ("‹ #001" eller "#002 ›").
+  - Vågrät axel: två rena hårlinjer med glapp runt stjärnan, utan knappar (användaren tog bort pilarna 2026-10-04).
   - Lodrät axel: färgnamnen, var och en med en ruta av det riktiga tyget (15 px, utskuren ur produktbilderna, `img/swatch-*.webp`; camo är delad diagonalt i tyg och tryck). Den valda glider in under stjärnan med terrakottaprick och benvit ram runt tygrutan. Ovalda färger har benvitt 62 %.
-  - Plagget stort i mitten med objektnumret bakom. **Svep i sidled vänder plagget** mellan fram och bak, och den andra sidan glider in från svepets håll (60 px). Tryck på plagget vänder det också. Kollektion byts **bara** med knapparna #001 och #002, aldrig med svep (användarens beslut 2026-10-04). Axeln ligger ovanför plagget, så att den nedersta färgen alltid går att trycka på.
+  - Plagget stort i mitten med objektnumret bakom. **Svep i sidled vänder plagget** mellan fram och bak, och den andra sidan glider in från svepets håll (60 px). Tryck på plagget vänder det också. Kollektion byts **bara** med flikarna #001 och #002, aldrig med svep (användarens beslut 2026-10-04). Axeln ligger ovanför plagget, så att den nedersta färgen alltid går att trycka på.
   - Under plagget: en växel **Framsida | Baksida** (1 px ram, benvitt block under vald sida).
   - Sedan datarad (objekt · färg · pris), storlekar S–XL och köpknapp.
 - **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram.
