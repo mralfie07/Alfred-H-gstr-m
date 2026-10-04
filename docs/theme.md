@@ -21,6 +21,9 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 - **Frilagda plagg** ligger i temat: `assets/cutout-<produktens webbadress>-<fram|bak>.webp` (1200 px), tygrutor i `assets/swatch-<webbadress>.webp`. Saknas en fil visas produktens första bild från Shopify i stället. En ny produkt behöver alltså två frilagda bilder och en tygruta med samma namnmönster.
 - Typsnittet Archivo (variabelt, OFL) ligger i temat: `assets/archivo-variable.woff2`.
 
+## I butiken
+- **Opublicerat tema "OBJECT 07 – fas 2"** (id `205739983196`), uppladdat 2026-10-04 från commit på `claude/fas-2-tema`. Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=205739983196`. Det är en kopia: ändringar i repot kommer inte in automatiskt förrän temat kopplas till GitHub (punkt 1 nedan).
+
 ## Att göra i Shopify innan temat visas
 1. **Koppla temat.** Shopifys GitHub-koppling kräver en gren som bara innehåller temat. Grenen `shopify-theme` är skapad för det (`git subtree split --prefix theme`). Online Store → Teman → Lägg till tema → Anslut från GitHub → grenen `shopify-theme`. Den ska uppdateras efter varje ändring i `theme/` (Claude gör det).
 2. **Heron:** ladda upp `brand/hero/hero-v2-original.mp4` i temaredigeraren (Hero-film → Film). Tills dess visas stillbilden.
