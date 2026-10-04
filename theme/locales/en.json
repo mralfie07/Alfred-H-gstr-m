@@ -1,0 +1,102 @@
+{
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
+  "general": {
+    "close": "Close",
+    "est": "Est. 2007",
+    "page": "Page {{ page }}",
+    "pagination": "Pages"
+  },
+  "header": {
+    "menu": "Menu",
+    "nav_label": "Main menu"
+  },
+  "footer": {
+    "follow": "Follow"
+  },
+  "localization": {
+    "language": "Language",
+    "country": "Country and currency",
+    "update": "Update"
+  },
+  "cart": {
+    "title": "Bag",
+    "kicker": "Your order",
+    "summary": "Summary",
+    "label_one": "Bag, 1 item",
+    "label_other": "Bag, {{ count }} items",
+    "added": "Added to bag",
+    "view": "View",
+    "view_full": "View full bag",
+    "empty": "Your bag is empty.",
+    "continue": "Shop the drop",
+    "subtotal": "Subtotal",
+    "taxes_shipping": "VAT included. Shipping calculated at checkout.",
+    "checkout": "Checkout",
+    "note": "Note to us",
+    "quantity": "Quantity",
+    "quantity_for": "Quantity for {{ title }}",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "remove": "Remove",
+    "error": "The bag could not be updated. Please try again."
+  },
+  "collections": {
+    "count": {
+      "one": "{{ count }} colourway",
+      "other": "{{ count }} colourways"
+    },
+    "empty": "No objects in this collection yet.",
+    "other": "More collections",
+    "all_title": "Collections"
+  },
+  "newsletter": {
+    "label": "Email address",
+    "placeholder": "Your email address",
+    "submit": "Sign up",
+    "success": "Done. You'll get an email before the next object drops.",
+    "error": "Enter a valid email address, like name@mail.com."
+  },
+  "pages": {
+    "placeholder": "Text coming soon.",
+    "not_found": "Object not found",
+    "not_found_text": "The page you're looking for isn't in the archive."
+  },
+  "password": {
+    "enter": "Have the password?",
+    "label": "Password",
+    "submit": "Enter",
+    "error": "Wrong password."
+  },
+  "products": {
+    "add_to_cart": "Add to bag",
+    "choose_size": "Choose size",
+    "sold_out": "Sold out",
+    "front": "Front",
+    "back": "Back",
+    "size": "Size",
+    "gallery": "Images",
+    "tax_included": "VAT included.",
+    "description_missing": "Material, fit and care coming soon."
+  },
+  "search": {
+    "title": "Search",
+    "label": "Search the store",
+    "submit": "Search",
+    "results": {
+      "one": "{{ count }} result for “{{ terms }}”",
+      "other": "{{ count }} results for “{{ terms }}”"
+    }
+  },
+  "sections": {
+    "cross": {
+      "collections": "Collections",
+      "color": "Colour",
+      "side": "Show side",
+      "flip": "Turn the garment",
+      "details": "Details and sizing",
+      "empty": "Choose collections for the cross in the theme editor."
+    }
+  }
+}

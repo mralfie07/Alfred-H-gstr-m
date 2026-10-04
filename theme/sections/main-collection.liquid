@@ -1,0 +1,305 @@
+{%- liquid
+  assign side = section.settings.side
+  assign back_first = section.settings.back_first | strip
+  if back_first != blank and collection.handle contains back_first
+    assign side = 'bak'
+  endif
+  capture number
+    render 'object-number', title: collection.title, part: 'number'
+  endcapture
+  assign number = number | strip
+  assign digits = number | remove: '#'
+-%}
+<div class="collection">
+  <header class="collection__head concrete">
+    <div class="collection__head-inner page-width">
+      <p class="ui">{{ section.settings.kicker }}</p>
+      <h1 class="collection__title">
+        <span class="visually-hidden">{{ collection.title }}</span>
+        <span class="collection__number numeral" aria-hidden="true">{{ number }}</span>
+      </h1>
+      <p class="ui muted">
+        {{- 'collections.count' | t: count: collection.products_count -}}
+      </p>
+      {%- if collection.description != blank -%}
+        <div class="rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </header>
+
+  <div class="page-width">
+    {%- paginate collection.products by 24 -%}
+      <ul class="collection__grid" role="list">
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign color = product.options_with_values.first.values.first
+            if product.options_with_values.first.name == 'Title'
+              capture color
+                render 'object-number', title: product.title, part: 'color'
+              endcapture
+            endif
+            assign loading = 'lazy'
+            if forloop.index <= 2
+              assign loading = 'eager'
+            endif
+          -%}
+          <li class="object-card">
+            <a class="object-card__link" href="{{ product.url }}">
+              <div class="object-card__media concrete">
+                <span class="object-card__digits numeral" aria-hidden="true">{{ digits }}</span>
+                {% render 'object-image',
+                  product: product,
+                  side: side,
+                  width: 900,
+                  loading: loading,
+                  class: 'object-card__image',
+                  sizes: '(min-width: 990px) 30vw, (min-width: 600px) 45vw, 92vw'
+                %}
+              </div>
+              <div class="object-card__info">
+                <h2 class="object-card__title ui">
+                  <span class="visually-hidden">{{ product.title }}</span>
+                  <span aria-hidden="true">{{ color }}</span>
+                </h2>
+                <p class="object-card__price">{{ product.price | money }}</p>
+              </div>
+              <p class="object-card__stock ui ui--small muted">
+                {%- if product.available -%}
+                  {%- for variant in product.variants -%}
+                    <span class="object-card__size{% unless variant.available %} object-card__size--out{% endunless %}">
+                      {{- variant.options.last -}}
+                      {%- unless variant.available %}<span class="visually-hidden"> ({{ 'products.sold_out' | t }})</span>{% endunless -%}
+                    </span>
+                  {%- endfor -%}
+                {%- else -%}
+                  {{ 'products.sold_out' | t }}
+                {%- endif -%}
+              </p>
+            </a>
+          </li>
+        {%- else -%}
+          <li class="collection__empty">{{ 'collections.empty' | t }}</li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="collection__pagination ui" aria-label="{{ 'general.pagination' | t }}">
+          {{ paginate | default_pagination: next: '→', previous: '←' }}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+
+    {%- liquid
+      assign prefix = section.settings.sibling_prefix | strip
+      assign sibling_count = 0
+      for c in collections
+        if c.handle != collection.handle and prefix != blank
+          assign start = c.handle | slice: 0, prefix.size
+          if start == prefix
+            assign sibling_count = sibling_count | plus: 1
+          endif
+        endif
+      endfor
+    -%}
+    {%- if sibling_count > 0 -%}
+      <nav class="collection__siblings" aria-label="{{ 'collections.other' | t }}">
+        <p class="ui muted">{{ 'collections.other' | t }}</p>
+        <ul role="list">
+          {%- for c in collections -%}
+            {%- assign start = c.handle | slice: 0, prefix.size -%}
+            {%- if c.handle != collection.handle and start == prefix -%}
+              <li>
+                <a class="collection__sibling" href="{{ c.url }}">
+                  <span class="numeral">{% render 'object-number', title: c.title, part: 'number' %}</span>
+                  {% render 'icon', name: 'arrow' %}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .collection__head {
+    overflow: hidden;
+  }
+
+  .collection__head-inner {
+    display: grid;
+    gap: var(--s-3);
+    padding-block: var(--s-7) var(--s-6);
+  }
+
+  .collection__title {
+    margin-block: var(--s-2);
+    font-weight: inherit;
+  }
+
+  /* The archive number, large enough to run off the edge on phones. */
+  .collection__number {
+    display: block;
+    font-size: clamp(5.5rem, 30vw, 15rem);
+    color: var(--bone);
+    margin-inline-start: -0.06em;
+  }
+
+  .collection__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: var(--s-6) var(--s-4);
+    margin: 0;
+    padding: var(--s-6) 0 var(--s-7);
+    list-style: none;
+  }
+
+  .object-card__link {
+    display: grid;
+    gap: var(--s-3);
+    text-decoration: none;
+  }
+
+  .object-card__media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .object-card__digits {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: -1;
+    font-size: clamp(6rem, 34vw, 11rem);
+    color: var(--bone-faint);
+  }
+
+  .object-card__image {
+    width: 86%;
+    height: 86%;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 16px rgb(12 12 11 / 0.32));
+    transition: transform 0.75s var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .object-card__link:hover .object-card__image {
+      transform: translateY(-6px);
+    }
+  }
+
+  .object-card__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-3);
+  }
+
+  .object-card__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .object-card__price {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .object-card__stock {
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .object-card__size--out {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .collection__pagination {
+    padding-bottom: var(--s-7);
+    text-align: center;
+
+    & .page,
+    & .next,
+    & .prev {
+      display: inline-block;
+      padding: var(--s-2) var(--s-3);
+    }
+  }
+
+  .collection__siblings {
+    display: grid;
+    gap: var(--s-3);
+    padding-block: var(--s-6) var(--s-8);
+    border-top: 1px solid var(--rule);
+
+    & ul {
+      display: grid;
+      gap: var(--s-2);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+
+  .collection__sibling {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-size: clamp(2.5rem, 12vw, 4.5rem);
+    text-decoration: none;
+
+    & svg {
+      width: 0.5em;
+      height: 0.5em;
+      transition: transform 0.5s var(--ease-out);
+    }
+
+    &:hover svg {
+      transform: translateX(6px);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Kollektion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Rad ovanför numret",
+      "default": "Drop 01 · Kollektion"
+    },
+    {
+      "type": "select",
+      "id": "side",
+      "label": "Sida som visas på korten",
+      "default": "fram",
+      "options": [
+        { "value": "fram", "label": "Framsida" },
+        { "value": "bak", "label": "Baksida" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "back_first",
+      "label": "Visa baksidan för",
+      "default": "object-002",
+      "info": "Kollektioner vars webbadress innehåller detta visar ryggen på korten (kyssmotivet sitter på ryggen)."
+    },
+    {
+      "type": "text",
+      "id": "sibling_prefix",
+      "label": "Andra kollektioner som länkas längst ner",
+      "default": "object-",
+      "info": "Kollektioner vars webbadress börjar så här, t.ex. object- för #001 och #002."
+    }
+  ]
+}
+{% endschema %}

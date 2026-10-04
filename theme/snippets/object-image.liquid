@@ -1,0 +1,40 @@
+{% doc %}
+  The cut-out garment for a product, from the theme's assets (named `cutout-<product handle>-<fram|bak>.webp`).
+  Falls back to the product's own Shopify image if no cut-out exists for that handle.
+
+  @param {object} product - The product
+  @param {string} [side] - 'fram' or 'bak' (default 'fram')
+  @param {number} [width] - Rendered width hint in px (default 600)
+  @param {string} [class] - Class for the img
+  @param {string} [loading] - 'lazy' or 'eager' (default 'lazy')
+  @param {string} [sizes] - sizes attribute
+
+  @example
+  {% render 'object-image', product: product, side: 'bak', width: 900 %}
+{% enddoc %}
+{%- liquid
+  assign side = side | default: 'fram'
+  assign width = width | default: 600
+  assign loading = loading | default: 'lazy'
+  assign file = 'cutout-' | append: product.handle | append: '-' | append: side | append: '.webp'
+  assign fallback = product.featured_image | image_url: width: width
+  if side == 'fram'
+    assign side_label = 'products.front' | t
+  else
+    assign side_label = 'products.back' | t
+  endif
+  capture alt
+    echo product.title | append: ', ' | append: side_label
+  endcapture
+-%}
+<img
+  {% if class %}class="{{ class }}"{% endif %}
+  src="{{ file | asset_url }}"
+  alt="{{ alt | strip | escape }}"
+  width="1200"
+  height="1200"
+  loading="{{ loading }}"
+  {% if sizes %}sizes="{{ sizes }}"{% endif %}
+  draggable="false"
+  {% if fallback %}onerror="this.onerror=null;this.src='{{ fallback }}'"{% endif %}
+>

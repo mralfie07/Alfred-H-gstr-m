@@ -1,0 +1,51 @@
+<div class="page-width list-collections">
+  <header class="page-head">
+    <h1 class="heading">{{ 'collections.all_title' | t }}</h1>
+  </header>
+  <ul class="list-collections__list" role="list">
+    {%- for collection in collections -%}
+      {%- unless collection.handle == 'frontpage' or collection.products_count == 0 -%}
+        <li>
+          <a href="{{ collection.url }}">
+            <span class="numeral">{% render 'object-number', title: collection.title, part: 'number' %}</span>
+            {% render 'icon', name: 'arrow' %}
+          </a>
+        </li>
+      {%- endunless -%}
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .list-collections {
+    padding-bottom: var(--s-8);
+  }
+
+  .list-collections__list {
+    display: grid;
+    gap: var(--s-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    & a {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-4);
+      font-size: clamp(2.5rem, 12vw, 4.5rem);
+      text-decoration: none;
+
+      & svg {
+        width: 0.5em;
+        height: 0.5em;
+      }
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Alla kollektioner",
+  "settings": []
+}
+{% endschema %}

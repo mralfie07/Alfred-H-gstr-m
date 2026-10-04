@@ -1,0 +1,90 @@
+<div class="cart-page page-width">
+  <header class="page-head">
+    <p class="ui muted">{{ 'cart.kicker' | t }}</p>
+    <h1 class="heading">{{ 'cart.title' | t }}</h1>
+  </header>
+
+  {%- if cart.item_count > 0 -%}
+    <div class="cart-page__grid">
+      {% render 'cart-lines' %}
+
+      <aside class="cart-page__summary" aria-label="{{ 'cart.summary' | t }}">
+        <div class="cart-summary__row ui">
+          <span>{{ 'cart.subtotal' | t }}</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        {%- for discount in cart.cart_level_discount_applications -%}
+          <div class="cart-summary__row muted">
+            <span>{{ discount.title }}</span>
+            <span>−{{ discount.total_allocated_amount | money }}</span>
+          </div>
+        {%- endfor -%}
+        <p class="muted">{{ 'cart.taxes_shipping' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          {%- if section.settings.show_note -%}
+            <label class="ui ui--small" for="CartNote">{{ 'cart.note' | t }}</label>
+            <textarea class="cart-page__note" id="CartNote" name="note" rows="3">{{ cart.note }}</textarea>
+          {%- endif -%}
+          <button class="button button--full" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+        </form>
+      </aside>
+    </div>
+  {%- else -%}
+    <div class="cart-empty">
+      <p>{{ 'cart.empty' | t }}</p>
+      <a class="button button--ghost" href="{{ routes.root_url }}#droppet">{{ 'cart.continue' | t }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .cart-page {
+    padding-bottom: var(--s-8);
+  }
+
+  .cart-page__grid {
+    display: grid;
+    gap: var(--s-7);
+    align-items: start;
+
+    @media (min-width: 990px) {
+      grid-template-columns: 1fr 360px;
+    }
+  }
+
+  .cart-page__summary {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-5);
+    border: 1px solid var(--rule);
+
+    & form {
+      display: grid;
+      gap: var(--s-3);
+    }
+  }
+
+  .cart-page__note {
+    width: 100%;
+    padding: var(--s-3);
+    border: 1px solid var(--bone-dim);
+    border-radius: 0;
+    font-size: 1rem;
+    background: transparent;
+    resize: vertical;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Varukorg",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_note",
+      "label": "Visa fält för meddelande",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

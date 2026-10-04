@@ -19,7 +19,7 @@ Målet: en komplett Shopify-sajt som känns som den kostat 100 000 dollar. Unik,
 - **Tryckfiler (original, från användaren 2026-10-04):** översikt i `brand/prints/print-overview.png`. Två motiv i tre färgställningar (svart, blå, svart-camo):
   - **Kyssmotivet** (två ansikten som bildar ett hjärta): bröst + rygg. Filer `1_svart_brost/rygg`, `2_bla_brost/rygg`, `3_svart-camo_brost/rygg`.
   - **Sidtrycket** (#001): kyssmotivet delat över sidsömmen. Ett ansikte i profil på **framsidan** precis intill sidsömmen, det andra ansiktet på **baksidan** på andra sidan sömmen. Sömmen går lodrätt genom mitten av motivet och ansiktena möts där, som en kyss över sömmen. Sitter lågt på sidan. Filer `4_svart-sidtryck_fram/bak`, `5_bla-sidtryck_fram/bak`, `6_svart-camo-sidtryck_fram/bak`.
-  - **Numrering (bekräftad av användaren 2026-10-04):** **OBJECT #001 = sidtrycket**, **OBJECT #002 = kyssmotivet** (bröst + rygg). Varje nummer finns i tre färger: svart, blå, svart-camo. Totalt sex plagg. Shopify har fem produkter och måste städas upp så att det stämmer (fråga användaren innan något ändras).
+  - **Numrering (bekräftad av användaren 2026-10-04):** **OBJECT #001 = sidtrycket**, **OBJECT #002 = kyssmotivet** (bröst + rygg). Varje nummer finns i tre färger: svart, blå, svart-camo. Totalt sex plagg, i Shopify som sex produkter (städat i fas 2, se avsnitt 12).
   - Enskilda tryckfiler i full storlek ligger i `brand/prints/` (`1_svart_brost.webp` osv.). Alla tolv tryckfiler finns (komplett 2026-10-04).
   - **Produktbilder (fram + bak) för alla sex finns i `brand/products/`**, namngivna `<färg>-<motiv>_<fram|bak>.jpg` (färg: `svart`, `bla`, `svart-camo`; motiv: `kyss`, `sidtryck`). Camo-bilderna är ca 1600–1800 px, övriga ca 750–900 px (be om större till sajten). `object-002-sheet.png` visar nacketikett och ärmlapp i närbild.
   - Översikten är för liten som AI-referens. Använd de enskilda PNG-filerna i full upplösning när de finns i `brand/prints/`.
@@ -121,18 +121,33 @@ Varje fas i en egen session. Användaren godkänner fas 1 innan kodningen börja
 - ~~Priserna står på 0,00 kr.~~ Fixat: alla produkter kostar 799 kr (2026-10-03).
 - Standardtemat är vitt och krockar med de mörka produktbilderna.
 
-Produktstatus 2026-10-03 (5 produkter, alla aktiva, 799 kr):
-- OBJECT #001 finns två gånger (`object-001`, `object-1`) och OBJECT #002 tre gånger (`object-002`, `object-2`, `object-3`). Fråga användaren om det är olika färger eller dubbletter innan något ändras.
-- Inga storlekar: varje produkt har bara varianten "Default Title". Storlekar ska läggas till som varianter.
-- Lagersaldo 0 på alla.
-- Inga beskrivningar (material, passform, tvättråd saknas).
+Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): sex produkter, en per färg, alla 799 kr med storlekarna S–XL.
+
+| Kollektion | Produkt | Webbadress (gammal) |
+|---|---|---|
+| OBJECT #001 (`object-001`) | OBJECT #001 – Svart | `object-001-svart` (`object-1`) |
+| | OBJECT #001 – Blå | `object-001-bla` (`object-001`) |
+| | OBJECT #001 – Svart-camo | `object-001-svart-camo` (`object-4`, stod på 0 kr) |
+| OBJECT #002 (`object-002`) | OBJECT #002 – Svart | `object-002-svart` (`object-2`) |
+| | OBJECT #002 – Blå | `object-002-bla` (`object-002`) |
+| | OBJECT #002 – Svart-camo | `object-002-svart-camo` (`object-3`) |
+
+- Tillvalen är **Färg** (ett värde per produkt) och **Storlek** (S, M, L, XL). Gamla adresser omdirigeras automatiskt.
+- Lagersaldo är 0 överallt utom #001 Blå S (1). Allt visas som slutsålt tills användaren fyller på lagret.
+- Beskrivningar (material, passform, tvättråd) saknas fortfarande.
 
 ## 13. Beslut om butik och innehåll (användaren, 2026-10-04)
 - **Produktupplägg:** två produkter, **OBJECT #001** (sidtryck) och **OBJECT #002** (kyssmotiv), var och en med färgval svart / blå / svart-camo. Dubbletterna i Shopify ska slås ihop till dessa två (fråga innan något raderas).
-- **Två separata kollektioner:** #001 och #002 ska upplevas och visas som två separata kollektioner, inte bara som två varianter i samma väljare. **Öppen fråga till fas 2:** ska varje kollektion vara en egen Shopify-kollektion där varje färg är en egen produkt, eller en produkt per kollektion med färgval?
+- **Två separata kollektioner:** #001 och #002 ska upplevas och visas som två separata kollektioner, inte bara som två varianter i samma väljare. **Beslut fas 2:** varje kollektion är en egen Shopify-kollektion och varje färg en egen produkt.
 - **Storlekar:** S, M, L, XL. **Pris:** 799 kr.
 - **Språk:** svenska och engelska (Shopify Markets / översättningar, språkväljare i headern).
 - **Nyhetsbrev / drop-anmälan:** ja.
 - **AI-märkning i sidfoten:** nej (användarens beslut).
 - **Sidor, märkets historia, frakt/retur, kontakt:** användaren återkommer. Bygg med tydliga platshållare som kan redigeras i temaredigeraren.
 - **Produktinfo** (material, passform, tvätt, mått): saknas än.
+
+## 14. Beslut i fas 2 (användaren, 2026-10-04)
+- En produkt per färg (sex produkter i två kollektioner), städade enligt tabellen i avsnitt 12.
+- Header enligt DESIGN.md: svart och fast i toppen, ordmärket till vänster, meny och varukorg till höger.
+- Startsidan i fas 2: hero, korset och drop-anmälan. Kampanjbild, arkivrutnät och "om märket" byggs inte nu.
+- Temat ligger i `theme/`. Hur det är uppbyggt och vad som återstår: `docs/theme.md`.

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0c0c0b">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+
+    <title>
+      {{- page_title -}}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {% render 'meta-tags' %}
+
+    {{ 'archivo-variable.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    <style>
+      :root { --concrete-image: url("{{ 'concrete.webp' | asset_url }}"); }
+    </style>
+
+    <script>
+      window.theme = {
+        template: {{ template.name | json }},
+        routes: {
+          cartAdd: {{ routes.cart_add_url | append: '.js' | json }},
+          cartChange: {{ routes.cart_change_url | append: '.js' | json }}
+        },
+        strings: {
+          added: {{ 'cart.added' | t | json }},
+          addToCart: {{ 'products.add_to_cart' | t | json }},
+          chooseSize: {{ 'products.choose_size' | t | json }},
+          soldOut: {{ 'products.sold_out' | t | json }},
+          cartError: {{ 'cart.error' | t | json }},
+          cartOne: {{ 'cart.label_one' | t | json }},
+          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }}
+        }
+      };
+    </script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name }}">
+    <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% section 'cart-drawer' %}
+
+    <div class="toast" id="cart-toast" role="status" aria-live="polite">
+      <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" width="48" height="48" hidden>
+      <div class="toast__text">
+        <strong data-toast-title></strong>
+        <small data-toast-sub></small>
+      </div>
+      <button class="toast__action ui" type="button" data-open-dialog="cart-drawer">
+        {{- 'cart.view' | t -}}
+      </button>
+    </div>
+  </body>
+</html>

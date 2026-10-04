@@ -24,6 +24,7 @@ Eget Shopify-tema (Liquid) för klädmärket OBJECT 07. Hela briefen med koncept
 - Hero-video: `brand/hero/hero-v2-original.mp4` (v2 i originalformat 16:9, samma fil i mobil och dator), produceras enligt `docs/hero-plan.md`.
 - Frilagda produktbilder: `brand/products/cutout/`.
 - Designsystem: `DESIGN.md`. Produktfakta: `PRODUCT.md`. Sidstruktur: `docs/sitemap.md`. Prototyp: `prototypes/objekt-valjaren/`.
+- Temat: `theme/` (uppbyggnad och vad som återstår i `docs/theme.md`). Shopify ansluts till grenen `shopify-theme`, som bara innehåller temat.
 
 ## Användaren
 Skriver svenska. Svara på svenska, kort och tydligt, och förklara tekniska saker enkelt.

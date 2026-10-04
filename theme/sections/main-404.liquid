@@ -1,0 +1,27 @@
+<div class="page-width not-found">
+  <p class="not-found__number numeral" aria-hidden="true">#404</p>
+  <h1 class="heading">{{ 'pages.not_found' | t }}</h1>
+  <p class="muted">{{ 'pages.not_found_text' | t }}</p>
+  <a class="button button--ghost" href="{{ routes.root_url }}#droppet">{{ 'cart.continue' | t }}</a>
+</div>
+
+{% stylesheet %}
+  .not-found {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+    padding-block: var(--s-7) var(--s-8);
+  }
+
+  .not-found__number {
+    font-size: clamp(5rem, 28vw, 13rem);
+    color: var(--bone-dim);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "404",
+  "settings": []
+}
+{% endschema %}

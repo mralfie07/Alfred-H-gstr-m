@@ -1,0 +1,14 @@
+{
+  "type": "footer",
+  "name": "Sidfot",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "menu": "footer",
+        "show_policies": true
+      }
+    }
+  },
+  "order": ["footer"]
+}
