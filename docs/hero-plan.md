@@ -25,6 +25,8 @@ Claude genererar via Higgsfield-kopplingen (kontot är Pro, 600 krediter, verifi
 - Klipplistan i briefen ska anpassas: bara män, och de fyra tröjorna ovan fördelade över klippen.
 - Alla tryckfiler och produktbilder finns (2026-10-04). **Starta inte genereringen förrän användaren säger till.**
 
+Logg över referenser, media_id och genereringar: `docs/hero-assets.md`.
+
 ## Steg
 
 ### 0. Underlag (0 krediter)
