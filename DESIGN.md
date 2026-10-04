@@ -48,7 +48,7 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 - **Header:** svart, sticky, ordmärket till vänster, meny och varukorg med räknare till höger. Räknaren syns först när något ligger i korgen.
 - **Hero:** kampanjfilmen i originalformat, 16:9 i full bredd. Hela bilden visas alltid, aldrig beskuren eller inzoomad, och samma fil används i mobil och på dator (`brand/hero/hero-v2-original.mp4`). Raden och den understrukna länken står nere till vänster i bilden, ovanpå en mörk toning (även i mobil, aldrig i ett svart fält under filmen). Stillbild när rörelse är avstängd.
 - **Korset (objektväljaren):** varje kontroll ska synas utan förklaring.
-  - **Två separata kollektioner** (användarens beslut 2026-10-04): överst en flikrad, "DROP 01 · TVÅ KOLLEKTIONER", med en flik per objekt. Varje flik har en miniatyr av tröjan i vald färg, numret stort (`#001`, `#002`, bredd 125 %, vikt 300) och motivet under (SIDTRYCK, KYSSMOTIV). En benvit stapel på 2 px glider under den öppna kollektionen. Den andra fliken börjar på korsets lodräta axel. Sidan öppnar på #001.
+  - **Två separata kollektioner** (användarens beslut 2026-10-04): överst en flikrad, "DROP 01 · TVÅ KOLLEKTIONER", med en flik per objekt. Varje flik har en miniatyr av tröjan i vald färg, och bara numret, stort (`#001`, `#002`, bredd 125 %, vikt 300). Inga beskrivande ord som "sidtryck" eller "kyssmotiv" (användarens beslut). En benvit stapel på 2 px glider under den öppna kollektionen. Den andra fliken börjar på korsets lodräta axel. Sidan öppnar på #001.
   - Den lodräta axeln har etiketten "FÄRG".
   - Vågrät axel: armarna slutar i pilspetsar, som på en koordinataxel, och pekar bara dit det finns en annan kollektion ("‹ #001" eller "#002 ›"). Svep förbi sista kollektionen leder till anmälan.
   - Lodrät axel: färgnamnen, var och en med en ruta av det riktiga tyget (15 px, utskuren ur produktbilderna, `img/swatch-*.webp`; camo är delad diagonalt i tyg och tryck). Den valda glider in under stjärnan med terrakottaprick och benvit ram runt tygrutan. Ovalda färger har benvitt 62 %.
@@ -61,7 +61,7 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 ## Rörelse
 - En kurva: `cubic-bezier(.16, 1, .3, 1)`.
 - **Det enda iscensatta ögonblicket är rörelsen i korset:** färglistan glider så att vald färg hamnar under stjärnan (0,6 s). Vid byte av kollektion glider plagget in från svepets håll (110 px, längre än vid färgbyte), numret byts, stjärnan vrider sig 90° (0,7 s) och flikstapeln glider över (0,55 s).
-- **Fram/bak:** plagget vänder sig runt sin lodräta axel som på en galge (ut 0,25 s, in 0,68 s med samma kurva), och blocket i växeln glider till vald sida (0,55 s).
+- **Fram/bak:** plagget tonar direkt över till andra sidan (samma övertoning som vid färgbyte, ingen vändning), och blocket i växeln glider till vald sida (0,55 s). Användaren valde bort en 3D-vändning 2026-10-04.
 - **Visa hur, en gång:** första gången plagget syns och ingen har rört korset lutar det sig mot nästa kollektion som om någon svepte (1,4 s). Samtidigt pekar pilspetsen åt höger, stapeln under flikarna sträcker sig mot #002 och dess miniatyr lyser upp, och sedan ger de ovalda tygrutorna en kort puls i tur och ordning. Det körs inte igen och hoppas över om man redan har tryckt.
 - I vila svävar plagget svagt (7 px, 7 s) och golvskuggan andas med. Inga scrollanimationer utöver visningen ovan.
 - `prefers-reduced-motion`: allt av, heron visas som stillbild.

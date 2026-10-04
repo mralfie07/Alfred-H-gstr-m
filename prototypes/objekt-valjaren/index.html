@@ -105,9 +105,7 @@ button { cursor: pointer; }
   filter: drop-shadow(0 4px 4px rgb(12 12 11 / .3)); transition: opacity .45s var(--ease-out), transform .6s var(--ease-out);
 }
 .coll[aria-selected="true"] .coll-thumb { opacity: 1; transform: translateY(-2px); }
-.coll-text { display: grid; gap: 4px; }
 .coll-no { font-stretch: 125%; font-weight: 300; font-size: clamp(24px, 7vw, 34px); line-height: 1; letter-spacing: -.01em; }
-.coll-sub { font-size: 10px; }
 .coll-cap { margin: 0 0 calc(var(--s-3) * -1); color: var(--bone-dim); font-size: 10px; }
 .coll-ind {
   position: absolute; left: 0; bottom: -1px; width: 50%; height: 2px; background: var(--bone);
@@ -302,11 +300,11 @@ button { cursor: pointer; }
       <div class="collections" role="tablist" aria-label="Kollektioner i Drop 01" id="collections">
         <button class="coll" type="button" role="tab" id="tab-001" data-o="001" aria-selected="true" aria-controls="panel">
           <img class="coll-thumb" src="img/svart-camo-sidtryck_fram.webp" alt="" width="54" height="54">
-          <span class="coll-text"><span class="coll-no">#001</span><span class="coll-sub ui">Sidtryck</span></span>
+          <span class="coll-no">#001</span>
         </button>
         <button class="coll" type="button" role="tab" id="tab-002" data-o="002" aria-selected="false" aria-controls="panel" tabindex="-1">
           <img class="coll-thumb" src="img/svart-camo-kyss_bak.webp" alt="" width="54" height="54">
-          <span class="coll-text"><span class="coll-no">#002</span><span class="coll-sub ui">Kyssmotiv</span></span>
+          <span class="coll-no">#002</span>
         </button>
         <span class="coll-ind" aria-hidden="true"></span>
       </div>
@@ -408,40 +406,19 @@ button { cursor: pointer; }
 
   for (const o of OBJECTS) for (const c of COLORS) for (const v of ["fram", "bak"]) { const i = new Image(); i.src = file(o, c.id, v); }
 
-  let current = null, turning = false;
-  function showGarment(from = 0, turn = 0) {
+  let current = null;
+  function showGarment(from = 0) {
     const img = document.createElement("img");
     img.src = file(state.o, state.c, state.v);
     img.alt = `OBJECT #${state.o}, ${COLORS.find(c => c.id === state.c).name.toLowerCase()}, ${state.v === "fram" ? "framsida" : "baksida"}`;
-    const old = current;
-    current = img;
-    if (old) old.getAnimations().forEach(a => a.finish());
-
-    // Front/back: the garment turns on its vertical axis, like a shirt on a hanger.
-    if (turn && !reduce) {
-      const p = "perspective(1400px) ";
-      turning = true; setTimeout(() => turning = false, 560);
-      img.style.transition = "none"; img.classList.add("on");
-      $("garment").appendChild(img);
-      if (old) {
-        old.style.transition = "none";
-        old.animate([{ transform: p + "rotateY(0deg)" }, { transform: p + `rotateY(${90 * turn}deg)` }],
-          { duration: 250, easing: "cubic-bezier(.55, 0, .9, .4)", fill: "forwards" });
-        setTimeout(() => old.remove(), 260);
-      }
-      img.animate([{ transform: p + `rotateY(${-90 * turn}deg)` }, { transform: p + "rotateY(0deg)" }],
-        { duration: 680, delay: old ? 240 : 0, easing: EASE, fill: "backwards" })
-        .finished.then(() => { img.style.transition = ""; }, () => {});
-      return;
-    }
-
     img.style.setProperty("--from", from + "px");
     $("garment").appendChild(img);
     requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("on")));
-    if (old) { old.style.transition = ""; old.style.setProperty("--from", (-from) + "px"); old.classList.remove("on"); setTimeout(() => old.remove(), 600); }
+    if (current) { const old = current; old.style.setProperty("--from", (-from) + "px"); old.classList.remove("on"); setTimeout(() => old.remove(), 600); }
+    current = img;
   }
 
-  function render({ from = 0, numeral = 0, turn = 0 } = {}) {
+  function render({ from = 0, numeral = 0 } = {}) {
     const ci = COLORS.findIndex(c => c.id === state.c);
     const oi = OBJECTS.indexOf(state.o);
     const list = $("colors");
@@ -482,13 +459,13 @@ button { cursor: pointer; }
       n.classList.add(numeral > 0 ? "out-l" : "out-r");
       setTimeout(() => { n.textContent = state.o; n.classList.remove("out-l", "out-r"); }, 280);
     }
-    showGarment(from, turn);
+    showGarment(from);
   }
 
   function setView(v) {
-    if (v === state.v || turning) return;
+    if (v === state.v) return;
     state.v = v;
-    render({ turn: v === "bak" ? 1 : -1 });
+    render();
   }
 
   function goObject(dir) {
@@ -564,7 +541,7 @@ button { cursor: pointer; }
   let engaged = false;
   for (const t of ["click", "keydown"]) $("droppet").addEventListener(t, () => engaged = true, { capture: true });
   function demo() {
-    if (engaged || turning) return;
+    if (engaged) return;
     const ease = "cubic-bezier(.45, 0, .2, 1)";
     $("garment").animate([
       { transform: "none" }, { transform: "translateX(-38px) rotate(-1.5deg)", offset: .36 },
