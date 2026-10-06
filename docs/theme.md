@@ -27,7 +27,7 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 
 ## Att göra i Shopify innan temat visas
 1. **Koppla temat (när det går).** Shopifys GitHub-koppling kräver en gren som bara innehåller temat. Grenen `shopify-theme` är skapad för det (`git subtree split --prefix theme`). Online Store → Teman → Lägg till tema → Anslut från GitHub → grenen `shopify-theme`. Den ska uppdateras efter varje ändring i `theme/` (Claude gör det).
-2. **Heron:** filmen följer med temat (`assets/hero-1080.mp4` 3,1 MB och `hero-720.mp4` 1,4 MB för mobil, komprimerade från `hero-v2-original.mp4`), eftersom Shopify inte tillåter uppladdade filmer på provkonton. Efter uppgradering kan en film väljas i temaredigeraren (Hero-film → Film) i stället.
+2. **Heron:** filmen följer med temat (`assets/hero-1080.mp4` 3,1 MB och `hero-720.mp4` 1,4 MB för mobil, komprimerade från `hero-v3-original.mp4`), eftersom Shopify inte tillåter uppladdade filmer på provkonton. Efter uppgradering kan en film väljas i temaredigeraren (Hero-film → Film) i stället.
 3. **Lager:** fyll på lagersaldot per storlek. Nu står allt på 0, så allt visas som slutsålt.
 4. **Menyer:** `main-menu` (header) och `footer` (sidfot) under Innehåll → Menyer.
 5. **Engelska:** lägg till engelska under Inställningar → Språk och publicera. Då syns språkväljaren. Produktnamn och färger översätts i Translate & Adapt.

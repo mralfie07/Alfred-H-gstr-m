@@ -191,3 +191,12 @@ Videoklipp v3 (`kling3_0` pro, 5 s, utan ljud, 16:9, ~53 krediter). Higgsfield f
 | 7 | d2979c29 | ef0e4be2-5030-4a76-bc92-3434e2470674 | Går ifrån kameran, kameran följer |
 | 8 | 155b9ad2 | 487de62a-c2c3-4057-9835-543bffa16864 | Långsam inzoomning på ansiktet |
 Klipp 1, 6 och 9 återanvänds från tagning 1 (2845a30a, a4ff9498, d78fb326).
+
+## Redigering v3 (2026-10-06, gäller)
+Samma rytm och format som v2 (0,7 s per klipp, huvudbilden klipp 6 1,0 s, totalt 6,8 s, 1928×1076, CRF 18). SEG i `scripts/hero-cut.sh`. Granskad bildruta för bildruta: trycken stabila, samma modell genom hela filmen.
+| Fil | Storlek |
+|---|---|
+| `brand/hero/hero-v3-original.mp4` (1928×1076) | 9,0 MB |
+| `brand/hero/hero-v3-original-poster.jpg` | stillbild |
+| `theme/assets/hero-1080.mp4` (CRF 24) och `hero-720.mp4` (CRF 25) | 3,1 MB och 1,4 MB |
+v2-filerna sparas som historik.

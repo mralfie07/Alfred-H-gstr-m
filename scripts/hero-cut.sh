@@ -7,8 +7,10 @@
 set -e
 mkdir -p out
 # v1 (1,2 s per klipp): "1 0.0 1.2" "2 2.0 1.2" "3 3.6 1.2" "4 1.5 1.2" "5 2.0 1.2" "6 3.0 1.6" "7 1.5 1.2" "8 3.6 1.2" "9 3.8 1.2"
-# v2 (0,7 s per klipp, huvudbilden 1,0 s):
-SEG=( "1 0.0 0.7" "2 2.3 0.7" "3 4.0 0.7" "4 1.8 0.7" "5 2.3 0.7" "6 3.4 1.0" "7 1.8 0.7" "8 4.0 0.7" "9 4.3 0.7" )
+# v2 (0,7 s per klipp, huvudbilden 1,0 s): "1 0.0 0.7" "2 2.3 0.7" "3 4.0 0.7" "4 1.8 0.7" "5 2.3 0.7" "6 3.4 1.0" "7 1.8 0.7" "8 4.0 0.7" "9 4.3 0.7"
+# v3 (2026-10-06, första droppet: bara t-shirt och långärmad). Klipp 1, 6, 9 från tagning 1; 2, 3, 4, 5, 7, 8 nya
+# (job_id i docs/hero-assets.md). Samma rytm som v2; startpunkterna i 3, 4 och 8 flyttade dit tagningen är bäst.
+SEG=( "1 0.0 0.7" "2 2.3 0.7" "3 0.4 0.7" "4 1.2 0.7" "5 2.3 0.7" "6 3.4 1.0" "7 1.8 0.7" "8 2.2 0.7" "9 4.3 0.7" )
 INPUTS=(); F=""; n=0
 GRADE="eq=contrast=1.05:saturation=0.9:gamma=0.98"
 for s in "${SEG[@]}"; do set -- $s
