@@ -23,6 +23,7 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 
 ## I butiken
 - **"OBJECT 07 – fas 2 med film"** (id `205740474716`) är butikens publicerade tema sedan 2026-10-04. Det första uppladdade temat (utan film) är borttaget.
+- **"OBJECT 07 – hero v3 (första droppet)"** (id `205884195164`), opublicerat 2026-10-06: samma tema med nya heron (bara t-shirten och den långärmade). Ska publiceras i stället för "fas 2 med film". Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=205884195164`.
 - **Så kommer ändringar ut (gäller tills vidare):** Shopify-kopplingen får inte skriva till ett publicerat tema, och användaren hittar inte "Anslut från GitHub" i sin Shopify (troligen avstängt under provperioden). Därför laddar Claude upp varje ny version som ett **opublicerat** tema (zip via `stagedUploadsCreate` + `themeCreate`), skickar förhandsvisningslänken, och användaren publicerar själv under Online Store → Teman. Testa GitHub-kopplingen igen efter uppgraderingen.
 
 ## Att göra i Shopify innan temat visas
