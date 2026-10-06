@@ -32,12 +32,10 @@
       <ul class="collection__grid" role="list">
         {%- for product in collection.products -%}
           {%- liquid
-            assign color = product.options_with_values.first.values.first
-            if product.options_with_values.first.name == 'Title'
-              capture color
-                render 'object-number', title: product.title, part: 'color'
-              endcapture
-            endif
+            capture color
+              render 'object-color', product: product
+            endcapture
+            assign color = color | strip
             assign loading = 'lazy'
             if forloop.index <= 2
               assign loading = 'eager'
@@ -59,7 +57,7 @@
               <div class="object-card__info">
                 <h2 class="object-card__title ui">
                   <span class="visually-hidden">{{ product.title }}</span>
-                  <span aria-hidden="true">{% if product.type != blank %}{{ product.type }} · {% endif %}{{ color }}</span>
+                  <span aria-hidden="true">{{ product.type }}{% if product.type != blank and color != blank %} · {% endif %}{{ color }}</span>
                 </h2>
                 <p class="object-card__price">{{ product.price | money }}</p>
               </div>

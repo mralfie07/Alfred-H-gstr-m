@@ -19,13 +19,10 @@
   assign number = number | strip
   assign digits = number | remove: '#'
 
-  assign color_option = product.options_with_values.first
-  assign color = color_option.values.first
-  if color_option.name == 'Title'
-    capture color
-      render 'object-number', title: product.title, part: 'color'
-    endcapture
-  endif
+  capture color
+    render 'object-color', product: product
+  endcapture
+  assign color = color | strip
 
   assign size_option = product.options_with_values.last
   assign current = product.selected_or_first_available_variant
@@ -74,8 +71,8 @@
 
     <h1 class="product__title">
       <span class="product__object">OBJECT {{ number }}</span>
-      {%- if color != blank %}
-        <span class="product__color">{% if product.type != blank %}{{ product.type }} · {% endif %}{{ color }}</span>
+      {%- if color != blank or product.type != blank %}
+        <span class="product__color">{{ product.type }}{% if product.type != blank and color != blank %} · {% endif %}{{ color }}</span>
       {%- endif -%}
     </h1>
 
@@ -92,7 +89,9 @@
         <ul role="list">
           {%- for sibling in object_collection.products limit: 12 -%}
             {%- liquid
-              assign sibling_color = sibling.options_with_values.first.values.first
+              capture sibling_color
+                render 'object-color', product: sibling
+              endcapture
               assign swatch = 'swatch-' | append: sibling.handle | append: '.webp'
             -%}
             <li>

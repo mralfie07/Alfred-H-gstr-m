@@ -1,0 +1,24 @@
+{% doc %}
+  Outputs a product's colour name: the value of its colour option ("Färg"/"Color") when it has one,
+  otherwise the part of the title after " – " (e.g. "OBJECT #001 – Blå"). Outputs nothing when the
+  product has no colour (single-colourway drops, where the colour isn't shown).
+
+  @param {object} product - The product
+
+  @example
+  {% render 'object-color', product: product %}
+{% enddoc %}
+{%- liquid
+  assign found = false
+  for option in product.options_with_values
+    assign option_name = option.name | downcase
+    if option_name == 'färg' or option_name == 'color' or option_name == 'colour' or option_name == 'farbe'
+      echo option.values.first
+      assign found = true
+      break
+    endif
+  endfor
+  unless found
+    render 'object-number', title: product.title, part: 'color'
+  endunless
+-%}
