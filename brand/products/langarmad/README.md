@@ -5,3 +5,5 @@
 - `langarmad_bak-fram.jpg`: båda sidorna bredvid varandra.
 
 Plagget är AI-genererat, trycket är original. Inget provplagg finns än.
+
+**Uppdaterat 2026-10-06:** trycket på den långärmade är nu överfört från t-shirtens produktbilder (`scripts/transfer-print.py`), så att det har samma spruckna, tryckta yta som på t-shirten. Den frilagda bilden i temat är skalad så att plagget är lika långt som t-shirten.
