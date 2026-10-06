@@ -44,8 +44,8 @@
   },
   "collections": {
     "count": {
-      "one": "{{ count }} colourway",
-      "other": "{{ count }} colourways"
+      "one": "{{ count }} piece",
+      "other": "{{ count }} pieces"
     },
     "empty": "No objects in this collection yet.",
     "other": "More collections",
