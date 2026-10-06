@@ -151,3 +151,12 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - Header enligt DESIGN.md: svart och fast i toppen, ordmärket till vänster, meny och varukorg till höger.
 - Startsidan i fas 2: hero, korset och drop-anmälan. Kampanjbild, arkivrutnät och "om märket" byggs inte nu.
 - Temat ligger i `theme/`. Hur det är uppbyggt och vad som återstår: `docs/theme.md`.
+
+## 15. Första droppet (användaren, 2026-10-06)
+- **En färg i taget.** Första droppet är bara **svart-camo** (acid wash). Fler färger släpps senare som egna drops.
+- **Två plagg:** en **t-shirt** och en **långärmad t-shirt**, i samma tyg och samma färg.
+- **Tryck på båda: kyssmotivet**, litet på bröstet och stort på ryggen (filerna `3_svart-camo_brost` och `3_svart-camo_rygg`).
+- Sidtrycket (#001) och färgerna svart och blå ingår inte i första droppet.
+- **Öppet:** numrering (t.ex. t-shirt #001 och långärmad #002, eller annat), pris på den långärmade, måttguide för båda.
+- Shopify har fortfarande de sex produkterna från fas 2. De ska ändras till det nya upplägget, men fråga användaren innan något ändras. Korsets lodräta axel kan då visa plaggen (T-shirt / Långärmad) i stället för färger, i en senare fas.
+- Tillverkarunderlag: `docs/leverantor-underlag.md`.
