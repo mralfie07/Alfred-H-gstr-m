@@ -25,7 +25,7 @@ Konsten i trycken. Motiven är handritade linjeansikten: två ansikten som kysse
 - Kassan styrs av Shopify.
 
 ## Capabilities and Constraints
-- Två produkter i första droppet: **OBJECT #001** (sidtrycket) och **OBJECT #002** (kyssmotivet, bröst + rygg), var och en i svart, blå och svart-camo. Oversized, tunga t-shirts i acid wash. Storlekar S–XL. 799 kr.
+- Första droppet (beslut 2026-10-06): en färgställning, svart-camo (svart acid wash med kyssmotivet i camo, bröst + rygg). **OBJECT #001 = t-shirt, 699 kr. OBJECT #002 = långärmad t-shirt, 999 kr.** Storlekar S–XL. Fler färger och sidtrycket kommer i senare drops.
 - Shopify har idag fem produkter (dubbletter) som ska slås ihop till två med färg- och storleksval. Fråga innan något raderas.
 - Öppet: produktinfo (material, gsm, passform, tvätt, mått), märkets historia, frakt/retur, kontakt, sociala kanaler, sidlista, domän, storlek på upplagorna.
 

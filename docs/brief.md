@@ -157,6 +157,7 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Två plagg:** en **t-shirt** och en **långärmad t-shirt**, i samma tyg och samma färg.
 - **Tryck på båda: kyssmotivet**, litet på bröstet och stort på ryggen (filerna `3_svart-camo_brost` och `3_svart-camo_rygg`).
 - Sidtrycket (#001) och färgerna svart och blå ingår inte i första droppet.
-- **Öppet:** numrering (t.ex. t-shirt #001 och långärmad #002, eller annat), pris på den långärmade, måttguide för båda.
-- Shopify har fortfarande de sex produkterna från fas 2. De ska ändras till det nya upplägget, men fråga användaren innan något ändras. Korsets lodräta axel kan då visa plaggen (T-shirt / Långärmad) i stället för färger, i en senare fas.
+- **Beslut (2026-10-06):** **OBJECT #001 = t-shirten, 699 kr. OBJECT #002 = långärmad t-shirt, 999 kr.** Storlek S–XL. Öppet: måttguide för båda.
+- **Shopify (ändrat med användarens godkännande 2026-10-06):** `object-001-svart-camo` = t-shirten (typ T-shirt, i kollektionen OBJECT #001), `object-002-svart-camo` = den långärmade (typ Långärmad t-shirt, ny produkt, i kollektionen OBJECT #002, bilder från `brand/products/langarmad/`). De fem gamla produkterna är **utkast** och omdöpta efter motiv: Sidtryck – Svart / Blå / Svart-camo, Kyss – Svart / Blå (handles `sidtryck-*`, `kyss-*`).
+- **Sajten:** korsets flikar är de två objekten, färgaxeln visar svart-camo (nya färger fylls på där när de droppar). Ryggtrycket visas först överallt. Plaggtypen syns i korset, på produktsidan och på kollektionskorten.
 - Tillverkarunderlag: `docs/leverantor-underlag.md`.

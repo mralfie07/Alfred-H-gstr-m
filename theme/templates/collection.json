@@ -4,9 +4,9 @@
       "type": "main-collection",
       "settings": {
         "kicker": "Drop 01 · Kollektion",
-        "side": "fram",
+        "side": "bak",
         "sibling_prefix": "object-",
-        "back_first": "object-002"
+        "back_first": ""
       }
     },
     "signup": {

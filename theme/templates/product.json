@@ -5,7 +5,10 @@
       "blocks": {
         "description": {
           "type": "description",
-          "settings": { "title": "Om objektet", "open": true }
+          "settings": {
+            "title": "Om objektet",
+            "open": true
+          }
         },
         "size": {
           "type": "accordion",
@@ -29,13 +32,20 @@
           }
         }
       },
-      "block_order": ["description", "size", "care", "shipping"],
+      "block_order": [
+        "description",
+        "size",
+        "care",
+        "shipping"
+      ],
       "settings": {
         "kicker": "Drop 01",
-        "back_first": "object-002",
+        "back_first": "object-0",
         "show_gallery": true
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

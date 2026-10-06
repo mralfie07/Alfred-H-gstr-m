@@ -75,7 +75,7 @@
     <h1 class="product__title">
       <span class="product__object">OBJECT {{ number }}</span>
       {%- if color != blank %}
-        <span class="product__color">{{ color }}</span>
+        <span class="product__color">{% if product.type != blank %}{{ product.type }} · {% endif %}{{ color }}</span>
       {%- endif -%}
     </h1>
 

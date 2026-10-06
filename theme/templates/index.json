@@ -16,7 +16,7 @@
           "type": "object",
           "settings": {
             "collection": "object-001",
-            "side": "fram"
+            "side": "bak"
           }
         },
         "object_002": {
@@ -27,10 +27,13 @@
           }
         }
       },
-      "block_order": ["object_001", "object_002"],
+      "block_order": [
+        "object_001",
+        "object_002"
+      ],
       "settings": {
-        "kicker": "Drop 01 · två kollektioner",
-        "color_order": "svart,bla,svart-camo",
+        "kicker": "Drop 01 · två objekt",
+        "color_order": "svart-camo,svart,bla",
         "default_color": "svart-camo"
       }
     },
@@ -42,5 +45,9 @@
       }
     }
   },
-  "order": ["hero", "cross", "signup"]
+  "order": [
+    "hero",
+    "cross",
+    "signup"
+  ]
 }

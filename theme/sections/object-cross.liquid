@@ -175,7 +175,9 @@
 
         <p class="cross__data ui" aria-live="polite">
           <span data-cross-number>OBJECT {% render 'object-number', title: first_block.settings.collection.title, part: 'number' %}</span>
-          <span data-cross-color>{{ start_product.options_with_values.first.values.first }}</span>
+          <span data-cross-kind>
+            {%- if start_product.type != blank -%}{{ start_product.type }}{%- else -%}{{ start_product.options_with_values.first.values.first }}{%- endif -%}
+          </span>
           <span data-cross-price>{{ start_product.price | money }}</span>
         </p>
 
@@ -240,6 +242,7 @@
                   {{ key | json }}: {
                     "title": {{ product.title | json }},
                     "color": {{ product.options_with_values.first.values.first | json }},
+                    "type": {{ product.type | json }},
                     "price": {{ product.price | money | strip_html | json }},
                     "url": {{ product.url | json }},
                     "available": {{ product.available | json }},
@@ -812,7 +815,7 @@
       }
 
       this.querySelector('[data-cross-number]').textContent = `OBJECT #${obj.number}`;
-      this.querySelector('[data-cross-color]').textContent = product.color;
+      this.querySelector('[data-cross-kind]').textContent = product.type || product.color;
       this.querySelector('[data-cross-price]').textContent = product.price;
       this.querySelector('[data-cross-link]').href = product.url;
 
@@ -954,13 +957,13 @@
       "type": "text",
       "id": "kicker",
       "label": "Rad ovanför flikarna",
-      "default": "Drop 01 · två kollektioner"
+      "default": "Drop 01 · två objekt"
     },
     {
       "type": "text",
       "id": "color_order",
       "label": "Färgernas ordning",
-      "default": "svart,bla,svart-camo",
+      "default": "svart-camo,svart,bla",
       "info": "Kommaseparerat. Färger som inte står med hamnar sist."
     },
     {
