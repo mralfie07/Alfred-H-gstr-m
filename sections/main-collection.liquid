@@ -59,7 +59,7 @@
               <div class="object-card__info">
                 <h2 class="object-card__title ui">
                   <span class="visually-hidden">{{ product.title }}</span>
-                  <span aria-hidden="true">{{ color }}</span>
+                  <span aria-hidden="true">{% if product.type != blank %}{{ product.type }} · {% endif %}{{ color }}</span>
                 </h2>
                 <p class="object-card__price">{{ product.price | money }}</p>
               </div>
