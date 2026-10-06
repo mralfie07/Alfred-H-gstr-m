@@ -146,3 +146,29 @@ Ny export med samma klippning som v2: källans egen upplösning 1928×1076 (16:9
 | `brand/hero/hero-v2-original.mp4` (1928×1076) | 9,0 MB |
 | `brand/hero/hero-v2-original-poster.jpg` | stillbild medan videon laddar |
 De äldre `hero-desktop-*` och `hero-mobile-*` sparas bara som historik.
+
+## Hero v3 – första droppet (2026-10-06)
+Användaren: heron ska bara visa första droppets plagg, **t-shirten och den långärmade t-shirten**, båda svart acid wash med kyssmotivet i camo (bröst + rygg). Samma film i övrigt.
+- Klipp 1, 6 och 9 visar redan camo-t-shirten och behålls (gamla videoklipp).
+- Klipp 2, 3, 4, 5, 7 och 8 görs om: den gamla startbilden redigeras med `nano_banana_pro` 2K 16:9 så att bara tröjan byts (samma modell, pose, ljus och bildutsnitt).
+- Fördelning: långärmad i 2, 3, 4, 7. T-shirt i 1, 5, 6, 8, 9.
+
+Nya referenser (media_id):
+| Fil | media_id |
+|---|---|
+| products/langarmad/langarmad_fram.jpg | 9d1b5671-6033-4d1f-b3bd-e724e4eaa696 |
+| products/langarmad/langarmad_bak.jpg | a075e8cb-ee46-4b82-8907-5ed0b91ac8c7 |
+| prints/3_svart-camo_brost.webp | 436ee3a3-6d99-4d71-add0-e7488353462e |
+| Shopify-bild t-shirt camo fram (object-002-svart-camo) | 953a2744-e7a3-4ec1-ada9-455af1bd7045 |
+| Shopify-bild t-shirt camo bak | 83fc9b8a-2d7a-4cb1-ad87-74c9fb53b3e0 |
+
+Nya startbilder (två varianter per klipp, ~24 krediter). **Förslag** markerat med *, väntar på användarens godkännande:
+| Klipp | Plagg | Variant A | Variant B |
+|---|---|---|---|
+| 2 | långärmad, fram | 96df414a-12ea-4d21-a1f0-420c78ab5547 * | 8e618cff-34ab-41b5-b396-c4e393066e62 |
+| 3 | långärmad, fram | b40b32cc-1697-4af1-b1a9-561e384c332b * | 3a286628-df11-493a-a001-0d91117a82ec |
+| 4 | långärmad, fram (skuggor) | 21492a7f-d441-47f5-9d36-481dde3d0313 | 8a68cfe7-7d2c-48fc-a563-a1877bb8737e * |
+| 5 | t-shirt, fram | 0ab3dd65-041b-40aa-82c8-2eef27a37f29 * | 0f529029-5f24-4714-8d59-a56f7f68df24 |
+| 7 | långärmad, rygg | 2e514c52-56e8-4903-bd69-f85c0ccc51fd | d2979c29-0250-4a63-9f8b-4871f506702d * |
+| 8 | t-shirt, fram (ansikte) | 0527dcb2-de40-42c2-92c5-059aeaa16684 | bec7ae0d-d5ee-4990-913b-5d1b5f2e97d3 * |
+Trycken är kontrollerade mot `brand/prints/3_svart-camo_brost.webp` och `_rygg.webp` i närbild: stämmer i alla förslag.
