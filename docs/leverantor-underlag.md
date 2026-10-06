@@ -8,12 +8,12 @@ Startpunkt för en ny chatt om tillverkning. Allt nedan kommer från `docs/brief
 - Målgrupp: 18–25, handlar i mobilen. Ribba för kvalitet och finish: Aimé Leon Dore, Kith, Palace, Stüssy.
 
 ## Första droppet (beslutat 2026-10-06)
-Märket släpper en färg i taget. Första droppet är **två plagg i samma tyg och färg:**
+Märket släpper en färgställning i taget. Första droppet är **"svart-camo": svart acid wash-plagg med kyssmotivet i camo.** Camon sitter i trycket, inte i tyget. Två plagg i samma tyg och färg:
 
 | Plagg | Färg | Tryck |
 |---|---|---|
-| **T-shirt**, oversized och tung | Svart-camo, acid wash | Kyssmotivet: litet på vänster bröst, stort på ryggen |
-| **Långärmad t-shirt**, oversized och tung, samma tyg | Svart-camo, acid wash | Samma: litet på vänster bröst, stort på ryggen |
+| **T-shirt**, oversized och tung | Svart/kolgrå acid wash | Kyssmotivet i camo-utförande: litet på vänster bröst, stort på ryggen |
+| **Långärmad t-shirt**, oversized och tung, samma tyg | Svart/kolgrå acid wash | Samma: litet på vänster bröst, stort på ryggen |
 
 - **Storlekar:** S, M, L, XL på båda.
 - **Passform:** rund hals med tjock ribb, nedsläppta axlar, rak och boxig kropp (se `produktbilder/object-002-sheet.png`).
@@ -25,20 +25,19 @@ Märket släpper en färg i taget. Första droppet är **två plagg i samma tyg 
 - Senare drops: samma modeller i svart och blå acid wash, och ett andra motiv (ett tryck som går över sidsömmen). Ingår inte nu, men bra att veta för tillverkaren.
 
 ## Trycket
-Kyssmotivet: två handritade linjeansikten som bildar ett hjärta. Tre färger i trycket: mörk (svart/marin), benvit/gräddvit och en liten orange prick.
+Kyssmotivet: två handritade linjeansikten som bildar ett hjärta. I camo-utförandet är ena halvan av hjärtat benvit/gräddvit och den andra fylld med ett grönt kamouflagemönster (ljusgrön, mörkgrön, beige, svart), med benvita linjer och en liten orange prick. Det blir alltså ett flerfärgstryck med många färger, vilket påverkar val av tryckmetod och pris.
 - Tryckfiler i full storlek: `tryck/3_svart-camo_brost.webp` (bröst) och `tryck/3_svart-camo_rygg.webp` (rygg). Översikt över alla motiv: `tryck/print-overview.png`.
 
 ## Bilder i paketet
-- `produktbilder/svart-camo-kyss_fram.jpg` och `_bak.jpg`: t-shirten i svart-camo med trycket.
+- `produktbilder/svart-camo-kyss_fram.jpg` och `_bak.jpg`: t-shirten med camo-trycket.
+- `produktbilder/langarmad_fram.jpg`, `_bak.jpg` och `langarmad_bak-fram.jpg`: den långärmade. Plagget är AI-genererat, trycket är de riktiga tryckfilerna inlagda ovanpå.
 - `produktbilder/object-002-sheet.png`: närbilder på nacketikett, ärmflagga och brösttryck (visas på den blå färgen, samma detaljer gäller camo).
-- Bild på den långärmade finns inte än.
 - **Obs:** bilderna är visualiseringar, inte fotografier av färdiga provplagg.
 
 ## Öppet (att ta reda på med tillverkaren)
 - Material och vikt (gsm). Briefen säger bara "tung".
 - Hur acid wash-effekten görs och hur jämn den blir mellan plaggen.
-- Tryckmetod (screentryck, DTG, DTF, annat) som klarar tre färger på camo-tyg med acid wash.
-- Om camo plus acid wash kostar mer än vanlig svart acid wash, och hur mycket.
+- Tryckmetod (screentryck, DTG, DTF, annat) som klarar ett flerfärgat camo-motiv med fina linjer på mörkt acid wash-tyg, och vad antalet färger betyder för priset.
 - Minsta order (MOQ) per modell, färg och storlek, och om t-shirt och långärmad kan köras i samma produktion. Upplagan per drop är inte bestämd.
 - Pris per plagg, provplagg, ledtid, frakt och tull till Sverige.
 - Måttguide per storlek för båda plaggen (behövs till butiken).
