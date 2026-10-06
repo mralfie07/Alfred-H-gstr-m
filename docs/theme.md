@@ -23,10 +23,10 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 
 ## I butiken
 - **"OBJECT 07 – fas 2 med film"** (id `205740474716`) är butikens publicerade tema sedan 2026-10-04. Det första uppladdade temat (utan film) är borttaget.
-- Shopify-kopplingen får inte skriva till ett publicerat tema. Ändringar når därför butiken antingen som ett nytt opublicerat tema (som här) eller via GitHub-kopplingen (punkt 1 nedan, rekommenderas).
+- **Så kommer ändringar ut (gäller tills vidare):** Shopify-kopplingen får inte skriva till ett publicerat tema, och användaren hittar inte "Anslut från GitHub" i sin Shopify (troligen avstängt under provperioden). Därför laddar Claude upp varje ny version som ett **opublicerat** tema (zip via `stagedUploadsCreate` + `themeCreate`), skickar förhandsvisningslänken, och användaren publicerar själv under Online Store → Teman. Testa GitHub-kopplingen igen efter uppgraderingen.
 
 ## Att göra i Shopify innan temat visas
-1. **Koppla temat.** Shopifys GitHub-koppling kräver en gren som bara innehåller temat. Grenen `shopify-theme` är skapad för det (`git subtree split --prefix theme`). Online Store → Teman → Lägg till tema → Anslut från GitHub → grenen `shopify-theme`. Den ska uppdateras efter varje ändring i `theme/` (Claude gör det).
+1. **Koppla temat (när det går).** Shopifys GitHub-koppling kräver en gren som bara innehåller temat. Grenen `shopify-theme` är skapad för det (`git subtree split --prefix theme`). Online Store → Teman → Lägg till tema → Anslut från GitHub → grenen `shopify-theme`. Den ska uppdateras efter varje ändring i `theme/` (Claude gör det).
 2. **Heron:** filmen följer med temat (`assets/hero-1080.mp4` 3,1 MB och `hero-720.mp4` 1,4 MB för mobil, komprimerade från `hero-v2-original.mp4`), eftersom Shopify inte tillåter uppladdade filmer på provkonton. Efter uppgradering kan en film väljas i temaredigeraren (Hero-film → Film) i stället.
 3. **Lager:** fyll på lagersaldot per storlek. Nu står allt på 0, så allt visas som slutsålt.
 4. **Menyer:** `main-menu` (header) och `footer` (sidfot) under Innehåll → Menyer.
