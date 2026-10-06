@@ -170,5 +170,11 @@ Nya startbilder (två varianter per klipp, ~24 krediter). **Förslag** markerat 
 | 4 | långärmad, fram (skuggor) | 21492a7f-d441-47f5-9d36-481dde3d0313 | 8a68cfe7-7d2c-48fc-a563-a1877bb8737e * |
 | 5 | t-shirt, fram | 0ab3dd65-041b-40aa-82c8-2eef27a37f29 * | 0f529029-5f24-4714-8d59-a56f7f68df24 |
 | 7 | långärmad, rygg | 2e514c52-56e8-4903-bd69-f85c0ccc51fd | d2979c29-0250-4a63-9f8b-4871f506702d * |
-| 8 | t-shirt, fram (ansikte) | 0527dcb2-de40-42c2-92c5-059aeaa16684 | bec7ae0d-d5ee-4990-913b-5d1b5f2e97d3 * |
+| 8 | t-shirt, fram (ansikte) | 0527dcb2-de40-42c2-92c5-059aeaa16684 | bec7ae0d-d5ee-4990-913b-5d1b5f2e97d3 |
 Trycken är kontrollerade mot `brand/prints/3_svart-camo_brost.webp` och `_rygg.webp` i närbild: stämmer i alla förslag.
+
+**Klipp 8 omgjord (användaren: trycket såg inte äkta ut).** Trycket låg i skuggan men var lika ljust som i solen, alltså inklistrat. Ny redigering av 8B med trycket i skuggan, tygets veck och struktur igenom och samma spruckna tryckyta som i klipp 1 (~4 krediter):
+| Variant | job_id |
+|---|---|
+| 8C (för blek och sliten) | 4a547bc4-3043-43e0-a280-8bc318c9a003 |
+| **8D (förslag)** | 155b9ad2-66c6-4b71-8e9c-7d07ba1462ad |
