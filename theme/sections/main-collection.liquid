@@ -15,8 +15,13 @@
     <div class="collection__head-inner page-width">
       <p class="ui">{{ section.settings.kicker }}</p>
       <h1 class="collection__title">
-        <span class="visually-hidden">{{ collection.title }}</span>
-        <span class="collection__number numeral" aria-hidden="true">{{ number }}</span>
+        {%- if collection.title contains '#' -%}
+          <span class="visually-hidden">{{ collection.title }}</span>
+          <span class="collection__number numeral" aria-hidden="true">{{ number }}</span>
+        {%- else -%}
+          {%- comment -%} Collections that aren't one object (e.g. /collections/all) show their name. {%- endcomment -%}
+          <span class="collection__name heading">{{ collection.title }}</span>
+        {%- endif -%}
       </h1>
       <p class="ui muted">
         {{- 'collections.count' | t: count: collection.products_count -}}
@@ -36,6 +41,16 @@
               render 'object-color', product: product
             endcapture
             assign color = color | strip
+            capture card_digits
+              render 'object-number', title: product.title, part: 'digits'
+            endcapture
+            assign card_digits = card_digits | strip
+            unless product.title contains '#'
+              assign card_digits = ''
+              if collection.title contains '#'
+                assign card_digits = digits
+              endif
+            endunless
             assign loading = 'lazy'
             if forloop.index <= 2
               assign loading = 'eager'
@@ -44,7 +59,9 @@
           <li class="object-card">
             <a class="object-card__link" href="{{ product.url }}">
               <div class="object-card__media concrete">
-                <span class="object-card__digits numeral" aria-hidden="true">{{ digits }}</span>
+                {%- if card_digits != blank -%}
+                  <span class="object-card__digits numeral" aria-hidden="true">{{ card_digits }}</span>
+                {%- endif -%}
                 {% render 'object-image',
                   product: product,
                   side: side,
@@ -137,6 +154,11 @@
   }
 
   /* The archive number, large enough to run off the edge on phones. */
+  .collection__name {
+    display: block;
+    margin-block: var(--s-3);
+  }
+
   .collection__number {
     display: block;
     font-size: clamp(5.5rem, 30vw, 15rem);

@@ -44,8 +44,8 @@
   },
   "collections": {
     "count": {
-      "one": "{{ count }} färg",
-      "other": "{{ count }} färger"
+      "one": "{{ count }} plagg",
+      "other": "{{ count }} plagg"
     },
     "empty": "Inga objekt i den här kollektionen än.",
     "other": "Fler kollektioner",
