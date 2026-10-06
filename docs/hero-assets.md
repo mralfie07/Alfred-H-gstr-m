@@ -178,3 +178,16 @@ Trycken är kontrollerade mot `brand/prints/3_svart-camo_brost.webp` och `_rygg.
 |---|---|
 | 8C (för blek och sliten) | 4a547bc4-3043-43e0-a280-8bc318c9a003 |
 | **8D (förslag)** | 155b9ad2-66c6-4b71-8e9c-7d07ba1462ad |
+
+**Valda startbilder v3 (användaren godkände 2026-10-06):** 2A, 3A, 4B, 5A, 7B, 8D.
+
+Videoklipp v3 (`kling3_0` pro, 5 s, utan ljud, 16:9, ~53 krediter). Higgsfield föreslog stilpresetet "IN THE DARK" i stället för att köra klippen; det avböjdes (`declined_preset_id` 24bae836-2c4a-48e0-89b6-49fcc0b21612) så att filmens utseende inte ändras.
+| Klipp | Startbild | job_id | Rörelse |
+|---|---|---|---|
+| 2 | 96df414a | d331c6e0-69c6-4782-a17b-69f9b8673216 | Går mot kameran mellan pelare, kameran följer i sidled |
+| 3 | b40b32cc | 15dd0361-5ec1-48c7-8331-1e5288bb5711 | Liten huvudvridning mot kameran, långsam inzoomning |
+| 4 | 8a68cfe7 | 54e7ef1d-eec2-4569-8857-54086755dc76 | Pelarskuggor glider över bröstet |
+| 5 | 0ab3dd65 | a97f39ff-97e6-45d6-a6c7-ffa7d7c8231e | Underifrån, står still, långsam inzoomning |
+| 7 | d2979c29 | ef0e4be2-5030-4a76-bc92-3434e2470674 | Går ifrån kameran, kameran följer |
+| 8 | 155b9ad2 | 487de62a-c2c3-4057-9835-543bffa16864 | Långsam inzoomning på ansiktet |
+Klipp 1, 6 och 9 återanvänds från tagning 1 (2845a30a, a4ff9498, d78fb326).
