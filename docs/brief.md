@@ -159,5 +159,6 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - Sidtrycket (#001) och färgerna svart och blå ingår inte i första droppet.
 - **Beslut (2026-10-06):** **OBJECT #001 = t-shirten, 699 kr. OBJECT #002 = långärmad t-shirt, 999 kr.** Storlek S–XL. Öppet: måttguide för båda.
 - **Shopify (ändrat med användarens godkännande 2026-10-06):** `object-001-svart-camo` = t-shirten (typ T-shirt, i kollektionen OBJECT #001), `object-002-svart-camo` = den långärmade (typ Långärmad t-shirt, ny produkt, i kollektionen OBJECT #002, bilder från `brand/products/langarmad/`). De fem gamla produkterna är **utkast** och omdöpta efter motiv: Sidtryck – Svart / Blå / Svart-camo, Kyss – Svart / Blå (handles `sidtryck-*`, `kyss-*`).
-- **Sajten:** korsets flikar är de två objekten, färgaxeln visar svart-camo (nya färger fylls på där när de droppar). Ryggtrycket visas först överallt. Plaggtypen syns i korset, på produktsidan och på kollektionskorten.
+- **Ingen färg visas (användaren, 2026-10-06):** produkterna heter bara "OBJECT #001" och "OBJECT #002", tillvalet Färg är borttaget (bara Storlek) och korset döljer färgaxeln (etiketten "Färg" och "Svart-camo"). Axeln kommer tillbaka av sig själv när en kollektion får fler än en färg; färgen läses då från tillvalet Färg eller från titeln ("OBJECT #001 – Blå").
+- **Sajten:** korsets flikar är de två objekten. Ryggtrycket visas först överallt. Plaggtypen syns i korset, på produktsidan och på kollektionskorten.
 - Tillverkarunderlag: `docs/leverantor-underlag.md`.

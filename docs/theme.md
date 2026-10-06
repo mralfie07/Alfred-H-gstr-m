@@ -18,6 +18,7 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 ## Hur produktdatan läses
 - **Korset** har ett block per kollektion. Varje produkt i kollektionen är en färg. Färgen läses från webbadressen efter numret: `object-001-svart-camo` → `svart-camo`. Därför ligger samma färg på samma rad i båda kollektionerna. Ordningen och startfärgen ställs in i temaredigeraren.
 - Pris, storlekar och lager kommer direkt från Shopify. Slutsålda storlekar är överstrukna och går inte att välja.
+- **Färg** läses av `snippets/object-color.liquid`: tillvalet Färg/Color, annars titeln efter " – ". Har produkten ingen färg visas ingen. Korset visar färgaxeln bara när droppet har fler än en färg.
 - **Plaggtyp** (Shopifys produkttyp, t.ex. "T-shirt", "Långärmad t-shirt") visas i korsets datarad, under namnet på produktsidan och på kollektionskorten.
 - **Frilagda plagg** ligger i temat: `assets/cutout-<produktens webbadress>-<fram|bak>.webp` (1200 px), tygrutor i `assets/swatch-<webbadress>.webp`. Saknas en fil visas produktens första bild från Shopify i stället. En ny produkt behöver alltså två frilagda bilder och en tygruta med samma namnmönster.
 - Typsnittet Archivo (variabelt, OFL) ligger i temat: `assets/archivo-variable.woff2`.

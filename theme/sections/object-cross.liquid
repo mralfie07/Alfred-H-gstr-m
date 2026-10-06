@@ -29,6 +29,11 @@
     endunless
   endfor
   assign colors = color_list | split: ','
+  # The colour axis only appears once a drop has more than one colourway.
+  assign show_colors = false
+  if colors.size > 1
+    assign show_colors = true
+  endif
 
   assign start_color = section.settings.default_color | strip
   unless colors contains start_color
@@ -108,13 +113,16 @@
       </div>
 
       <div class="cross__panel" id="CrossPanel-{{ section.id }}" role="tabpanel" aria-labelledby="CrossTab-{{ section.id }}-0">
-        <div class="cross__axis" style="--rows: {{ colors.size }}">
+        <div class="cross__axis" style="--rows: {% if show_colors %}{{ colors.size }}{% else %}0{% endif %}">
           <span class="cross__v-line" aria-hidden="true"></span>
-          <p class="cross__axis-label ui ui--small" aria-hidden="true">{{ 'sections.cross.color' | t }}</p>
+          {%- if show_colors -%}
+            <p class="cross__axis-label ui ui--small" aria-hidden="true">{{ 'sections.cross.color' | t }}</p>
+          {%- endif -%}
           <span class="cross__h-line cross__h-line--start" aria-hidden="true"></span>
           <span class="cross__h-line cross__h-line--end" aria-hidden="true"></span>
           <span class="cross__star" aria-hidden="true">{% render 'icon', name: 'star' %}</span>
 
+          {%- if show_colors -%}
           <ul class="cross__colors" role="radiogroup" aria-label="{{ 'sections.cross.color' | t }}" style="--sel: {{ start_index }}">
             {%- for key in colors -%}
               {%- liquid
@@ -129,9 +137,12 @@
                   endfor
                 endfor
                 if swatch_product
-                  assign first_option = swatch_product.options_with_values.first
-                  if first_option.name != 'Title'
-                    assign name = first_option.values.first
+                  capture option_name
+                    render 'object-color', product: swatch_product
+                  endcapture
+                  assign option_name = option_name | strip
+                  if option_name != blank
+                    assign name = option_name
                   endif
                 endif
                 assign swatch = 'swatch-' | append: swatch_product.handle | append: '.webp'
@@ -151,6 +162,7 @@
               </li>
             {%- endfor -%}
           </ul>
+          {%- endif -%}
         </div>
 
         <div class="cross__stage">
@@ -176,7 +188,7 @@
         <p class="cross__data ui" aria-live="polite">
           <span data-cross-number>OBJECT {% render 'object-number', title: first_block.settings.collection.title, part: 'number' %}</span>
           <span data-cross-kind>
-            {%- if start_product.type != blank -%}{{ start_product.type }}{%- else -%}{{ start_product.options_with_values.first.values.first }}{%- endif -%}
+            {%- if start_product.type != blank -%}{{ start_product.type }}{%- else -%}{% render 'object-color', product: start_product %}{%- endif -%}
           </span>
           <span data-cross-price>{{ start_product.price | money }}</span>
         </p>
@@ -241,7 +253,8 @@
                   -%}
                   {{ key | json }}: {
                     "title": {{ product.title | json }},
-                    "color": {{ product.options_with_values.first.values.first | json }},
+                    {%- capture product_color -%}{% render 'object-color', product: product %}{%- endcapture -%}
+                    "color": {{ product_color | strip | json }},
                     "type": {{ product.type | json }},
                     "price": {{ product.price | money | strip_html | json }},
                     "url": {{ product.url | json }},
@@ -776,8 +789,9 @@
     }
 
     #syncColors() {
-      const index = this.colors.indexOf(this.state.c);
       const list = this.querySelector('.cross__colors');
+      if (!list) return;
+      const index = this.colors.indexOf(this.state.c);
       list.style.setProperty('--sel', index);
       const products = this.objects[this.state.o].products;
       list.querySelectorAll('.cross__color-item').forEach((item, i) => {
