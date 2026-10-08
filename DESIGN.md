@@ -55,16 +55,45 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
   - Plagget stort i mitten med objektnumret bakom. **Svep i sidled vänder plagget** mellan fram och bak, och den andra sidan glider in från svepets håll (60 px). Tryck på plagget vänder det också. Kollektion byts **bara** med flikarna #001 och #002, aldrig med svep (användarens beslut 2026-10-04). Axeln ligger ovanför plagget, så att den nedersta färgen alltid går att trycka på.
   - Under plagget: en växel **Framsida | Baksida** (1 px ram, benvitt block under vald sida).
   - Sedan datarad (objekt · färg · pris), storlekar S–XL och köpknapp.
-- **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram.
+- **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram. Kampanjporträttet (campaign-07) mörkt bakom, valbart.
+- **Arkivband** (`archive-ticker`), **kampanjband** (`campaign-reel`), **ordmärket stort i sidfoten** och **kampanjfoto bakom kollektionsnumret**: tillkom i fas 3, se Rörelse. Alla kan stängas av eller bytas i temaredigeraren.
 - **Avisering:** benvit ruta nertill med miniatyr, objekt, färg, storlek och pris.
 
 ## Rörelse
-- En kurva: `cubic-bezier(.16, 1, .3, 1)`.
-- **Det enda iscensatta ögonblicket är rörelsen i korset:** färglistan glider så att vald färg hamnar under stjärnan (0,6 s). Vid byte av kollektion glider plagget in från svepets håll (110 px, längre än vid färgbyte), numret byts, stjärnan vrider sig 90° (0,7 s) och flikstapeln glider över (0,55 s).
-- **Fram/bak:** plagget tonar direkt över till andra sidan (samma övertoning som vid färgbyte, ingen vändning), och blocket i växeln glider till vald sida (0,55 s). Användaren valde bort en 3D-vändning 2026-10-04.
-- **Visa hur, en gång:** första gången plagget syns och ingen har rört korset kommer tre steg. Först lutar plagget sig som om någon svepte, och blocket i fram/bak-växeln sträcker sig mot andra sidan (1,4 s). Sedan lyser den andra kollektionens miniatyr upp och flikstapeln sträcker sig dit (1,3 s). Sist ger de ovalda tygrutorna en kort puls i tur och ordning. Det körs inte igen och hoppas över om man redan har tryckt.
-- I vila svävar plagget svagt (7 px, 7 s) och golvskuggan andas med. Inga scrollanimationer utöver visningen ovan.
-- `prefers-reduced-motion`: allt av, heron visas som stillbild.
+**Fas 3 (2026-10-08):** användaren valde bort "lugnt" och vill ha rörelse fullt ut ("helt sjuka animationer", den ultimata sajten). Allt utgår ändå från märkets egna element: stjärnan, horisonten den skär genom ovalen, arkivnumren och betongen. Byggt i `theme/assets/motion.css`, `motion.js`, `snippets/motion-head.liquid` och i varje sektions egen stylesheet/javascript.
+
+### Kurvor och regler
+- `--ease-out` `cubic-bezier(.16, 1, .3, 1)`: det mesta (in, ut, tillstånd).
+- `--ease-in-out` `cubic-bezier(.77, 0, .175, 1)`: rörelse över skärmen (ridåer, horisonten, plagg som flyger mellan sidor).
+- `--ease-spring` (`linear()`, dämpad fjäder ζ 0,55, ca 12 % översving): sådant som landar (plagg, stjärnan).
+- Bara `transform`, `translate`, `scale`, `rotate`, `opacity` och `clip-path`. Hover-rörelse bara för mus (`hover: hover` och `pointer: fine`).
+- `<html class="motion">` sätts före första bildrutan när besökaren tillåter rörelse. All rörelse hänger på den. Utan (avstängd rörelse, inget JS, eller om `motion.js` inte laddas inom 6 s) står allt stilla och synligt. `prefers-reduced-motion`: allt av, heron som stillbild, kampanjbandet blir en remsa att svepa i.
+
+### Iscensatta ögonblick
+- **Intro (första besöket på startsidan per session):** svart skärm, stjärnan vrider sig ett kvarts varv i taget och "EST. 2007" rullar fram som ett räkneverk medan filmen laddar (minst 1,9 s, högst 3,6 s, klick eller tangent hoppar över). Stjärnan sträcks ut till en horisontlinje, skärmen klyvs längs den och halvorna glider isär (1,3 s), filmen zoomar ut från 1,18, headern glider ner och raden avkodas. Hoppas över i temaredigeraren.
+- **Sidbyten (View Transitions, Chrome och Safari 18.2+):** nästa sida öppnar sig från en horisontlinje mitt på skärmen (0,85 s) medan den gamla sjunker bakåt och mörknar. Headern står still. Plagget och arkivnumret flyger mellan kort/kors och produktsida åt båda hållen och lyfter lite på vägen (0,9 s). Produktsidan öppnar på samma sida (fram/bak) som visades i korset.
+- **Korset byggs i två steg:** när korset kommer in stiger flikarna, axlarna ritas ut från stjärnan och stjärnan snurrar in med fjäder. När plaggytan kommer in rullar numret fram och plagget faller ner på sitt golv. Sedan "visa hur" som förut.
+- **Kampanjbandet:** nio kampanjbilder som filmremsa. Sidan scrollar nedåt, rutorna åker i sidled under en fast rubrik, varje bild glider inuti sitt fönster, rutan i mitten är skarp och de andra dämpade, ett jätteord ("OBJECT 07") glider bakom i en tredjedels fart och rutnumret rullar.
+- **Arkivbandet:** jättetext med riktiga produktdata som löper. Scroll gör det snabbare och lutar det, scroll uppåt vänder det.
+
+### Arkivnummer
+Siffrorna rullar på plats som ett räkneverk (`snippets/numeral-roll.liquid`, `theme.rollTo`): kollektionens #001, produktsidans nummer, korsets nummer (rullar framåt eller bakåt vid flikbyte), introts år, 404 och kampanjbandets räknare.
+
+### Plagget
+- Svävar i vila (7–8 px, 7 s) med golvskugga, i korset och på produktsidan.
+- **Dra i sidled:** plagget följer fingret med motstånd och vänds när man släpper långt eller snabbt nog, annars fjädrar det tillbaka. Tryck vänder också.
+- **Mus:** plagget lutar i 3D mot pekaren (högst ca 11°), numret glider åt andra hållet för djup. En benvit markör säger "VÄND" (och "ÖPPNA" på kollektionskorten).
+- **Köp:** knappens text ger plats åt stjärnan som vrider sig medan korgen svarar. Sedan flyger en kopia av plagget i en båge in i väskan, som gungar till.
+- Fram/bak: framsidan ligger till vänster om baksidan, som i växeln. Det nya glider in från rätt håll (56 px), och blocket i växeln glider under vald sida.
+
+### Scroll
+- Heron zoomar in (1,16) och sjunker i svart när man scrollar förbi, och raden lyfter bort fortare.
+- Kollektionens kampanjfoto glider ner bakom numret, plaggen svävar på eget djup i korten och numret i korset ligger djupare än plagget.
+- Saker under vikningen glider in en gång när de kommer i bild (rubriker maskas fram underifrån, fältet i anmälan ritas ut från vänster). Det som syns vid laddning rörs aldrig.
+- Ordmärket stiger upp ur sidfotens nederkant.
+
+### Små saker
+Filmkorn över hela sajten (35 mm, 0,07). Etiketter avkodas från arkivtecken (`0–9 # * + / < >`) och behåller bredden. Länkar: strecket går ut åt höger och ritas in igen från vänster. Headerlänkar rullar upp. Storleksrutan fylls nerifrån. Dragspel öppnas mjukt. Menyn faller ner som en ridå och raderna stiger fram en i taget. Varukorgsrader glider in, och en borttagen rad glider ut medan resten flyttar upp. Anmälans pilknapp och kollektionslänkarna dras mot pekaren. Varukorgsbubblan studsar.
 
 ## Bildspråk
 - Kampanj: 35 mm-film, hårt middagsljus, brutalistisk betong, samma kille i alla bilder (Higgsfield-referenser i `docs/hero-assets.md`).

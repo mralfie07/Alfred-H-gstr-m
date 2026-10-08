@@ -162,3 +162,10 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Ingen färg visas (användaren, 2026-10-06):** produkterna heter bara "OBJECT #001" och "OBJECT #002", tillvalet Färg är borttaget (bara Storlek) och korset döljer färgaxeln (etiketten "Färg" och "Svart-camo"). Axeln kommer tillbaka av sig själv när en kollektion får fler än en färg; färgen läses då från tillvalet Färg eller från titeln ("OBJECT #001 – Blå").
 - **Sajten:** korsets flikar är de två objekten. Ryggtrycket visas först överallt. Plaggtypen syns i korset, på produktsidan och på kollektionskorten.
 - Tillverkarunderlag: `docs/leverantor-underlag.md`.
+
+## 16. Fas 3: motion (användaren, 2026-10-08)
+- **Rörelse fullt ut.** Först valdes "lugnt + några ögonblick", men under sessionen ändrade användaren sig: inte lika simpelt som förut, "helt sjuka animationer", "den ultimata hemsidan", som med en budget på en miljon dollar. Det som står om lugn rörelse i avsnitt 3 och i äldre versioner av DESIGN.md gäller inte längre. Märkets element bär fortfarande rörelsen.
+- **Sidbyten:** plagget följer med mellan sidorna. **Hero:** stjärnan, horisonten och att sidan klyvs vid första besöket. **Hero-filmen** görs inte om nu (den långärmade har kvar den äldre trycklooken).
+- **Higgsfield:** inget nytt får skapas, men befintliga bilder och klipp får användas. Kampanjbandet, kollektionernas bakgrunder och anmälans porträtt är de godkända startbilderna v3 samt 1B, 6B och 9A (se `docs/hero-assets.md`).
+- **Leverans:** som ett **nytt opublicerat tema**. Befintliga teman i butiken (publicerat och Drop 01) rörs inte.
+- Tillkom på startsidan: arkivband och kampanjband. Tillkom i sidfoten: ordmärket stort. Allt kan tas bort i temaredigeraren.

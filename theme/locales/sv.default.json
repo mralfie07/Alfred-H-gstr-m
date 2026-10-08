@@ -98,5 +98,12 @@
       "details": "Detaljer och mått",
       "empty": "Välj kollektioner för korset i temaredigeraren."
     }
+  },
+  "motion": {
+    "flip": "Vänd",
+    "open": "Öppna",
+    "frame": "Bild",
+    "campaign": "Kampanjbilder",
+    "ticker": "Arkivband"
   }
 }

@@ -74,20 +74,38 @@
       fetchpriority="high"
     >
   {%- endif -%}
+  <span class="hero__veil" aria-hidden="true"></span>
 
   <div class="hero__copy page-width">
     {%- if section.settings.kicker != blank -%}
-      <p class="ui">{{ section.settings.kicker }}</p>
+      <p class="ui" data-scramble data-hero-kicker>{{ section.settings.kicker }}</p>
     {%- endif -%}
     {%- if section.settings.link_label != blank -%}
       <a class="ui link" href="{{ section.settings.link | default: '#droppet' }}">{{ section.settings.link_label }}</a>
     {%- endif -%}
+  </div>
+
+  {%- comment -%}
+    First visit in a session (html.intro, set by snippets/motion-head): the screen is ink, the
+    emblem's star turns while the year rolls to 2007 and the film loads. Then the star stretches
+    into a horizon and the page splits open along it.
+  {%- endcomment -%}
+  <div class="curtain" aria-hidden="true" data-curtain>
+    <span class="curtain__half curtain__half--top"></span>
+    <span class="curtain__half curtain__half--bottom"></span>
+    <span class="curtain__line"></span>
+    <span class="curtain__star">{% render 'icon', name: 'star' %}</span>
+    <p class="curtain__est">
+      <span class="ui ui--small">{{ 'general.est' | t | split: '2007' | first | strip }}</span>
+      <span class="curtain__year numeral">{% render 'numeral-roll', text: '2007' %}</span>
+    </p>
   </div>
 </section>
 
 {% stylesheet %}
   .hero {
     position: relative;
+    overflow: clip;
     background: var(--char);
 
     &::after {
@@ -116,11 +134,20 @@
     }
   }
 
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .hero__copy {
     position: absolute;
     inset-inline: 0;
     bottom: var(--s-4);
-    z-index: 1;
+    z-index: 2;
     display: grid;
     gap: var(--s-2);
     justify-items: start;
@@ -130,27 +157,276 @@
       gap: var(--s-3);
     }
   }
+
+  /* Leaving the hero: the film pushes in and sinks into ink, the line lifts away faster. */
+  @supports (animation-timeline: view()) {
+    .motion .hero__media {
+      animation: hero-push linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    .motion .hero__veil {
+      animation: hero-dim linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+
+    .motion .hero__copy {
+      animation: hero-lift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 80%;
+    }
+  }
+
+  @keyframes hero-push {
+    to {
+      scale: 1.16;
+    }
+  }
+
+  @keyframes hero-dim {
+    to {
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes hero-lift {
+    to {
+      translate: 0 -140%;
+      opacity: 0;
+    }
+  }
+
+  /* The intro curtain */
+  .curtain {
+    display: none;
+  }
+
+  .intro .curtain {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: block;
+    cursor: pointer;
+  }
+
+  .curtain__half {
+    position: absolute;
+    inset-inline: 0;
+    height: calc(50% + 1px);
+    background: var(--ink);
+    transition: translate 1.3s var(--ease-in-out) 0.8s, box-shadow 0s linear 0.8s;
+  }
+
+  .curtain__half--top {
+    top: 0;
+  }
+
+  .curtain__half--bottom {
+    bottom: 0;
+  }
+
+  .curtain__line {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--bone);
+    scale: 0 1;
+    transition: scale 0.8s var(--ease-in-out), opacity 0.4s;
+  }
+
+  .curtain__star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    color: var(--bone);
+    animation:
+      curtain-star-in 0.9s var(--ease-spring) 0.1s backwards,
+      o7-star-turn 1.15s var(--ease-out) 0.55s infinite;
+    transition: scale 0.8s var(--ease-in-out), opacity 0.5s var(--ease-out) 0.3s;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .curtain__est {
+    position: absolute;
+    top: calc(50% + 40px);
+    left: 0;
+    right: 0;
+    display: grid;
+    justify-items: center;
+    gap: var(--s-2);
+    color: var(--bone-dim);
+    animation: o7-rise 0.9s var(--ease-out) 0.3s backwards;
+    transition: opacity 0.35s, translate 0.6s var(--ease-out);
+  }
+
+  /* The year counts up to 2007 like an archive counter. */
+  .curtain__year {
+    font-size: clamp(3.25rem, 16vw, 7.5rem);
+    color: var(--bone-dim);
+    --roll-delay: 0.4s;
+  }
+
+  @keyframes curtain-star-in {
+    from {
+      opacity: 0;
+      scale: 0.2;
+      rotate: -135deg;
+    }
+  }
+
+  /* Opening: the star stretches into the horizon, then the page splits along it. */
+  .intro--open {
+    & .curtain__star {
+      animation: none;
+      scale: 18 0.04;
+      opacity: 0;
+    }
+
+    & .curtain__line {
+      scale: 1 1;
+      opacity: 0;
+      transition: scale 0.8s var(--ease-in-out), opacity 0.2s linear 0.8s;
+    }
+
+    & .curtain__est {
+      opacity: 0;
+      translate: 0 12px;
+    }
+
+    /* The horizon splits: each half carries one edge of the line away. */
+    & .curtain__half--top {
+      translate: 0 -101%;
+      box-shadow: inset 0 -1px 0 var(--bone);
+    }
+
+    & .curtain__half--bottom {
+      translate: 0 101%;
+      box-shadow: inset 0 1px 0 var(--bone);
+    }
+  }
+
+  .intro--done .curtain {
+    display: none;
+  }
+
+  /* What waits behind the curtain. */
+  .intro .hero__media {
+    transform: scale(1.18);
+  }
+
+  .intro--open .hero__media {
+    transform: none;
+    transition: transform 2.6s var(--ease-out) 0.8s;
+  }
+
+  .intro .section-header {
+    translate: 0 -100%;
+  }
+
+  .intro--open .section-header {
+    translate: none;
+    transition: translate 1s var(--ease-out) 1.5s;
+  }
+
+  .intro .hero__copy > * {
+    opacity: 0;
+    translate: 0 18px;
+  }
+
+  .intro--open .hero__copy > * {
+    opacity: 1;
+    translate: none;
+    transition: opacity 0.8s var(--ease-out) 1.6s, translate 1s var(--ease-out) 1.6s;
+  }
+
+  .intro--open .hero__copy > :nth-child(2) {
+    transition-delay: 1.75s;
+  }
+
+  /* If scripts never run, the curtain lifts on its own. */
+  .intro:not(.intro--open) .curtain {
+    animation: curtain-failsafe 0.01s linear 6s forwards;
+  }
+
+  .intro:not(.intro--open) :is(.hero__copy > *, .section-header) {
+    animation: curtain-failsafe-show 0.01s linear 6s forwards;
+  }
+
+  @keyframes curtain-failsafe {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @keyframes curtain-failsafe-show {
+    to {
+      opacity: 1;
+      translate: none;
+    }
+  }
 {% endstylesheet %}
 
 {% javascript %}
   (() => {
+    const root = document.documentElement;
     const video = document.querySelector('[data-hero-video]');
-    if (!video) return;
     const still = window.matchMedia('(prefers-reduced-motion: reduce)');
     const play = () => {
       if (still.matches) {
-        video.pause();
+        video?.pause();
         return;
       }
-      video.play().catch(() => {});
+      video?.play().catch(() => {});
     };
-    play();
-    still.addEventListener('change', play);
-    // Pause when off screen to save battery on phones.
-    new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) play();
-      else video.pause();
-    }).observe(video);
+
+    if (video) {
+      play();
+      still.addEventListener('change', play);
+      // Pause when off screen to save battery on phones.
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) play();
+        else video.pause();
+      }).observe(video);
+    }
+
+    if (!root.classList.contains('intro')) return;
+
+    // Intro: the film buffers behind the curtain. Open once it plays, but let the star turn for a
+    // moment first, and never hold the page for long. A click or a key opens it at once.
+    const curtain = document.querySelector('[data-curtain]');
+    let opened = false;
+    const open = () => {
+      if (opened) return;
+      opened = true;
+      if (video) {
+        video.currentTime = 0;
+        play();
+      }
+      root.classList.add('intro--open');
+      const kicker = document.querySelector('[data-hero-kicker]');
+      if (kicker) window.theme?.scramble?.(kicker, kicker.textContent, { delay: 1600, duration: 900 });
+      setTimeout(() => root.classList.add('intro--done'), 2900);
+    };
+    const whenReady = () => setTimeout(open, Math.max(0, 1900 - performance.now()));
+    if (!video || (!video.paused && video.readyState >= 3)) whenReady();
+    else {
+      video.addEventListener('playing', whenReady, { once: true });
+      // A source that can't be played reports on the <source>, not the video.
+      video.querySelector('source:last-of-type')?.addEventListener('error', whenReady, { once: true });
+    }
+    setTimeout(open, Math.max(0, 3600 - performance.now()));
+    curtain?.addEventListener('click', open);
+    window.addEventListener('keydown', open, { once: true });
   })();
 {% endjavascript %}
 

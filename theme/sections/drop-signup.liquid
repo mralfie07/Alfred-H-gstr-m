@@ -1,11 +1,31 @@
-<section class="signup" id="anmal" aria-labelledby="SignupTitle-{{ section.id }}">
+{%- liquid
+  assign fallback = section.settings.fallback | strip
+-%}
+<section class="signup{% if section.settings.image != blank or fallback != blank %} signup--image{% endif %}" id="anmal" aria-labelledby="SignupTitle-{{ section.id }}">
+  {%- if section.settings.image != blank -%}
+    <div class="signup__media" aria-hidden="true">
+      {{ section.settings.image | image_url: width: 1600 | image_tag: widths: '800, 1200, 1600', sizes: '100vw', loading: 'lazy', alt: '' }}
+    </div>
+  {%- elsif fallback != blank -%}
+    <div class="signup__media" aria-hidden="true">
+      <img
+        src="{{ fallback | append: '-1600.webp' | asset_url }}"
+        srcset="{{ fallback | append: '-800.webp' | asset_url }} 800w, {{ fallback | append: '-1600.webp' | asset_url }} 1600w"
+        sizes="100vw"
+        alt=""
+        width="1600"
+        height="893"
+        loading="lazy"
+      >
+    </div>
+  {%- endif -%}
   <div class="signup__inner">
-    <h2 class="heading" id="SignupTitle-{{ section.id }}">{{ section.settings.heading }}</h2>
+    <h2 class="heading" id="SignupTitle-{{ section.id }}" data-reveal="mask">{{ section.settings.heading }}</h2>
     {%- if section.settings.text != blank -%}
-      <div class="rte">{{ section.settings.text }}</div>
+      <div class="rte" data-reveal>{{ section.settings.text }}</div>
     {%- endif -%}
 
-    {%- form 'customer', id: 'SignupForm', class: 'signup__form-wrap' -%}
+    {%- form 'customer', id: 'SignupForm', class: 'signup__form-wrap', data-reveal: '' -%}
       <input type="hidden" name="contact[tags]" value="newsletter,drop-signup">
       {%- liquid
         assign error = false
@@ -28,11 +48,12 @@
           placeholder="{{ 'newsletter.placeholder' | t }}"
           {% if error %}aria-invalid="true" aria-describedby="SignupStatus-{{ section.id }}"{% endif %}
         >
-        <button type="submit" aria-label="{{ 'newsletter.submit' | t }}">{% render 'icon', name: 'arrow' %}</button>
+        <button type="submit" aria-label="{{ 'newsletter.submit' | t }}" data-magnetic>{% render 'icon', name: 'arrow' %}</button>
       </div>
       <p class="signup__status" id="SignupStatus-{{ section.id }}" role="status">
         {%- if form.posted_successfully? -%}
-          {{ 'newsletter.success' | t }}
+          <span class="signup__stamp" aria-hidden="true">{% render 'icon', name: 'star' %}</span>
+          {{- 'newsletter.success' | t }}
         {%- elsif error -%}
           {{ 'newsletter.error' | t }}
         {%- endif -%}
@@ -43,7 +64,52 @@
 
 {% stylesheet %}
   .signup {
+    position: relative;
     padding: var(--s-7) var(--gutter);
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  .signup--image {
+    padding-block: clamp(6rem, 30vw, 12rem);
+  }
+
+  /* The campaign portrait behind the form, deep in shadow and drifting slower than the page. */
+  .signup__media {
+    position: absolute;
+    inset: -12% 0;
+    z-index: -1;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgb(12 12 11 / 0.92), rgb(12 12 11 / 0.55) 40%, rgb(12 12 11 / 0.92));
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 70% 30%;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .motion .signup__media {
+      animation: signup-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+
+  @keyframes signup-drift {
+    from {
+      translate: 0 -8%;
+    }
+    to {
+      translate: 0 8%;
+    }
   }
 
   .signup__inner {
@@ -51,6 +117,46 @@
     gap: var(--s-4);
     max-width: 560px;
     margin: 0 auto;
+  }
+
+  /* The field draws itself in from the left as it arrives. */
+  .signup__form-wrap .signup__form {
+    transition: clip-path 1.3s var(--ease-in-out) calc(var(--reveal-delay, 0s) + 0.2s);
+  }
+
+  .signup__form-wrap[data-reveal-state="waiting"] .signup__form {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .signup__form-wrap[data-reveal-state="in"] .signup__form {
+    clip-path: inset(-6px);
+  }
+
+  /* After signing up: the star stamps the line like an archive entry. */
+  .signup__stamp {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-inline-end: var(--s-2);
+    vertical-align: -1px;
+    color: var(--bone);
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .motion .signup__stamp {
+    animation: signup-stamp 1.2s var(--ease-spring) 0.3s backwards;
+  }
+
+  @keyframes signup-stamp {
+    from {
+      opacity: 0;
+      scale: 3;
+      rotate: -90deg;
+    }
   }
 {% endstylesheet %}
 
@@ -71,6 +177,17 @@
       "id": "text",
       "label": "Text",
       "default": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Bakgrundsbild"
+    },
+    {
+      "type": "text",
+      "id": "fallback",
+      "label": "Temats bakgrundsbild",
+      "info": "Används när ingen bild är vald, t.ex. campaign-07. Lämna tomt för ingen bild."
     }
   ],
   "presets": [

@@ -68,10 +68,10 @@
   </div>
 {%- else -%}
   {%- capture start_number -%}{% render 'object-number', title: first_block.settings.collection.title, part: 'digits' %}{%- endcapture -%}
-  <object-cross class="cross concrete" id="droppet" data-start-color="{{ start_color }}">
+  <object-cross class="cross concrete" id="droppet" data-start-color="{{ start_color }}" data-reveal="scene">
     <div class="cross__inner">
       {%- if section.settings.kicker != blank -%}
-        <p class="cross__kicker ui ui--small" aria-hidden="true">{{ section.settings.kicker }}</p>
+        <p class="cross__kicker ui ui--small" aria-hidden="true" data-scramble>{{ section.settings.kicker }}</p>
       {%- endif -%}
 
       {%- liquid
@@ -165,17 +165,22 @@
           {%- endif -%}
         </div>
 
-        <div class="cross__stage">
-          <span class="cross__numeral numeral" aria-hidden="true">{{ start_number | strip }}</span>
+        <div class="cross__stage" data-vt-object="{{ start_product.handle }}" data-cursor="{{ 'motion.flip' | t }}" data-reveal="scene">
+          <span class="cross__numeral numeral" aria-hidden="true">
+            {%- comment -%} The digits roll in when the cross arrives, and roll to the next number on a tab change. {%- endcomment -%}
+            <span class="cross__numeral-digits" data-vt="numeral" data-roll-value="{{ start_number | strip }}">
+              {%- render 'numeral-roll', text: start_number, load: false -%}
+            </span>
+          </span>
           <div class="cross__float">
             <span class="cross__floor" aria-hidden="true"></span>
-            <button class="cross__garment" type="button" aria-label="{{ 'sections.cross.flip' | t }}">
-              {% render 'object-image', product: start_product, side: start_side, width: 1200, class: 'is-on', sizes: '(min-width: 600px) 560px, 92vw' %}
+            <button class="cross__garment" id="CrossGarment-{{ section.id }}" type="button" aria-label="{{ 'sections.cross.flip' | t }}">
+              {% render 'object-image', product: start_product, side: start_side, width: 1200, class: 'is-on', sizes: '(min-width: 600px) 560px, 92vw', vt: 'garment', loading: 'eager' %}
             </button>
           </div>
         </div>
 
-        <div class="cross__view" role="radiogroup" aria-label="{{ 'sections.cross.side' | t }}" style="--v: {% if start_side == 'bak' %}1{% else %}0{% endif %}">
+        <div class="cross__view" data-reveal role="radiogroup" aria-label="{{ 'sections.cross.side' | t }}" style="--v: {% if start_side == 'bak' %}1{% else %}0{% endif %}">
           <span class="cross__view-bar" aria-hidden="true"></span>
           <button class="ui" type="button" role="radio" data-side="fram" aria-checked="{% if start_side == 'fram' %}true{% else %}false{% endif %}">
             {{- 'products.front' | t -}}
@@ -185,16 +190,24 @@
           </button>
         </div>
 
-        <p class="cross__data ui" aria-live="polite">
-          <span data-cross-number>OBJECT {% render 'object-number', title: first_block.settings.collection.title, part: 'number' %}</span>
-          <span data-cross-kind>
-            {%- if start_product.type != blank -%}{{ start_product.type }}{%- else -%}{% render 'object-color', product: start_product %}{%- endif -%}
-          </span>
-          <span data-cross-price>{{ start_product.price | money }}</span>
+        {%- capture start_kind -%}
+          {%- if start_product.type != blank -%}{{ start_product.type }}{%- else -%}{% render 'object-color', product: start_product %}{%- endif -%}
+        {%- endcapture -%}
+        {%- capture start_line -%}
+          OBJECT {% render 'object-number', title: first_block.settings.collection.title, part: 'number' %} · {{ start_kind | strip }} · {{ start_product.price | money }}
+        {%- endcapture -%}
+        {%- comment -%} The visible row decodes on every change; screen readers hear the live copy once. {%- endcomment -%}
+        <p class="visually-hidden" aria-live="polite" data-cross-live>{{ start_line | strip }}</p>
+        <p class="cross__data ui" aria-hidden="true" data-reveal>
+          <span data-cross-number data-scramble>OBJECT {% render 'object-number', title: first_block.settings.collection.title, part: 'number' %}</span>
+          <span data-cross-kind data-scramble data-scramble-delay="120">{{ start_kind | strip }}</span>
+          <span data-cross-price data-scramble data-scramble-delay="240">{{ start_product.price | money }}</span>
         </p>
 
         <product-form
+          data-reveal
           class="cross__form"
+          data-fly-from="#CrossGarment-{{ section.id }}"
           data-toast-image="{{ 'cutout-' | append: start_product.handle | append: '-' | append: start_side | append: '.webp' | asset_url }}"
           data-toast-title="{{ start_product.title | escape }}"
           data-toast-price="{{ start_product.price | money | strip_html | escape }}"
@@ -228,7 +241,7 @@
           </form>
         </product-form>
 
-        <a class="cross__more ui link" href="{{ start_product.url }}" data-cross-link>{{ 'sections.cross.details' | t }}</a>
+        <a class="cross__more ui link" data-reveal href="{{ start_product.url }}" data-cross-link>{{ 'sections.cross.details' | t }}</a>
       </div>
     </div>
 
@@ -253,6 +266,7 @@
                   -%}
                   {{ key | json }}: {
                     "title": {{ product.title | json }},
+                    "handle": {{ product.handle | json }},
                     {%- capture product_color -%}{% render 'object-color', product: product %}{%- endcapture -%}
                     "color": {{ product_color | strip | json }},
                     "type": {{ product.type | json }},
@@ -519,22 +533,17 @@
     place-items: center;
     font-size: min(52vw, 300px);
     color: var(--bone-dim);
-    transition: opacity 0.35s, transform 0.7s var(--ease-out);
   }
 
-  .cross__numeral--out-start {
-    opacity: 0;
-    transform: translateX(-12%);
-  }
-
-  .cross__numeral--out-end {
-    opacity: 0;
-    transform: translateX(12%);
+  .cross__numeral-digits {
+    display: block;
+    transition: translate 0.9s var(--ease-out);
   }
 
   .cross__float {
     position: absolute;
     inset: 0;
+    perspective: 1200px;
     animation: cross-float 7s ease-in-out infinite;
   }
 
@@ -547,11 +556,15 @@
     border: 0;
     background: none;
     cursor: pointer;
+    transition: rotate 0.9s var(--ease-out);
 
+    /* Square boxes everywhere the garment appears, so it flies between pages without stretching. */
     & img {
       grid-area: 1 / 1;
-      width: 100%;
+      width: auto;
+      max-width: 100%;
       height: 100%;
+      aspect-ratio: 1;
       object-fit: contain;
       pointer-events: none;
       -webkit-user-drag: none;
@@ -627,7 +640,11 @@
     transition: transform 0.55s var(--ease-out);
   }
 
+  /* Wraps between its parts, never inside one, so decoding values can't reflow the row. */
   .cross__data {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     text-align: center;
 
     & span + span::before {
@@ -653,6 +670,139 @@
   .cross__more {
     justify-self: center;
     color: var(--bone);
+  }
+
+  /* The cross builds itself in two beats, hidden from the first paint so nothing blinks out.
+     1. As the cross arrives: the tabs rise, the axes draw out from the star, the star spins in.
+     2. As the garment area arrives: the number counts up and the garment drops onto its floor.
+     The controls below rise on their own as they scroll in (data-reveal). */
+  .cross {
+    --scene: 0.15s;
+  }
+
+  .motion .cross:is(:not([data-reveal-state]), [data-reveal-state="waiting"]) {
+    & .cross__tab {
+      opacity: 0;
+      translate: 0 28px;
+    }
+
+    & .cross__tab-bar,
+    & .cross__h-line {
+      scale: 0 1;
+    }
+
+    & .cross__v-line {
+      scale: 1 0;
+    }
+
+    & .cross__star {
+      opacity: 0;
+      scale: 0.15;
+      rotate: -180deg;
+    }
+
+    & .cross__colors {
+      opacity: 0;
+    }
+  }
+
+  .cross[data-reveal-state="in"] {
+    & .cross__tab {
+      transition: translate 1s var(--ease-out) calc(var(--scene) + var(--t, 0s)), opacity 0.8s var(--ease-out) calc(var(--scene) + var(--t, 0s)), color 0.45s var(--ease-out);
+    }
+
+    & .cross__tab:nth-child(2) {
+      --t: 0.09s;
+    }
+
+    & .cross__tab:nth-child(3) {
+      --t: 0.18s;
+    }
+
+    & .cross__tab-bar {
+      transform-origin: 0 50%;
+      transition: scale 0.9s var(--ease-in-out) calc(var(--scene) + 0.3s), transform 0.55s var(--ease-out);
+    }
+
+    & .cross__h-line {
+      transition: scale 1.1s var(--ease-in-out) calc(var(--scene) + 0.25s);
+    }
+
+    & .cross__h-line--start {
+      transform-origin: 100% 50%;
+    }
+
+    & .cross__h-line--end {
+      transform-origin: 0 50%;
+    }
+
+    & .cross__v-line {
+      transform-origin: 50% 100%;
+      transition: scale 1s var(--ease-in-out) calc(var(--scene) + 0.25s);
+    }
+
+    & .cross__star {
+      transition: transform 0.7s var(--ease-out), opacity 0.4s var(--ease-out) calc(var(--scene) + 0.2s), scale 1.3s var(--ease-spring) calc(var(--scene) + 0.2s), rotate 1.4s var(--ease-out) calc(var(--scene) + 0.2s);
+    }
+
+    & .cross__colors {
+      transition: transform 0.6s var(--ease-out), opacity 0.8s var(--ease-out) calc(var(--scene) + 0.9s);
+    }
+  }
+
+  .motion .cross__stage:is(:not([data-reveal-state]), [data-reveal-state="waiting"]) {
+    & .roll__col {
+      transform: translateY(0);
+    }
+
+    & .cross__numeral {
+      opacity: 0;
+    }
+
+    & .cross__float {
+      opacity: 0;
+      translate: 0 -90px;
+    }
+
+    & .cross__floor {
+      scale: 0.2;
+    }
+  }
+
+  .cross__stage[data-reveal-state="in"] {
+    & .cross__numeral {
+      transition: opacity 0.5s var(--ease-out) var(--scene);
+    }
+
+    & .roll__col {
+      transition: transform calc(1.5s + var(--n, 0) * 0.25s) var(--ease-out) calc(var(--scene) + var(--n, 0) * 0.06s);
+    }
+
+    & .cross__float {
+      transition: opacity 0.5s var(--ease-out) calc(var(--scene) + 0.2s), translate 1.5s var(--ease-spring) calc(var(--scene) + 0.2s);
+    }
+
+    & .cross__floor {
+      transition: scale 1.5s var(--ease-spring) calc(var(--scene) + 0.3s);
+    }
+  }
+
+  /* Scrolling past, the archive number sits deeper than the garment. */
+  @supports (animation-timeline: view()) {
+    .motion .cross__numeral {
+      animation: cross-depth linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+
+  @keyframes cross-depth {
+    from {
+      translate: 0 -14%;
+    }
+    to {
+      translate: 0 14%;
+    }
   }
 {% endstylesheet %}
 
@@ -732,32 +882,24 @@
         });
       }
 
-      // A sideways swipe on the garment turns it over; a tap does too. Collections change only with the tabs.
+      // The garment follows a sideways drag and turns over when let go; a tap turns it too.
+      // Collections change only with the tabs. With a mouse it also leans toward the pointer.
       const stage = this.querySelector('.cross__stage');
-      let x0 = null;
-      let y0 = null;
-      let swiped = false;
-      stage.addEventListener('pointerdown', (event) => {
-        x0 = event.clientX;
-        y0 = event.clientY;
-        swiped = false;
-      });
-      stage.addEventListener('pointercancel', () => {
-        x0 = null;
-      });
-      stage.addEventListener('pointerup', (event) => {
-        if (x0 === null) return;
-        const dx = event.clientX - x0;
-        const dy = event.clientY - y0;
-        x0 = null;
-        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
-        swiped = true;
-        setTimeout(() => (swiped = false), 50);
-        this.#setView(this.state.v === 'fram' ? 'bak' : 'fram', dx < 0 ? 1 : -1);
-      });
-      this.garment.addEventListener('click', () => {
-        if (swiped) return;
-        this.#setView(this.state.v === 'fram' ? 'bak' : 'fram');
+      const turn = (dir = 0) => this.#setView(this.state.v === 'fram' ? 'bak' : 'fram', dir);
+      this.garment.addEventListener('click', () => turn());
+      // motion.js (deferred) brings the drag and tilt; wait for it if this script runs first.
+      const gestures = () => {
+        window.theme.dragFlip?.(stage, this.garment, turn);
+        window.theme.tilt?.(stage, this.garment, this.querySelector('.cross__numeral-digits'));
+      };
+      if (window.theme.dragFlip || document.readyState !== 'loading') gestures();
+      else document.addEventListener('DOMContentLoaded', gestures, { once: true });
+
+      // The product page opens on the side you were looking at.
+      this.querySelector('[data-cross-link]').addEventListener('click', () => {
+        try {
+          sessionStorage.setItem('o7-side', `${this.product.handle}:${this.state.v}`);
+        } catch (error) {}
       });
 
       this.querySelector('.cross__sizes').addEventListener('change', (event) => {
@@ -828,18 +970,24 @@
         button.setAttribute('aria-checked', String(button.dataset.side === this.state.v));
       }
 
-      this.querySelector('[data-cross-number]').textContent = `OBJECT #${obj.number}`;
-      this.querySelector('[data-cross-kind]').textContent = product.type || product.color;
-      this.querySelector('[data-cross-price]').textContent = product.price;
+      // The data row decodes into the new values; the live copy tells screen readers once.
+      const line = [`OBJECT #${obj.number}`, product.type || product.color, product.price];
+      const live = this.querySelector('[data-cross-live]');
+      if (live.textContent !== line.join(' · ')) live.textContent = line.join(' · ');
+      ['[data-cross-number]', '[data-cross-kind]', '[data-cross-price]'].forEach((selector, i) => {
+        const el = this.querySelector(selector);
+        if (el.textContent === line[i]) return;
+        if (window.theme.scramble) window.theme.scramble(el, line[i], { delay: i * 90 });
+        else el.textContent = line[i];
+      });
       this.querySelector('[data-cross-link]').href = product.url;
+      this.querySelector('.cross__stage').dataset.vtObject = product.handle;
 
+      // The archive number counts forward or back to the new object.
       if (numeral) {
-        const n = this.querySelector('.cross__numeral');
-        n.classList.add(numeral > 0 ? 'cross__numeral--out-start' : 'cross__numeral--out-end');
-        setTimeout(() => {
-          n.textContent = obj.number;
-          n.classList.remove('cross__numeral--out-start', 'cross__numeral--out-end');
-        }, 280);
+        const digits = this.querySelector('.cross__numeral-digits');
+        if (window.theme.rollTo) window.theme.rollTo(digits, obj.number, numeral);
+        else digits.textContent = obj.number;
       }
 
       this.#renderForm(product);
@@ -890,10 +1038,12 @@
         if (product.fallback) img.src = product.fallback;
       };
       img.style.setProperty('--from', `${from}px`);
+      img.dataset.vt = 'garment';
       this.garment.append(img);
       requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('is-on')));
       if (this.current) {
         const old = this.current;
+        old.removeAttribute('data-vt');
         old.style.setProperty('--from', `${-from}px`);
         old.classList.remove('is-on');
         setTimeout(() => old.remove(), 600);
@@ -908,7 +1058,8 @@
       const io = new IntersectionObserver((entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
         io.disconnect();
-        setTimeout(() => this.#demo(), 700);
+        // Let the cross finish building itself before showing how it works.
+        setTimeout(() => this.#demo(), this.querySelector('.cross__stage').dataset.revealState === 'in' ? 2600 : 900);
       }, { threshold: 0.6 });
       io.observe(this.querySelector('.cross__stage'));
     }

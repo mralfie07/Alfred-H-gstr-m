@@ -25,7 +25,10 @@
         <ul class="site-header__links ui" role="list">
           {%- for link in menu.links -%}
             <li>
-              <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+              <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
+                {%- comment -%} The span rolls up on hover and its copy (data-text) takes its place. {%- endcomment -%}
+                <span data-text="{{ link.title | escape }}">{{ link.title }}</span>
+              </a>
             </li>
           {%- endfor -%}
         </ul>
@@ -75,7 +78,9 @@
     <div class="drawer__body">
       <ul class="menu__list" role="list">
         {%- for link in menu.links -%}
-          <li><a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a></li>
+          <li style="--i: {{ forloop.index0 }}">
+            <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}><span>{{ link.title }}</span></a>
+          </li>
         {%- endfor -%}
       </ul>
     </div>

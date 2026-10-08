@@ -29,28 +29,36 @@
 -%}
 
 <div class="product">
-  <div class="product__stage concrete">
-    <span class="product__numeral numeral" aria-hidden="true">{{ digits }}</span>
-    <div class="product__garment">
-      {% render 'object-image',
-        product: product,
-        side: 'fram',
-        width: 1200,
-        loading: 'eager',
-        class: 'product__image product__image--fram',
-        sizes: '(min-width: 990px) 50vw, 100vw'
-      %}
-      {% render 'object-image',
-        product: product,
-        side: 'bak',
-        width: 1200,
-        loading: 'eager',
-        class: 'product__image product__image--bak',
-        sizes: '(min-width: 990px) 50vw, 100vw'
-      %}
+  <div class="product__stage concrete" id="ProductStage-{{ section.id }}" data-product-stage>
+    <span class="product__numeral numeral" aria-hidden="true">
+      <span class="product__numeral-digits">{% render 'numeral-roll', text: digits %}</span>
+    </span>
+    <div class="product__garment" data-cursor="{{ 'motion.flip' | t }}" data-enter="drop" style="--enter-i: 1">
+      <div class="product__depth">
+        <span class="product__floor" aria-hidden="true"></span>
+        <div class="product__float">
+          {% render 'object-image',
+            product: product,
+            side: 'fram',
+            width: 1200,
+            loading: 'eager',
+            class: 'product__image product__image--fram',
+            sizes: '(min-width: 990px) 50vw, 100vw'
+          %}
+          {% render 'object-image',
+            product: product,
+            side: 'bak',
+            width: 1200,
+            loading: 'eager',
+            class: 'product__image product__image--bak',
+            sizes: '(min-width: 990px) 50vw, 100vw'
+          %}
+        </div>
+      </div>
     </div>
-    <fieldset class="product__view">
+    <fieldset class="product__view" data-enter style="--enter-i: 4">
       <legend class="visually-hidden">{{ 'sections.cross.side' | t }}</legend>
+      <span class="product__view-bar" aria-hidden="true"></span>
       <label class="ui">
         <input type="radio" name="view-{{ section.id }}" value="fram" {% if side == 'fram' %}checked{% endif %}>
         {{- 'products.front' | t -}}
@@ -60,11 +68,23 @@
         {{- 'products.back' | t -}}
       </label>
     </fieldset>
+    <script>
+      // Coming from the cross, open on the side that was showing there.
+      (() => {
+        try {
+          const [handle, side] = (sessionStorage.getItem('o7-side') || '').split(':');
+          sessionStorage.removeItem('o7-side');
+          if (handle !== {{ product.handle | json }}) return;
+          const input = document.currentScript.previousElementSibling.querySelector(`input[value="${side}"]`);
+          if (input) input.checked = true;
+        } catch (error) {}
+      })();
+    </script>
   </div>
 
-  <div class="product__info">
+  <div class="product__info" data-enter-group>
     {%- if object_collection -%}
-      <a class="product__kicker ui muted" href="{{ object_collection.url }}">
+      <a class="product__kicker ui muted" href="{{ object_collection.url }}" data-scramble>
         {{- section.settings.kicker }} · {% render 'object-number', title: object_collection.title, part: 'number' -%}
       </a>
     {%- endif -%}
@@ -112,6 +132,7 @@
 
     <product-form
       class="product__form"
+      data-fly-from="#ProductStage-{{ section.id }}"
       data-toast-image="{{ 'cutout-' | append: product.handle | append: '-' | append: side | append: '.webp' | asset_url }}"
       data-toast-title="{{ product.title | escape }}"
       data-toast-price="{{ product.price | money | strip_html | escape }}"
@@ -194,7 +215,7 @@
     <ul class="product-gallery__track" role="list">
       {%- for media in product.media -%}
         {%- if media.media_type == 'image' -%}
-          <li class="product-gallery__item">
+          <li class="product-gallery__item" data-reveal>
             {{
               media
               | image_url: width: 1400
@@ -234,6 +255,10 @@
     padding: var(--s-5) var(--gutter) var(--s-5);
     overflow: hidden;
     isolation: isolate;
+    perspective: 1400px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
 
     @media (min-width: 990px) {
       position: sticky;
@@ -252,12 +277,62 @@
     color: var(--bone-dim);
   }
 
+  .product__numeral-digits {
+    display: block;
+    view-transition-name: numeral;
+    transition: translate 0.9s var(--ease-out);
+  }
+
   .product__garment {
+    position: relative;
     display: grid;
     place-items: center;
     width: min(100%, 640px);
     aspect-ratio: 1;
     margin-inline: auto;
+    cursor: pointer;
+    transition: rotate 0.9s var(--ease-out);
+  }
+
+  .product__depth {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* At rest the garment hovers over a soft floor shadow, as in the cross. */
+  .product__float {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    animation: o7-float 7s ease-in-out infinite;
+  }
+
+  .product__floor {
+    position: absolute;
+    inset-inline: 24%;
+    bottom: 3%;
+    height: 6%;
+    border-radius: 50%;
+    background: rgb(12 12 11 / 0.5);
+    filter: blur(16px);
+    animation: o7-floor 7s ease-in-out infinite;
+  }
+
+  @keyframes o7-float {
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes o7-floor {
+    50% {
+      transform: scaleX(0.9);
+      opacity: 0.75;
+    }
   }
 
   .product__image {
@@ -266,13 +341,56 @@
     height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 18px 16px rgb(12 12 11 / 0.32));
+    pointer-events: none;
+    -webkit-user-drag: none;
     transition: opacity 0.45s var(--ease-out), transform 0.75s var(--ease-out);
   }
 
-  .product__stage:has(input[value="fram"]:checked) .product__image--bak,
+  /* Front sits to the left of back, as in the switch: turning to the back slides it in from the right. */
   .product__stage:has(input[value="bak"]:checked) .product__image--fram {
     opacity: 0;
-    transform: scale(0.97);
+    transform: translateX(-56px) scale(0.97);
+  }
+
+  .product__stage:has(input[value="fram"]:checked) .product__image--bak {
+    opacity: 0;
+    transform: translateX(56px) scale(0.97);
+  }
+
+  /* The visible side is the one that flies in from the card or the cross (snippets/motion-head). */
+  .product__stage:has(input[value="fram"]:checked) .product__image--fram,
+  .product__stage:has(input[value="bak"]:checked) .product__image--bak {
+    view-transition-name: garment;
+  }
+
+  /* On phones, scrolling on to the details, the garment sinks back and the number rises. */
+  @supports (animation-timeline: view()) {
+    @media (max-width: 989px) {
+      .motion .product__depth {
+        animation: product-sink linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 100%;
+      }
+
+      .motion .product__numeral {
+        animation: product-rise linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 100%;
+      }
+    }
+  }
+
+  @keyframes product-sink {
+    to {
+      scale: 0.82;
+      opacity: 0.2;
+    }
+  }
+
+  @keyframes product-rise {
+    to {
+      translate: 0 -30%;
+    }
   }
 
   .product__view {
@@ -292,11 +410,10 @@
       height: 42px;
       font-size: 0.6875rem;
       cursor: pointer;
-      transition: color 0.45s var(--ease-out), background-color 0.45s var(--ease-out);
+      transition: color 0.45s var(--ease-out);
 
       &:has(input:checked) {
         color: var(--ink);
-        background: var(--bone);
       }
 
       &:has(input:focus-visible) {
@@ -312,6 +429,20 @@
       opacity: 0;
       cursor: inherit;
     }
+  }
+
+  /* A bone block slides under the chosen side, as in the cross. */
+  .product__view-bar {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 50%;
+    background: var(--bone);
+    transition: transform 0.55s var(--ease-out);
+  }
+
+  .product__view:has(input[value="bak"]:checked) .product__view-bar {
+    transform: translateX(100%);
   }
 
   .product__info {
@@ -498,6 +629,24 @@
     }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const stage = document.querySelector('[data-product-stage]');
+    if (!stage) return;
+    const garment = stage.querySelector('.product__garment');
+    const radios = [...stage.querySelectorAll('.product__view input')];
+    const turn = () => radios.find((input) => !input.checked)?.click();
+    // Drag sideways (or tap) to turn the garment over; with a mouse it leans toward the pointer.
+    garment.addEventListener('click', turn);
+    const gestures = () => {
+      window.theme.dragFlip?.(stage, garment, turn);
+      window.theme.tilt?.(stage, garment, stage.querySelector('.product__numeral-digits'));
+    };
+    if (window.theme.dragFlip || document.readyState !== 'loading') gestures();
+    else document.addEventListener('DOMContentLoaded', gestures, { once: true });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {

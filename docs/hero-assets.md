@@ -200,3 +200,19 @@ Samma rytm och format som v2 (0,7 s per klipp, huvudbilden klipp 6 1,0 s, totalt
 | `brand/hero/hero-v3-original-poster.jpg` | stillbild |
 | `theme/assets/hero-1080.mp4` (CRF 24) och `hero-720.mp4` (CRF 25) | 3,1 MB och 1,4 MB |
 v2-filerna sparas som historik.
+
+## Kampanjbilder i temat (fas 3, 2026-10-08)
+Befintliga startbilder (2752×1536, inga nya genereringar) nedladdade från Higgsfield och sparade som `theme/assets/campaign-NN-{800,1600}.webp`:
+| Fil | Startbild | Motiv | Används |
+|---|---|---|---|
+| campaign-01 | 1B fa1adcc3 | tyget, makro | kampanjbandet |
+| campaign-02 | 2A 96df414a (v3) | mellan pelarna, långärmad | kampanjbandet |
+| campaign-03 | 3A b40b32cc (v3) | porträtt, långärmad | kampanjbandet |
+| campaign-04 | 6B 19dba6ed | ryggen, t-shirt | kampanjbandet |
+| campaign-05 | 4B 8a68cfe7 (v3) | skuggor över bröstet, långärmad | kampanjbandet |
+| campaign-06 | 5A 0ab3dd65 (v3) | trappan, t-shirt | kampanjbandet, bakom #001 |
+| campaign-07 | 8D 155b9ad2 (v3) | ansiktet, t-shirt | kampanjbandet, bakom drop-anmälan |
+| campaign-08 | 7B d2979c29 (v3) | korridoren, ryggen, långärmad | kampanjbandet, bakom #002 |
+| campaign-09 | 9A d7c8f039 | trycket, makro | kampanjbandet |
+Obs: bilderna med den långärmade har samma äldre trycklook som heron.
+

@@ -1,0 +1,71 @@
+{% doc %}
+  Motion bootstrap, inline in <head> so it runs before the first paint.
+  - Adds `motion` to <html> when the visitor allows motion; every animation in the theme hangs on it.
+  - First visit to the home page in a session: adds `intro` (the horizon opening, see sections/hero.liquid).
+  - Page transitions: names the garment and its archive number on both pages, so they fly from the
+    card (or the cross) to the product page and back. Arriving through a transition adds `vt`, which
+    skips the load entrances (the page is already moving).
+
+  @example
+  {% render 'motion-head' %}
+{% enddoc %}
+<script>
+  (() => {
+    const root = document.documentElement;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    root.classList.add('motion');
+    // If the motion script never arrives, fall back to the still site rather than leave things hidden.
+    setTimeout(() => {
+      if (!window.theme?.observeReveals) root.classList.remove('motion', 'intro');
+    }, 6000);
+    {%- if template.name == 'index' and request.design_mode != true %}
+      try {
+        if (!sessionStorage.getItem('o7-intro')) {
+          root.classList.add('intro');
+          sessionStorage.setItem('o7-intro', '1');
+        }
+      } catch (error) {}
+    {%- endif %}
+
+    const handleOf = (url) => {
+      try {
+        return new URL(url, location.href).pathname.match(/\/products\/([^/]+)/)?.[1] || null;
+      } catch (error) {
+        return null;
+      }
+    };
+    const named = [];
+    const nameObject = (handle) => {
+      if (!handle) return;
+      const host = [...document.querySelectorAll('[data-vt-object]')].find((el) => el.dataset.vtObject === handle);
+      if (!host) return;
+      for (const el of host.querySelectorAll('[data-vt]')) {
+        el.style.viewTransitionName = el.dataset.vt;
+        named.push(el);
+      }
+    };
+    const unname = () => {
+      for (const el of named.splice(0)) el.style.viewTransitionName = '';
+    };
+
+    window.addEventListener('pageswap', (event) => {
+      if (!event.viewTransition) return;
+      if (document.querySelector('dialog[open]')) {
+        root.classList.add('vt-flat');
+        return;
+      }
+      nameObject(handleOf(event.activation?.entry?.url));
+    });
+    window.addEventListener('pagereveal', (event) => {
+      if (!event.viewTransition) return;
+      root.classList.add('vt');
+      nameObject(handleOf(window.navigation?.activation?.from?.url));
+      event.viewTransition.finished.finally(unname);
+    });
+    window.addEventListener('pageshow', (event) => {
+      if (!event.persisted) return;
+      unname();
+      root.classList.remove('vt-flat');
+    });
+  })();
+</script>

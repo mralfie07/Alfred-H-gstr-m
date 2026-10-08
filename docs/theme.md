@@ -1,4 +1,4 @@
-# Temat – OBJECT 07 (fas 2)
+# Temat – OBJECT 07 (fas 2 och 3)
 
 Eget Shopify-tema i `theme/`. Byggt efter `DESIGN.md` (riktningen Korset) och godkänt av Shopifys temakontroll (`shopify theme check`, inga anmärkningar).
 
@@ -12,6 +12,22 @@ Eget Shopify-tema i `theme/`. Byggt efter `DESIGN.md` (riktningen Korset) och go
 | Produkt | `sections/main-product.liquid` | Plagget på betong med Framsida/Baksida, färgerna i samma kollektion som länkar, storlek S–XL, köpknapp som ligger kvar nertill i mobilen, dragspel (beskrivning, storlek, material, frakt) och Shopifys produktbilder i ett svepbart band. |
 | Varukorg | `sections/cart-drawer.liquid`, `sections/main-cart.liquid` | Låda från höger (öppnas från väskan och från aviseringen efter köp) och en vanlig varukorgssida. |
 | Övrigt | `main-page`, `main-404`, `main-search`, `main-list-collections`, `main-password` | Enkla sidor i samma stil. Lösenordssidan har drop-anmälan. |
+| Startsida (fas 3) | `archive-ticker.liquid`, `campaign-reel.liquid` | **Arkivband** (jättetext med produktdata, reagerar på scroll) efter heron och **kampanjband** (nio kampanjbilder som filmremsa) efter korset. |
+
+## Rörelse (fas 3)
+Hela systemet beskrivs i `DESIGN.md` (Rörelse). Filerna:
+| Fil | Vad |
+|---|---|
+| `snippets/motion-head.liquid` | Körs i `<head>` före första bildrutan: klassen `motion`, introt (`intro`), namnger plagg och nummer för sidbyten. |
+| `assets/motion.css` | Sidbyten, entréer, avslöjanden, räkneverk, filmkorn, markör, ridåmeny, små saker. |
+| `assets/motion.js` | `theme.scramble`, `theme.rollTo`, `theme.dragFlip`, `theme.tilt`, `theme.flyToCart`, avslöjanden vid scroll, markör, magnetiska knappar, laddlinjen i headern. |
+| `snippets/numeral-roll.liquid` | Arkivnummer som rullar fram. |
+| `assets/grain.png` | Filmkornet (framtaget i Python). |
+| `assets/campaign-01…09-{800,1600}.webp` | Kampanjbilder (befintliga startbilder från Higgsfield, se `docs/hero-assets.md`). |
+
+Attribut i markupen: `data-enter` (in vid laddning), `data-reveal` (in vid scroll: tomt, `drop`, `mask`, `scene`), `data-scramble` (avkodas), `data-cursor="Vänd"` (markörens text), `data-magnetic`, `data-vt-object`/`data-vt` (plagg och nummer som flyger mellan sidor).
+
+Inställningar i temaredigeraren: Kollektion → kampanjbild bakom numret (av/på, kollektionens egen bild går före temats). Drop-anmälan → bakgrundsbild. Sidfot → ordmärket stort längst ner. Arkivbandet och kampanjbandet är vanliga sektioner (bilder kan bytas mot egna).
 
 Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbare och mjukare. `prefers-reduced-motion` stänger av rörelsen och visar heron som stillbild.
 
@@ -38,6 +54,6 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 6. **Favicon:** emblemet behöver beskäras tätt och testas i 16–32 px (se briefen). Läggs in under Temainställningar → Favicon.
 
 ## Kvar till senare faser
-- Fas 3: motion i hela sajten (sidövergångar, fler iscensatta ögonblick), heron i full kvalitet.
+- ~~Fas 3: motion i hela sajten~~ klar 2026-10-08 (se Rörelse ovan).
 - Fas 4: test på riktiga telefoner, tillgänglighetsgenomgång, prestanda.
 - Innehåll som användaren återkommer med: produktinfo, märkets historia, frakt/retur, kontakt, sociala länkar.

@@ -8,6 +8,7 @@
   @param {string} [class] - Class for the img
   @param {string} [loading] - 'lazy' or 'eager' (default 'lazy')
   @param {string} [sizes] - sizes attribute
+  @param {string} [vt] - View transition role ('garment'), named while navigating (snippets/motion-head)
 
   @example
   {% render 'object-image', product: product, side: 'bak', width: 900 %}
@@ -36,5 +37,6 @@
   loading="{{ loading }}"
   {% if sizes %}sizes="{{ sizes }}"{% endif %}
   draggable="false"
+  {% if vt %}data-vt="{{ vt }}"{% endif %}
   {% if fallback %}onerror="this.onerror=null;this.src='{{ fallback }}'"{% endif %}
 >

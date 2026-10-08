@@ -98,5 +98,12 @@
       "details": "Details and sizing",
       "empty": "Choose collections for the cross in the theme editor."
     }
+  },
+  "motion": {
+    "flip": "Turn",
+    "open": "Open",
+    "frame": "Frame",
+    "campaign": "Campaign images",
+    "ticker": "Archive band"
   }
 }
