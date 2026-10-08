@@ -27,6 +27,7 @@ Eget Shopify-tema (Liquid) för klädmärket OBJECT 07. Hela briefen med koncept
 - Frilagda produktbilder: `brand/products/cutout/`.
 - Designsystem: `DESIGN.md`. Produktfakta: `PRODUCT.md`. Sidstruktur: `docs/sitemap.md`. Prototyp: `prototypes/objekt-valjaren/`.
 - Temat: `theme/` (uppbyggnad och vad som återstår i `docs/theme.md`). Shopify ansluts till grenen `shopify-theme`, som bara innehåller temat.
+- Rörelse: `DESIGN.md` (Rörelse) och `docs/theme.md` (Rörelse). Lokal förhandsvisning och testskript: `scripts/preview/`.
 
 ## Användaren
 Skriver svenska. Svara på svenska, kort och tydligt, och förklara tekniska saker enkelt.
