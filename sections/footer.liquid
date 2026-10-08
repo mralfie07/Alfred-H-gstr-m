@@ -53,8 +53,38 @@
       {% render 'localization-form', id: 'footer' %}
       <p class="ui ui--small">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }} &middot; {{ 'general.est' | t }}</p>
     </div>
+
+    {%- if section.settings.show_mark -%}
+      {%- comment -%} The wordmark across the full width, rising out of the bottom edge as the page ends. {%- endcomment -%}
+      <div class="site-footer__mark" aria-hidden="true">
+        <img src="{{ 'wordmark.png' | asset_url }}" alt="" width="1180" height="140" loading="lazy" data-reveal="mask">
+      </div>
+    {%- endif -%}
   </div>
 </footer>
+
+{% stylesheet %}
+  .site-footer__mark {
+    margin-top: var(--s-7);
+    overflow: clip;
+
+    & img {
+      width: 100%;
+      opacity: 0.92;
+    }
+
+    & img[data-reveal] {
+      transition:
+        opacity 0.9s var(--ease-out) var(--reveal-delay, 0s),
+        translate 1.4s var(--ease-out) var(--reveal-delay, 0s),
+        clip-path 1.4s var(--ease-in-out) var(--reveal-delay, 0s);
+    }
+
+    & img[data-reveal-state="waiting"] {
+      translate: 0 70%;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -62,6 +92,12 @@
   "tag": "div",
   "class": "section-footer",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_mark",
+      "label": "Visa ordmärket stort längst ner",
+      "default": true
+    },
     {
       "type": "richtext",
       "id": "text",

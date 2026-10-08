@@ -24,7 +24,7 @@
         endfor
       endcapture
     -%}
-    <li class="cart-line">
+    <li class="cart-line" style="--line: line-{{ item.key | handleize }}; --i: {{ forloop.index0 }}">
       <a class="cart-line__media concrete" href="{{ item.url }}" tabindex="-1" aria-hidden="true">
         {% render 'object-image', product: item.product, side: 'fram', width: 300 %}
       </a>

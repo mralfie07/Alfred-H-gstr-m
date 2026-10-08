@@ -1,0 +1,498 @@
+/* OBJECT 07 — motion.
+   Everything that moves on its own is gated by `.motion` on <html>, set before the first paint by
+   snippets/motion-head.liquid when the visitor allows motion. Without it (reduced motion, no JS)
+   every element sits in its final state. Section-specific motion lives in each section's stylesheet. */
+
+:root {
+  /* On-screen movement: curtains, the horizon, things flying between pages. */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  /* A damped spring (ζ 0.55, ~12 % overshoot) for things that land: garments, the star. */
+  --ease-spring: linear(0, 0.056 3.1%, 0.191 6.2%, 0.368 9.4%, 0.552 12.5%, 0.724 15.6%, 0.868 18.8%, 0.98 21.9%, 1.057 25%, 1.103 28.1%, 1.124 31.2%, 1.125 34.4%, 1.112 37.5%, 1.092 40.6%, 1.069 43.8%, 1.046 46.9%, 1.026 50%, 1.01 53.1%, 0.998 56.2%, 0.99 59.4%, 0.985 62.5%, 0.984 65.6%, 0.985 68.8%, 0.987 71.9%, 0.99 75%, 0.993 78.1%, 0.995 81.2%, 0.998 84.4%, 1 87.5%, 1.001 90.6%, 1);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Page transitions: the next page opens from a horizon line, as the emblem's star cuts the oval.
+   The header stays put; the garment and its archive number fly to their place on the next page.
+   --------------------------------------------------------------------------------------------- */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+.section-header {
+  view-transition-name: site-header;
+}
+
+::view-transition-group(site-header) {
+  z-index: 10;
+}
+
+::view-transition-old(root) {
+  animation: o7-vt-recede 0.75s var(--ease-in-out) both;
+}
+
+::view-transition-new(root) {
+  animation: o7-vt-horizon 0.85s var(--ease-in-out) 0.05s both;
+}
+
+@keyframes o7-vt-recede {
+  to {
+    opacity: 0.2;
+    scale: 0.94;
+  }
+}
+
+@keyframes o7-vt-horizon {
+  from {
+    clip-path: inset(50% 0 50% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+::view-transition-group(garment),
+::view-transition-group(numeral) {
+  animation-duration: 0.9s;
+  animation-timing-function: var(--ease-in-out);
+}
+
+::view-transition-group(garment) {
+  z-index: 5;
+}
+
+::view-transition-group(numeral) {
+  z-index: 4;
+}
+
+/* Both snapshots fill their box the same way, so the garment never stretches mid-flight. */
+::view-transition-old(garment),
+::view-transition-new(garment),
+::view-transition-old(numeral),
+::view-transition-new(numeral) {
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The garment lifts off the page while it travels. */
+::view-transition-image-pair(garment) {
+  animation: o7-vt-lift 0.9s var(--ease-in-out) both;
+}
+
+@keyframes o7-vt-lift {
+  50% {
+    scale: 1.06;
+    translate: 0 -2%;
+  }
+}
+
+/* Leaving with a dialog open, or swapping cart lines: nothing but the lines may fly. */
+.vt-flat *,
+.vt-cart *:not(.cart-line) {
+  view-transition-name: none !important; /* one shared root snapshot under the dialog */
+}
+
+/* Cart lines inside the open drawer: a removed line slides out, the rest close the gap. */
+#cart-drawer[open] .cart-line {
+  view-transition-name: var(--line);
+  view-transition-class: cart-line;
+}
+
+::view-transition-group(*.cart-line) {
+  animation-duration: 0.5s;
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-old(*.cart-line):only-child {
+  animation: o7-line-out 0.4s var(--ease-out) both;
+}
+
+::view-transition-new(*.cart-line):only-child {
+  animation: o7-line-in 0.5s var(--ease-out) both;
+}
+
+@keyframes o7-line-out {
+  to {
+    opacity: 0;
+    translate: 48px 0;
+  }
+}
+
+@keyframes o7-line-in {
+  from {
+    opacity: 0;
+    translate: 32px 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Archive numbers roll into place like a counter. Markup from snippets/numeral-roll.liquid,
+   or theme.rollTo() for numbers that change.
+   --------------------------------------------------------------------------------------------- */
+.roll {
+  position: relative;
+  display: inline-block;
+  overflow: visible clip;
+  vertical-align: top;
+}
+
+.roll__ghost {
+  visibility: hidden;
+}
+
+.roll__col {
+  position: absolute;
+  inset: 0 -0.5em auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateY(var(--roll-end, -90%));
+}
+
+.roll__col > span {
+  display: block;
+  height: 1lh;
+}
+
+.motion .roll__col[data-roll-load] {
+  animation: o7-roll calc(1.3s + var(--n, 0) * 0.22s) var(--ease-out) calc(var(--roll-delay, 0.15s) + var(--n, 0) * 0.05s) backwards;
+}
+
+/* Arriving on a product page through a view transition: the number is already flying. */
+.vt .product__numeral .roll__col {
+  animation: none;
+}
+
+@keyframes o7-roll {
+  from {
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Entrances on page load (skipped when the page arrives through a view transition).
+   --------------------------------------------------------------------------------------------- */
+@keyframes o7-rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--rise, 24px);
+  }
+}
+
+@keyframes o7-drop {
+  from {
+    opacity: 0;
+    translate: 0 -56px;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+@keyframes o7-slide-in {
+  from {
+    opacity: 0;
+    translate: var(--slide, 40px) 0;
+  }
+}
+
+.motion:not(.vt) [data-enter] {
+  animation: o7-rise 1s var(--ease-out) calc(0.12s + var(--enter-i, 0) * 80ms) backwards;
+}
+
+.motion:not(.vt) [data-enter="drop"] {
+  animation: o7-drop 1.3s var(--ease-spring) calc(0.2s + var(--enter-i, 0) * 90ms) backwards;
+}
+
+.motion:not(.vt) [data-enter-group] > * {
+  animation: o7-rise 0.9s var(--ease-out) calc(0.25s + var(--i, 0) * 60ms) backwards;
+}
+
+[data-enter-group] > :nth-child(2) { --i: 1; }
+[data-enter-group] > :nth-child(3) { --i: 2; }
+[data-enter-group] > :nth-child(4) { --i: 3; }
+[data-enter-group] > :nth-child(5) { --i: 4; }
+[data-enter-group] > :nth-child(6) { --i: 5; }
+[data-enter-group] > :nth-child(7) { --i: 6; }
+[data-enter-group] > :nth-child(n + 8) { --i: 7; }
+
+/* ---------------------------------------------------------------------------------------------
+   Reveal on scroll. theme.js only hides what starts below the fold ("waiting"), so nothing on
+   screen ever blinks out; it plays once ("in") as it arrives.
+   --------------------------------------------------------------------------------------------- */
+[data-reveal] {
+  transition:
+    opacity 0.9s var(--ease-out) var(--reveal-delay, 0s),
+    translate 1.1s var(--ease-out) var(--reveal-delay, 0s),
+    clip-path 1.2s var(--ease-in-out) var(--reveal-delay, 0s);
+}
+
+[data-reveal][data-reveal-state="waiting"] {
+  opacity: 0;
+  translate: 0 40px;
+}
+
+[data-reveal="drop"][data-reveal-state="waiting"] {
+  translate: 0 -48px;
+}
+
+[data-reveal="drop"] {
+  transition:
+    opacity 0.6s var(--ease-out) var(--reveal-delay, 0s),
+    translate 1.3s var(--ease-spring) var(--reveal-delay, 0s);
+}
+
+[data-reveal="mask"][data-reveal-state="waiting"] {
+  opacity: 1;
+  translate: 0 35%;
+  clip-path: inset(0 0 100% 0);
+}
+
+[data-reveal="mask"] {
+  clip-path: inset(0 0 -20% 0);
+}
+
+[data-reveal="scene"][data-reveal-state="waiting"] {
+  opacity: 1;
+  translate: none;
+}
+
+/* Archive numbers never break between their rolling digits. */
+.numeral,
+[data-roll-value] {
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Scrambled text: labels decode from archive glyphs (theme.scramble). The width is held so the
+   line never jitters.
+   --------------------------------------------------------------------------------------------- */
+.scramble {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Labels that decode stay hidden until their first frame (with a fallback if scripts never run). */
+.motion [data-scramble]:not([data-scrambled]) {
+  opacity: 0;
+  animation: o7-failsafe 0.01s linear 3s forwards;
+}
+
+@keyframes o7-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Film grain over the whole site, the same 35 mm stock as the campaign film.
+   --------------------------------------------------------------------------------------------- */
+.motion body::after {
+  content: "";
+  position: fixed;
+  inset: -120px;
+  z-index: 60;
+  pointer-events: none;
+  background: url("grain.png") 0 0 / 180px 180px;
+  opacity: 0.07;
+  animation: o7-grain 0.9s steps(6) infinite;
+}
+
+@keyframes o7-grain {
+  0% { translate: 0 0; }
+  20% { translate: -60px 40px; }
+  40% { translate: 50px -70px; }
+  60% { translate: -30px -40px; }
+  80% { translate: 70px 60px; }
+  100% { translate: 0 0; }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Cursor: over a garment, a bone disc says what a click does. Fine pointers only.
+   --------------------------------------------------------------------------------------------- */
+.cursor {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .has-cursor .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 70;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+    border-radius: 50%;
+    pointer-events: none;
+    color: var(--ink);
+    background: var(--bone);
+    font-stretch: 112%;
+    font-weight: 500;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0;
+    scale: 0.4;
+    transition: opacity 0.25s var(--ease-out), scale 0.45s var(--ease-out);
+    will-change: transform;
+  }
+
+  .has-cursor .cursor--on {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .has-cursor .cursor--press {
+    scale: 0.86;
+  }
+
+  .has-cursor [data-cursor],
+  .has-cursor [data-cursor] * {
+    cursor: none;
+  }
+}
+
+/* Magnetic controls drift toward the pointer and settle back. */
+[data-magnetic] {
+  transition: translate 0.7s var(--ease-spring);
+}
+
+[data-magnetic].is-attracted {
+  transition: translate 0.25s var(--ease-out);
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Drawers: the menu opens like a curtain from the top; contents arrive one after another.
+   --------------------------------------------------------------------------------------------- */
+.motion .drawer--full {
+  transform: none;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.75s var(--ease-in-out), overlay 0.75s allow-discrete, display 0.75s allow-discrete;
+
+  &[open] {
+    transform: none;
+    clip-path: inset(0 0 0 0);
+
+    @starting-style {
+      transform: none;
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+}
+
+.motion .drawer[data-opening] :is(.cart-line, .drawer__foot, .cart-empty) {
+  animation: o7-slide-in 0.8s var(--ease-out) calc(0.18s + var(--i, 0) * 70ms) backwards;
+}
+
+.motion .drawer[data-opening] .drawer__foot {
+  --i: 3;
+}
+
+.motion .drawer[data-opening] .menu__list > li > a > span {
+  animation: o7-menu-line 1s var(--ease-out) calc(0.3s + var(--i, 0) * 70ms) backwards;
+}
+
+.motion .drawer[data-opening] .menu__emblem {
+  animation: o7-emblem-in 1.1s var(--ease-spring) 0.25s backwards;
+}
+
+.motion .drawer[data-opening] .menu__foot {
+  animation: o7-rise 0.8s var(--ease-out) 0.6s backwards;
+}
+
+@keyframes o7-menu-line {
+  from {
+    translate: 0 110%;
+  }
+}
+
+@keyframes o7-emblem-in {
+  from {
+    opacity: 0;
+    rotate: -90deg;
+    scale: 0.6;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Small things.
+   --------------------------------------------------------------------------------------------- */
+@keyframes o7-star-turn {
+  0% {
+    rotate: 0deg;
+  }
+  60%,
+  100% {
+    rotate: 90deg;
+  }
+}
+
+/* Header links: the label rolls up and is replaced by itself. */
+@media (hover: hover) and (pointer: fine) {
+  .motion .site-header__links a {
+    display: inline-block;
+    overflow: clip;
+    vertical-align: top;
+
+    & > span {
+      position: relative;
+      display: block;
+      transition: translate 0.55s var(--ease-out);
+    }
+
+    & > span::after {
+      content: attr(data-text);
+      position: absolute;
+      inset-inline-start: 0;
+      top: 100%;
+    }
+
+    &:hover > span {
+      translate: 0 -100%;
+    }
+  }
+}
+
+/* Bag dips when something lands in it. */
+@keyframes o7-bag {
+  40% {
+    translate: 0 3px;
+    scale: 1.12;
+  }
+}
+
+.bag--catch svg {
+  animation: o7-bag 0.5s var(--ease-out);
+}
+
+/* Something flying into the bag. */
+.fly {
+  position: fixed;
+  z-index: 65;
+  pointer-events: none;
+  will-change: transform;
+
+  & img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 16px rgb(12 12 11 / 0.4));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important; /* user asked for no motion */
+  }
+}

@@ -41,13 +41,138 @@
       "type": "drop-signup",
       "settings": {
         "heading": "Få nästa droppet först",
-        "text": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>"
+        "text": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>",
+        "fallback": "campaign-07"
+      }
+    },
+    "ticker": {
+      "type": "archive-ticker",
+      "blocks": {
+        "drop": {
+          "type": "text",
+          "settings": {
+            "text": "Drop 01"
+          }
+        },
+        "object_001": {
+          "type": "object",
+          "settings": {
+            "collection": "object-001"
+          }
+        },
+        "object_002": {
+          "type": "object",
+          "settings": {
+            "collection": "object-002"
+          }
+        },
+        "est": {
+          "type": "text",
+          "settings": {
+            "text": "Est. 2007"
+          }
+        }
+      },
+      "block_order": [
+        "drop",
+        "object_001",
+        "object_002",
+        "est"
+      ],
+      "settings": {
+        "speed": 40,
+        "repeat": 2
+      }
+    },
+    "reel": {
+      "type": "campaign-reel",
+      "blocks": {
+        "frame_01": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-01",
+            "caption": "Tyget i middagssol"
+          }
+        },
+        "frame_02": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-02",
+            "caption": "Mellan pelarna"
+          }
+        },
+        "frame_03": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-03",
+            "caption": "OBJECT #002"
+          }
+        },
+        "frame_04": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-04",
+            "caption": "Ryggen, OBJECT #001"
+          }
+        },
+        "frame_05": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-05",
+            "caption": "Skuggor över bröstet"
+          }
+        },
+        "frame_06": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-06",
+            "caption": "Trappan"
+          }
+        },
+        "frame_07": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-07",
+            "caption": "Blicken"
+          }
+        },
+        "frame_08": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-08",
+            "caption": "Korridoren"
+          }
+        },
+        "frame_09": {
+          "type": "frame",
+          "settings": {
+            "fallback": "campaign-09",
+            "caption": "Trycket"
+          }
+        }
+      },
+      "block_order": [
+        "frame_01",
+        "frame_02",
+        "frame_03",
+        "frame_04",
+        "frame_05",
+        "frame_06",
+        "frame_07",
+        "frame_08",
+        "frame_09"
+      ],
+      "settings": {
+        "kicker": "Drop 01 · Kampanj",
+        "word": "Object 07"
       }
     }
   },
   "order": [
     "hero",
+    "ticker",
     "cross",
+    "reel",
     "signup"
   ]
 }

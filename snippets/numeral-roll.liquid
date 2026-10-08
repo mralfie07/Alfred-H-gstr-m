@@ -1,0 +1,28 @@
+{% doc %}
+  An archive number whose digits roll into place like a counter (motion.css). Each digit is a
+  column of ten that ends on the right one; without motion the column simply rests there.
+  The digits repeat inside the column, so put it inside an element with aria-hidden="true".
+
+  @param {string} text - The number, e.g. "#001" or "001"
+  @param {boolean} [load] - Roll when the page loads (default true). False leaves it to a reveal.
+
+  @example
+  {% render 'numeral-roll', text: '#001' %}
+{% enddoc %}
+{%- liquid
+  assign chars = text | strip | split: ''
+  assign n = 0
+-%}
+{%- for c in chars -%}
+  {%- if '0123456789' contains c -%}
+    {%- assign v = c | plus: 0 -%}
+    <span class="roll"><span class="roll__ghost">{{ c }}</span><span class="roll__col"{% unless load == false %} data-roll-load{% endunless %} style="--n: {{ n }}">
+      {%- for k in (1..10) -%}
+        <span>{{ v | plus: k | modulo: 10 }}</span>
+      {%- endfor -%}
+    </span></span>
+    {%- assign n = n | plus: 1 -%}
+  {%- else -%}
+    {{- c -}}
+  {%- endif -%}
+{%- endfor -%}

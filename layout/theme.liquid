@@ -26,6 +26,12 @@
 
     {{ 'archivo-variable.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'motion.css' | asset_url | stylesheet_tag }}
+    {%- if template.name == 'index' or template.name == 'collection' %}
+      {%- comment -%} Coming back from a product, the garment needs its card or the cross parsed before the first frame. {%- endcomment %}
+      <link rel="expect" href="#MainEnd" blocking="render">
+    {%- endif %}
+    {% render 'motion-head' %}
     <style>
       :root { --concrete-image: url("{{ 'concrete.webp' | asset_url }}"); }
     </style>
@@ -44,10 +50,12 @@
           soldOut: {{ 'products.sold_out' | t | json }},
           cartError: {{ 'cart.error' | t | json }},
           cartOne: {{ 'cart.label_one' | t | json }},
-          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }}
+          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }},
+          flip: {{ 'motion.flip' | t | json }}
         }
       };
     </script>
+    <script src="{{ 'motion.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
     {{ content_for_header }}
@@ -60,6 +68,7 @@
 
     <main id="MainContent" tabindex="-1">
       {{ content_for_layout }}
+      <span id="MainEnd" hidden></span>
     </main>
 
     {% sections 'footer-group' %}

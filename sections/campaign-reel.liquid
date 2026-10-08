@@ -1,0 +1,367 @@
+{%- liquid
+  assign frames = section.blocks.size
+  assign last = frames | minus: 1 | at_least: 1
+-%}
+<section class="reel" aria-label="{{ 'motion.campaign' | t }}" style="--frames: {{ frames }}" data-reel>
+  <div class="reel__sticky">
+    <div class="reel__head page-width">
+      {%- if section.settings.kicker != blank -%}
+        <p class="ui" data-scramble>{{ section.settings.kicker }}</p>
+      {%- endif -%}
+      <p class="reel__count ui" aria-hidden="true">
+        <span class="reel__index" data-reel-index data-roll-value="01">01</span>
+        <span class="reel__total">/ {% if frames < 10 %}0{% endif %}{{ frames }}</span>
+      </p>
+    </div>
+
+    {%- if section.settings.word != blank -%}
+      <p class="reel__word" aria-hidden="true">{{ section.settings.word }}</p>
+    {%- endif -%}
+
+    <ul class="reel__track" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign p = forloop.index0 | times: 100 | divided_by: last
+          assign fallback = block.settings.fallback | strip
+          assign loading = 'lazy'
+          if forloop.index <= 2
+            assign loading = 'eager'
+          endif
+        -%}
+        <li class="reel__frame" style="--p: {{ p }}%" {{ block.shopify_attributes }}>
+          <figure>
+            <div class="reel__media">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1600
+                  | image_tag:
+                    widths: '600, 900, 1200, 1600',
+                    sizes: '(min-width: 900px) 62vw, 80vw',
+                    loading: loading,
+                    alt: block.settings.image.alt | default: block.settings.caption
+                }}
+              {%- elsif fallback != blank -%}
+                <img
+                  src="{{ fallback | append: '-1600.webp' | asset_url }}"
+                  srcset="{{ fallback | append: '-800.webp' | asset_url }} 800w, {{ fallback | append: '-1600.webp' | asset_url }} 1600w"
+                  sizes="(min-width: 900px) 62vw, 80vw"
+                  alt="{{ block.settings.caption | escape }}"
+                  width="1600"
+                  height="893"
+                  loading="{{ loading }}"
+                >
+              {%- endif -%}
+            </div>
+            <figcaption class="reel__caption ui ui--small">
+              <span>{{ 'motion.frame' | t }} {% if forloop.index < 10 %}00{% elsif forloop.index < 100 %}0{% endif %}{{ forloop.index }}</span>
+              {%- if block.settings.caption != blank %}<span class="muted">{{ block.settings.caption }}</span>{% endif -%}
+            </figcaption>
+          </figure>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% stylesheet %}
+  /* Without scroll-driven animations (or with motion off) the reel is a strip you swipe through. */
+  .reel {
+    position: relative;
+    padding-block: var(--s-7);
+    background: var(--ink);
+    overflow: clip;
+  }
+
+  .reel__sticky {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+
+  .reel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-4);
+    width: 100%;
+  }
+
+  .reel__count {
+    display: flex;
+    gap: 0.5em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reel__total {
+    color: var(--bone-dim);
+  }
+
+  .reel__word {
+    display: none;
+  }
+
+  .reel__track {
+    display: flex;
+    gap: clamp(0.75rem, 3vw, 2rem);
+    margin: 0;
+    padding: 0 var(--gutter);
+    list-style: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .reel__frame {
+    flex: none;
+    width: min(80vw, 420px);
+    scroll-snap-align: start;
+
+    & figure {
+      display: grid;
+      gap: var(--s-3);
+      margin: 0;
+    }
+
+    @media (min-width: 900px) {
+      width: min(62vw, 104svh);
+    }
+  }
+
+  .reel__media {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: clip;
+    background: var(--char);
+
+    @media (min-width: 900px) {
+      aspect-ratio: 1600 / 893;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .reel__caption {
+    display: flex;
+    gap: var(--s-4);
+    color: var(--bone);
+  }
+
+  /* Pinned film strip: the page scrolls down, the frames travel sideways under a fixed head. */
+  @supports (animation-timeline: view()) {
+    .motion .reel {
+      height: calc(var(--frames) * 62svh + 100svh);
+      padding: 0;
+      overflow: visible;
+      view-timeline: --reel block;
+    }
+
+    .motion .reel__sticky {
+      position: sticky;
+      top: var(--header-h);
+      height: calc(100svh - var(--header-h));
+      align-content: center;
+      overflow: clip;
+    }
+
+    .motion .reel__track {
+      width: max-content;
+      overflow: visible;
+      scroll-snap-type: none;
+      animation: reel-travel linear both;
+      animation-timeline: --reel;
+      animation-range: contain 0% contain 100%;
+    }
+
+    /* Each frame's picture drifts inside its window as it crosses, a little slower than the strip. */
+    .motion .reel__media img {
+      scale: 1.18;
+      animation: reel-drift linear both;
+      animation-timeline: --reel;
+      animation-range: contain calc(var(--p) - 45%) contain calc(var(--p) + 45%);
+    }
+
+    .motion .reel__frame figure {
+      animation: reel-focus linear both;
+      animation-timeline: --reel;
+      animation-range: contain calc(var(--p) - 30%) contain calc(var(--p) + 30%);
+    }
+
+    /* A giant word behind the strip, moving at a third of its speed. */
+    .motion .reel__word {
+      position: absolute;
+      inset: auto 0 6% 0;
+      z-index: -1;
+      display: block;
+      margin: 0;
+      white-space: nowrap;
+      font-stretch: 125%;
+      font-weight: 300;
+      font-size: clamp(8rem, 38vw, 30rem);
+      line-height: 0.8;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: rgb(236 230 220 / 0.05);
+      animation: reel-word linear both;
+      animation-timeline: --reel;
+      animation-range: contain 0% contain 100%;
+    }
+
+    .motion .reel__sticky {
+      isolation: isolate;
+    }
+  }
+
+  @keyframes reel-travel {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: calc(-100% + 100vw) 0;
+    }
+  }
+
+  @keyframes reel-drift {
+    from {
+      translate: 8% 0;
+    }
+    to {
+      translate: -8% 0;
+    }
+  }
+
+  @keyframes reel-focus {
+    0%,
+    100% {
+      opacity: 0.45;
+      scale: 0.94;
+    }
+    50% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes reel-word {
+    from {
+      translate: 10% 0;
+    }
+    to {
+      translate: -40% 0;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    // The frame counter rolls to the frame nearest the middle of the screen.
+    for (const reel of document.querySelectorAll('[data-reel]')) {
+      const index = reel.querySelector('[data-reel-index]');
+      const frames = [...reel.querySelectorAll('.reel__frame')];
+      if (!index || frames.length < 2) continue;
+      let current = 0;
+      let raf = 0;
+      const update = () => {
+        raf = 0;
+        const mid = window.innerWidth / 2;
+        let best = 0;
+        let bestDistance = Infinity;
+        frames.forEach((frame, i) => {
+          const r = frame.getBoundingClientRect();
+          const d = Math.abs(r.left + r.width / 2 - mid);
+          if (d < bestDistance) {
+            bestDistance = d;
+            best = i;
+          }
+        });
+        if (best === current) return;
+        const dir = best > current ? 1 : -1;
+        current = best;
+        const label = String(best + 1).padStart(2, '0');
+        if (window.theme?.rollTo) window.theme.rollTo(index, label, dir);
+        else index.textContent = label;
+      };
+      const request = () => {
+        if (!raf) raf = requestAnimationFrame(update);
+      };
+      let watching = false;
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !watching) {
+          watching = true;
+          window.addEventListener('scroll', request, { passive: true });
+          reel.querySelector('.reel__track').addEventListener('scroll', request, { passive: true });
+          request();
+        } else if (!entry.isIntersecting && watching) {
+          watching = false;
+          window.removeEventListener('scroll', request);
+        }
+      }).observe(reel);
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Kampanjband",
+  "tag": "div",
+  "class": "section-reel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Rad",
+      "default": "Drop 01 · Kampanj"
+    },
+    {
+      "type": "text",
+      "id": "word",
+      "label": "Stort ord bakom bilderna",
+      "default": "Object 07"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "frame",
+      "name": "Bild",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bild"
+        },
+        {
+          "type": "text",
+          "id": "fallback",
+          "label": "Temats bild",
+          "info": "Används när ingen bild är vald, t.ex. campaign-01 … campaign-09."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Bildtext"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kampanjband",
+      "blocks": [
+        { "type": "frame", "settings": { "fallback": "campaign-01" } },
+        { "type": "frame", "settings": { "fallback": "campaign-02" } },
+        { "type": "frame", "settings": { "fallback": "campaign-03" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

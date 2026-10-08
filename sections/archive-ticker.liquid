@@ -1,0 +1,213 @@
+{%- liquid
+  assign repeat = section.settings.repeat | default: 2
+-%}
+<div class="ticker" data-ticker style="--ticker-speed: {{ section.settings.speed }}s">
+  <div class="ticker__skew" data-ticker-skew>
+    <div class="ticker__track" data-ticker-track>
+      {%- for group in (1..2) -%}
+        <ul class="ticker__group" role="list" {% if group == 2 %}aria-hidden="true"{% else %}aria-label="{{ 'motion.ticker' | t }}"{% endif %}>
+          {%- for round in (1..repeat) -%}
+            {%- for block in section.blocks -%}
+              <li class="ticker__item" {% if forloop.first and round == 1 and group == 1 %}{{ block.shopify_attributes }}{% endif %}>
+                {%- case block.type -%}
+                  {%- when 'object' -%}
+                    {%- assign coll = block.settings.collection -%}
+                    {%- assign p = coll.products.first -%}
+                    {%- if p -%}
+                      <span>OBJECT {% render 'object-number', title: coll.title, part: 'number' %}</span>
+                      {%- if p.type != blank %} <span class="ticker__dim">{{ p.type }}</span>{% endif %}
+                      <span class="ticker__dim">{{ p.price | money }}</span>
+                    {%- else -%}
+                      <span>{{ coll.title }}</span>
+                    {%- endif -%}
+                  {%- when 'text' -%}
+                    <span>{{ block.settings.text }}</span>
+                {%- endcase -%}
+              </li>
+              <li class="ticker__star" aria-hidden="true">{% render 'icon', name: 'star' %}</li>
+            {%- endfor -%}
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .ticker {
+    overflow: clip;
+    padding-block: var(--s-5);
+    border-block: 1px solid var(--rule);
+    background: var(--ink);
+  }
+
+  .ticker__skew {
+    will-change: transform;
+  }
+
+  .ticker__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .ticker__group {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: clamp(1.25rem, 4vw, 2.5rem);
+    margin: 0;
+    padding: 0 clamp(1.25rem, 4vw, 2.5rem) 0 0;
+    list-style: none;
+  }
+
+  .ticker__item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35em;
+    white-space: nowrap;
+    font-stretch: 125%;
+    font-weight: 300;
+    font-size: clamp(2.25rem, 10vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .ticker__dim {
+    color: var(--bone-faint);
+  }
+
+  .ticker__star {
+    flex: none;
+    width: clamp(1.25rem, 4vw, 2.25rem);
+    color: var(--bone-dim);
+
+    & svg {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  /* Runs on its own; scrolling speeds it up, leans it, and scrolling up turns it around (section JS). */
+  .motion .ticker__track {
+    animation: ticker-run var(--ticker-speed, 40s) linear infinite;
+  }
+
+  @keyframes ticker-run {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    for (const ticker of document.querySelectorAll('[data-ticker]')) {
+      if (!document.documentElement.classList.contains('motion')) continue;
+      const track = ticker.querySelector('[data-ticker-track]');
+      const skew = ticker.querySelector('[data-ticker-skew]');
+      const run = track.getAnimations()[0];
+      if (!run) continue;
+      let lastY = window.scrollY;
+      let lastT = performance.now();
+      let velocity = 0;
+      let rate = 1;
+      let dir = 1;
+      let raf = 0;
+      let visible = false;
+      const tick = (now) => {
+        const dt = Math.max(1, now - lastT);
+        const y = window.scrollY;
+        const v = (y - lastY) / dt;
+        lastY = y;
+        lastT = now;
+        velocity += (v - velocity) * 0.15;
+        if (Math.abs(v) > 0.05) dir = Math.sign(v);
+        const target = dir * (1 + Math.min(Math.abs(velocity) * 6, 7));
+        rate += (target - rate) * 0.08;
+        run.playbackRate = rate;
+        const lean = Math.max(-8, Math.min(8, velocity * -6));
+        skew.style.transform = `skewX(${lean.toFixed(2)}deg)`;
+        raf = visible ? requestAnimationFrame(tick) : 0;
+      };
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) {
+          run.play();
+          lastY = window.scrollY;
+          lastT = performance.now();
+          if (!raf) raf = requestAnimationFrame(tick);
+        } else {
+          run.pause();
+        }
+      }).observe(ticker);
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Arkivband",
+  "tag": "section",
+  "class": "section-ticker",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Tid för ett varv",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "repeat",
+      "label": "Upprepningar per varv",
+      "info": "Höj om bandet tar slut på breda skärmar.",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    }
+  ],
+  "blocks": [
+    {
+      "type": "object",
+      "name": "Objekt",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Kollektion",
+          "info": "Visar numret, plaggtypen och priset från kollektionens första produkt."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Drop 01"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arkivband",
+      "blocks": [
+        { "type": "text", "settings": { "text": "Drop 01" } },
+        { "type": "object" },
+        { "type": "object" },
+        { "type": "text", "settings": { "text": "Est. 2007" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

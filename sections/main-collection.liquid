@@ -9,25 +9,59 @@
   endcapture
   assign number = number | strip
   assign digits = number | remove: '#'
+
+  # Campaign image behind the number: the collection's own image, else the theme's still for its handle.
+  assign campaign = ''
+  if section.settings.show_image
+    if collection.image
+      assign campaign = collection.image | image_url: width: 1600
+      assign campaign_small = collection.image | image_url: width: 800
+    else
+      assign pairs = section.settings.campaign_images | split: ','
+      for pair in pairs
+        assign kv = pair | split: ':'
+        assign key = kv.first | strip
+        if key == collection.handle
+          assign file = kv.last | strip
+          assign campaign = file | append: '-1600.webp' | asset_url
+          assign campaign_small = file | append: '-800.webp' | asset_url
+        endif
+      endfor
+    endif
+  endif
 -%}
 <div class="collection">
-  <header class="collection__head concrete">
+  <header class="collection__head concrete{% if campaign != blank %} collection__head--image{% endif %}">
+    {%- if campaign != blank -%}
+      <div class="collection__media" aria-hidden="true">
+        <img
+          src="{{ campaign }}"
+          srcset="{{ campaign_small }} 800w, {{ campaign }} 1600w"
+          sizes="100vw"
+          alt=""
+          width="1600"
+          height="893"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </div>
+    {%- endif -%}
     <div class="collection__head-inner page-width">
-      <p class="ui">{{ section.settings.kicker }}</p>
+      <p class="ui" data-scramble>{{ section.settings.kicker }}</p>
       <h1 class="collection__title">
         {%- if collection.title contains '#' -%}
           <span class="visually-hidden">{{ collection.title }}</span>
-          <span class="collection__number numeral" aria-hidden="true">{{ number }}</span>
+          <span class="collection__number numeral" aria-hidden="true">{% render 'numeral-roll', text: number %}</span>
         {%- else -%}
           {%- comment -%} Collections that aren't one object (e.g. /collections/all) show their name. {%- endcomment -%}
-          <span class="collection__name heading">{{ collection.title }}</span>
+          <span class="collection__name heading" data-enter>{{ collection.title }}</span>
         {%- endif -%}
       </h1>
-      <p class="ui muted">
+      <p class="ui muted" data-enter style="--enter-i: 4">
         {{- 'collections.count' | t: count: collection.products_count -}}
       </p>
       {%- if collection.description != blank -%}
-        <div class="rte">{{ collection.description }}</div>
+        <div class="rte" data-enter style="--enter-i: 5">{{ collection.description }}</div>
       {%- endif -%}
     </div>
   </header>
@@ -56,11 +90,15 @@
               assign loading = 'eager'
             endif
           -%}
-          <li class="object-card">
-            <a class="object-card__link" href="{{ product.url }}">
+          <li
+            class="object-card"
+            data-vt-object="{{ product.handle }}"
+            {% if forloop.index <= 3 %}data-enter="drop" style="--enter-i: {{ forloop.index | plus: 2 }}"{% else %}data-reveal="drop"{% endif %}
+          >
+            <a class="object-card__link" href="{{ product.url }}" data-cursor="{{ 'motion.open' | t }}">
               <div class="object-card__media concrete">
                 {%- if card_digits != blank -%}
-                  <span class="object-card__digits numeral" aria-hidden="true">{{ card_digits }}</span>
+                  <span class="object-card__digits numeral" aria-hidden="true"><span data-vt="numeral">{{ card_digits }}</span></span>
                 {%- endif -%}
                 {% render 'object-image',
                   product: product,
@@ -68,7 +106,8 @@
                   width: 900,
                   loading: loading,
                   class: 'object-card__image',
-                  sizes: '(min-width: 990px) 30vw, (min-width: 600px) 45vw, 92vw'
+                  sizes: '(min-width: 990px) 30vw, (min-width: 600px) 45vw, 92vw',
+                  vt: 'garment'
                 %}
               </div>
               <div class="object-card__info">
@@ -123,8 +162,8 @@
           {%- for c in collections -%}
             {%- assign start = c.handle | slice: 0, prefix.size -%}
             {%- if c.handle != collection.handle and start == prefix -%}
-              <li>
-                <a class="collection__sibling" href="{{ c.url }}">
+              <li data-reveal="mask">
+                <a class="collection__sibling" href="{{ c.url }}" data-magnetic>
                   <span class="numeral">{% render 'object-number', title: c.title, part: 'number' %}</span>
                   {% render 'icon', name: 'arrow' %}
                 </a>
@@ -139,13 +178,73 @@
 
 {% stylesheet %}
   .collection__head {
+    position: relative;
     overflow: hidden;
+    isolation: isolate;
+  }
+
+  .collection__head--image {
+    background: var(--ink);
+  }
+
+  /* The campaign still sits behind the number, darkened so bone text keeps its contrast. */
+  .collection__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgb(12 12 11 / 0.92), rgb(12 12 11 / 0.35) 55%, rgb(12 12 11 / 0.55)),
+        rgb(12 12 11 / 0.2);
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 35%;
+    }
+  }
+
+  .motion:not(.vt) .collection__media img {
+    animation: collection-settle 2.4s var(--ease-out) backwards;
+  }
+
+  @keyframes collection-settle {
+    from {
+      scale: 1.14;
+      opacity: 0;
+    }
+  }
+
+  /* Leaving the head, the photo drifts down and pushes in behind the number. */
+  @supports (animation-timeline: view()) {
+    .motion .collection__media {
+      animation: collection-drift linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+
+  @keyframes collection-drift {
+    to {
+      translate: 0 30%;
+      scale: 1.1;
+    }
   }
 
   .collection__head-inner {
     display: grid;
     gap: var(--s-3);
     padding-block: var(--s-7) var(--s-6);
+  }
+
+  .collection__head--image .collection__head-inner {
+    padding-block: clamp(6rem, 32vw, 14rem) var(--s-6);
   }
 
   .collection__title {
@@ -198,19 +297,60 @@
     z-index: -1;
     font-size: clamp(6rem, 34vw, 11rem);
     color: var(--bone-faint);
+    transition: color 0.6s var(--ease-out), transform 0.9s var(--ease-out);
+
+    & > span {
+      display: block;
+    }
   }
 
+  /* Square box: the same shape as on the product page, so it flies across without stretching. */
   .object-card__image {
     width: 86%;
-    height: 86%;
+    height: auto;
+    aspect-ratio: 1;
     object-fit: contain;
     filter: drop-shadow(0 18px 16px rgb(12 12 11 / 0.32));
-    transition: transform 0.75s var(--ease-out);
+    transition: transform 0.9s var(--ease-out), filter 0.9s var(--ease-out);
   }
 
-  @media (hover: hover) {
-    .object-card__link:hover .object-card__image {
-      transform: translateY(-6px);
+  .object-card__media {
+    transition: scale 0.2s var(--ease-out);
+  }
+
+  .object-card__link:active .object-card__media {
+    scale: 0.985;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .object-card__link:hover {
+      & .object-card__image {
+        transform: translateY(-14px) rotate(-1.5deg);
+        filter: drop-shadow(0 34px 24px rgb(12 12 11 / 0.4));
+      }
+
+      & .object-card__digits {
+        color: var(--bone-dim);
+        transform: translateX(5%);
+      }
+    }
+  }
+
+  /* While the page scrolls, the garment floats at its own depth inside the card. */
+  @supports (animation-timeline: view()) {
+    .motion .object-card__image {
+      animation: card-depth linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+
+  @keyframes card-depth {
+    from {
+      translate: 0 7%;
+    }
+    to {
+      translate: 0 -7%;
     }
   }
 
@@ -280,8 +420,10 @@
       transition: transform 0.5s var(--ease-out);
     }
 
-    &:hover svg {
-      transform: translateX(6px);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover svg {
+        transform: translateX(10px) rotate(-45deg);
+      }
     }
   }
 {% endstylesheet %}
@@ -312,6 +454,20 @@
       "label": "Visa baksidan för",
       "default": "object-002",
       "info": "Kollektioner vars webbadress innehåller detta visar ryggen på korten (kyssmotivet sitter på ryggen)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Visa kampanjbild bakom numret",
+      "default": true,
+      "info": "Kollektionens egen bild används om den finns."
+    },
+    {
+      "type": "text",
+      "id": "campaign_images",
+      "label": "Temats kampanjbilder per kollektion",
+      "default": "object-001:campaign-06, object-002:campaign-08",
+      "info": "Används när kollektionen saknar egen bild. Format: webbadress:bild, kommaseparerat."
     },
     {
       "type": "text",
