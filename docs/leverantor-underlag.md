@@ -21,7 +21,7 @@ Märket släpper en färgställning i taget. Första droppet är **"svart-camo":
   - Vävd nacketikett, svart, med "OBJECT 07" och storlek.
   - Liten vävd flagga på ärmkanten med "OBJECT 07". På den långärmade ska ni bestämma var den sitter.
   - Logotypen finns som PNG (`logo/`). Vektor saknas.
-- **Pris i butiken:** t-shirten 799 kr. Den långärmade är inte prissatt än.
+- **Numrering och pris i butiken:** t-shirten är OBJECT #001, 699 kr. Den långärmade är OBJECT #002, 999 kr.
 - Senare drops: samma modeller i svart och blå acid wash, och ett andra motiv (ett tryck som går över sidsömmen). Ingår inte nu, men bra att veta för tillverkaren.
 
 ## Trycket
@@ -30,7 +30,7 @@ Kyssmotivet: två handritade linjeansikten som bildar ett hjärta. I camo-utför
 
 ## Bilder i paketet
 - `produktbilder/svart-camo-kyss_fram.jpg` och `_bak.jpg`: t-shirten med camo-trycket.
-- `produktbilder/langarmad_fram.jpg`, `_bak.jpg` och `langarmad_bak-fram.jpg`: den långärmade. Plagget är AI-genererat, trycket är de riktiga tryckfilerna inlagda ovanpå.
+- `produktbilder/langarmad_fram.jpg`, `_bak.jpg` och `langarmad_bak-fram.jpg`: den långärmade. Plagget är AI-genererat, trycket är överfört från t-shirtens produktbilder.
 - `produktbilder/object-002-sheet.png`: närbilder på nacketikett, ärmflagga och brösttryck (visas på den blå färgen, samma detaljer gäller camo).
 - **Obs:** bilderna är visualiseringar, inte fotografier av färdiga provplagg.
 

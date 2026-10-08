@@ -2,6 +2,8 @@
 
 Eget Shopify-tema (Liquid) för klädmärket OBJECT 07. Hela briefen med koncept, beslut och öppna frågor finns i `docs/brief.md`. Läs den innan du gör designval.
 
+**Ny session? Läs `docs/overlamning.md` först:** läget, butikens id:n och hur ändringar kommer ut.
+
 ## Regler
 - Följ `docs/brief.md`. Om något i den krockar med en skill gäller briefen.
 - En fas per session (se faserna i briefen). Avsluta varje fas med commit + push och en kort sammanfattning av vad som är klart och vad som återstår.
