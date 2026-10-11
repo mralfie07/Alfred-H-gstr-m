@@ -29,7 +29,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 | OBJECT 07 – fas 2 med film | 205740474716 | **Publicerat** (gammalt: tre färger, gamla heron) |
 | OBJECT 07 – hero v3 (första droppet) | 205884195164 | Opublicerat, ersatt, kan tas bort |
 | OBJECT 07 – Drop 01 (t-shirt + långärmad) | 205885768028 | Opublicerat. Fas 2 + första droppet, utan fas 3. Orört i fas 3. |
-| **OBJECT 07 – Fas 3 (motion)** | **206036402524** | **Opublicerat, det senaste (fas 3). Ska förhandsgranskas och publiceras av användaren.** |
+| **OBJECT 07 – Fas 3 (bara #001)** | **206036402524** | **Opublicerat, det senaste: fas 3 + bara t-shirten (uppdaterat på plats 2026-10-11). Ska förhandsgranskas och publiceras av användaren.** Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
 Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206036402524`
 
 **Så kommer ändringar ut** (GitHub-kopplingen hittas inte i användarens Shopify, troligen avstängd under provperioden):
@@ -64,7 +64,7 @@ Görs i en separat chatt. Underlaget finns i `docs/leverantor-underlag.md` (zip:
 - ffmpeg och ImageMagick finns. Pillow, numpy och scipy installeras med pip.
 
 ## Att göra (användaren)
-1. Förhandsgranska och **publicera "Fas 3 (motion)"** (ersätter Drop 01). Ta sedan bort de äldre OBJECT-temana. Drop 01 har köpfelet ovan.
+1. Förhandsgranska och **publicera "Fas 3 (bara #001)"** (ersätter Drop 01). Ta sedan bort de äldre OBJECT-temana. Drop 01 har köpfelet ovan.
 2. Fyll på **lager**.
 3. **Menyer** (`main-menu`, `footer`), **engelska** under Språk, **favicon** (emblemet).
 4. Uppgradera planen innan försäljning.
