@@ -28,7 +28,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 |---|---|---|
 | OBJECT 07 – fas 2 med film | 205740474716 | **Publicerat** (gammalt: tre färger, gamla heron) |
 | OBJECT 07 – hero v3 (första droppet) | 205884195164 | Opublicerat, ersatt, kan tas bort |
-| OBJECT 07 – Drop 01 (t-shirt + långärmad) | 205885768028 | Opublicerat. Fas 2 + första droppet, utan fas 3. Orört i fas 3. |
+| OBJECT 07 – Drop 01 (bara #001) | 205885768028 | Opublicerat. Fas 2 utan fas 3-rörelse. Uppdaterat på plats 2026-10-11: bara #001 i korset, hero v4, kollektionssidor hoppar över tomma kollektioner (ändrade filer från commit 4ef5caf, uppladdade via staged upload). Har kvar köpfelet i `updateCount` som rättades i fas 3. |
 | **OBJECT 07 – Fas 3 (bara #001)** | **206036402524** | **Opublicerat, det senaste: fas 3 + bara t-shirten (uppdaterat på plats 2026-10-11). Ska förhandsgranskas och publiceras av användaren.** Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
 Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206036402524`
 
