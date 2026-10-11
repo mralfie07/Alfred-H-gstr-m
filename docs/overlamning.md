@@ -9,7 +9,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 - **Nästa fas: fas 4**, mobil, finslipning, tillgänglighet och prestanda. Testa fas 3 på riktiga telefoner (iPhone med Safari och Android med Chrome): introt, svep på plaggen, kampanjbandet, sidbytena och filmkornets prestanda.
 
 ## Kö-sidan (2026-10-11)
-Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** för droppet: butikens lösenordssida, omgjord (`sections/main-password.liquid`, brief avsnitt 18). Den som skriver in sin e-post blir kund med taggen `drop-01-ko`. Nedräkning visas om Släppdatum fylls i i temaredigeraren. Sidan syns bara när lösenordsskyddet är på och temat som har den är publicerat. Lokalt: `/password` i `scripts/preview`.
+Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** för droppet och inte kunna handla. Kö-sidan är `sections/main-password.liquid` (brief avsnitt 18). Ett eget tema, **"Kö (bara e-post)"**, visar den på alla adresser; samma sektion är också lösenordssida i butikstemat. Den som skriver in sin e-post blir kund med taggen `drop-01-ko`. Nedräkning visas om Släppdatum fylls i i temaredigeraren. Sidan syns bara när lösenordsskyddet är på och temat som har den är publicerat. Lokalt: `/password` i `scripts/preview`.
 
 ## Första droppet (beslut 2026-10-06)
 - En färgställning i taget. Nu: **svart acid wash med kyssmotivet i camo**, litet på bröstet och stort på ryggen. Camon sitter i trycket, inte i tyget.
@@ -33,8 +33,9 @@ Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** fö
 | OBJECT 07 – hero v3 (första droppet) | 205884195164 | Opublicerat, ersatt, kan tas bort |
 | OBJECT 07 – Drop 01 (bara #001) | 205885768028 | Opublicerat. Fas 2 utan fas 3-rörelse. Uppdaterat på plats 2026-10-11: bara #001 i korset, hero v4, kollektionssidor hoppar över tomma kollektioner (ändrade filer från commit 4ef5caf, uppladdade via staged upload). Har kvar köpfelet i `updateCount` som rättades i fas 3. |
 | OBJECT 07 – Fas 3 (bara #001) | 206036402524 | Opublicerat, ersatt av "Kö till Drop 01" (samma innehåll, kö-sidan uppladdad på plats 2026-10-11). Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
-| **OBJECT 07 – Kö till Drop 01** | **206211711324** | **Opublicerat, det senaste (2026-10-11): fas 3 + bara t-shirten + kö-sidan, skapat rent från commit af588b1 utan den långärmades filer. Ska förhandsgranskas och publiceras av användaren.** |
-Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206211711324`
+| OBJECT 07 – Butik Drop 01 (till släppet) | 206211711324 | Opublicerat. Hela butiken (fas 3 + bara t-shirten + kö-sidan som lösenordssida), skapat rent från commit af588b1. **Publiceras när droppet öppnar.** |
+| **OBJECT 07 – Kö (bara e-post)** | **206212039004** | **Opublicerat, ska publiceras nu (före droppet).** Bara kö-sidan: varje adress (startsida, produkt, kollektion, varukorg …) visar kön, man kan inte handla. Byggs ur `theme/` med `scripts/build-ko-theme.sh` till `theme-ko/` (31 filer). |
+Förhandsvisning kö: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206212039004` · butik: `?preview_theme_id=206211711324`
 
 **Så kommer ändringar ut** (GitHub-kopplingen hittas inte i användarens Shopify, troligen avstängd under provperioden):
 1. Ändra i `theme/`, kör `shopify theme check` (CLI installeras med `npm i @shopify/cli` i scratchpad).
@@ -68,7 +69,7 @@ Görs i en separat chatt. Underlaget finns i `docs/leverantor-underlag.md` (zip:
 - ffmpeg och ImageMagick finns. Pillow, numpy och scipy installeras med pip.
 
 ## Att göra (användaren)
-1. Förhandsgranska och **publicera "Kö till Drop 01"** (ersätter alla andra OBJECT-teman). Behåll lösenordsskyddet på så att besökarna ser kö-sidan. Koppla domänen i Shopify (Inställningar → Domäner). Ta sedan bort de äldre OBJECT-temana (fas 2 med film, hero v3, Drop 01, Fas 3). Drop 01 har köpfelet ovan.
+1. **Nu:** publicera **"Kö (bara e-post)"** och koppla domänen (Inställningar → Domäner). **När droppet öppnar:** publicera **"Butik Drop 01 (till släppet)"** och stäng av lösenordsskyddet. Ta bort de äldre OBJECT-temana (fas 2 med film, hero v3, Drop 01, Fas 3). Drop 01 har köpfelet ovan.
 2. Fyll på **lager**.
 3. **Menyer** (`main-menu`, `footer`), **engelska** under Språk, **favicon** (emblemet).
 4. Uppgradera planen innan försäljning.

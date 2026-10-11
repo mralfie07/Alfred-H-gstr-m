@@ -12,7 +12,7 @@ Eget Shopify-tema i `theme/`. Byggt efter `DESIGN.md` (riktningen Korset) och go
 | Produkt | `sections/main-product.liquid` | Plagget på betong med Framsida/Baksida, färgerna i samma kollektion som länkar, storlek S–XL, köpknapp som ligger kvar nertill i mobilen, dragspel (beskrivning, storlek, material, frakt) och Shopifys produktbilder i ett svepbart band. |
 | Varukorg | `sections/cart-drawer.liquid`, `sections/main-cart.liquid` | Låda från höger (öppnas från väskan och från aviseringen efter köp) och en vanlig varukorgssida. |
 | Övrigt | `main-page`, `main-404`, `main-search`, `main-list-collections` | Enkla sidor i samma stil. |
-| Kö-sida | `main-password` (layout `password`) | Lösenordssidan = kö till droppet: film, e-post (kund med taggen `drop-01-ko`), valfri nedräkning (inställning Släppdatum), t-shirten, lösenordsfält. Se brief avsnitt 18. |
+| Kö-sida | `main-password` (layout `password`) | Lösenordssidan = kö till droppet: film, e-post (kund med taggen `drop-01-ko`), valfri nedräkning (inställning Släppdatum), t-shirten, lösenordsfält (bara på lösenordssidan). Det separata kö-temat `theme-ko/` (alla mallar = kö-sidan, ingen butik) byggs med `scripts/build-ko-theme.sh`. Se brief avsnitt 18. |
 | Startsida (fas 3) | `archive-ticker.liquid`, `campaign-reel.liquid` | **Arkivband** (jättetext med produktdata, reagerar på scroll) efter heron och **kampanjband** (nio kampanjbilder som filmremsa) efter korset. |
 
 ## Rörelse (fas 3)
