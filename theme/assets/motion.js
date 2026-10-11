@@ -78,8 +78,9 @@ function scramble(el, text = el.dataset.scrambleText ?? el.textContent, { durati
  * @param {HTMLElement} el
  * @param {string} next
  * @param {number} [dir] 1 rolls forward (digits come up from below), -1 rolls back
+ * @param {{ duration?: number, stagger?: number }} [options] Shorter for counters that follow a hand
  */
-function rollTo(el, next, dir = 1) {
+function rollTo(el, next, dir = 1, { duration = 900, stagger = 140 } = {}) {
   const prev = el.dataset.rollValue ?? el.textContent.trim();
   el.dataset.rollValue = next;
   if (!motion || prev === next) {
@@ -116,7 +117,7 @@ function rollTo(el, next, dir = 1) {
     wrap.append(ghost, col);
     el.append(wrap);
     col.animate([{ transform: `translateY(${from})` }, { transform: `translateY(${to})` }], {
-      duration: 900 + i * 140,
+      duration: duration + i * stagger,
       easing: EASE_OUT,
     });
   });

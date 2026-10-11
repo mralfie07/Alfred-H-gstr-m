@@ -221,18 +221,18 @@
   @media (hover: hover) and (pointer: fine) {
     campaign-reel:defined .reel__track {
       cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
     }
+  }
+
+  /* While a mouse drags, and while the strip glides to a frame, snapping waits. */
+  .reel__track.is-free {
+    scroll-snap-type: none;
   }
 
   .reel__track.is-dragging {
     cursor: grabbing;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  /* Dragging, or a sideways wheel/trackpad scroll in progress: no snapping until it settles. */
-  .reel__track.is-free {
-    scroll-snap-type: none;
   }
 
   .reel__frame {
@@ -284,24 +284,27 @@
     display: none;
   }
 
-  /* Motion, driven by the strip's own sideways scroll. */
-  .motion .reel__word {
-    position: absolute;
-    inset: auto 0 12% 0;
-    z-index: -1;
-    display: block;
-    margin: 0;
-    white-space: nowrap;
-    font-stretch: 125%;
-    font-weight: 300;
-    font-size: clamp(8rem, 38vw, 30rem);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
-    color: rgb(236 230 220 / 0.05);
-    pointer-events: none;
-    translate: calc(8% - var(--progress, 0) * 40%) 0;
-    transition: translate 0.6s var(--ease-out);
+  /* Motion, driven by the strip's own sideways scroll. The giant word is for wide screens: on a
+     phone it would sit entirely behind the picture. */
+  @media (min-width: 900px) {
+    .motion .reel__word {
+      position: absolute;
+      inset: auto 0 12% 0;
+      z-index: -1;
+      display: block;
+      margin: 0;
+      white-space: nowrap;
+      font-stretch: 125%;
+      font-weight: 300;
+      font-size: clamp(8rem, 38vw, 30rem);
+      line-height: 0.8;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      color: rgb(236 230 220 / 0.05);
+      pointer-events: none;
+      translate: calc(8% - var(--progress, 0) * 40%) 0;
+      transition: translate 0.6s var(--ease-out);
+    }
   }
 
   .reel__track[data-reveal="slide"][data-reveal-state="waiting"] {
@@ -363,8 +366,7 @@
       this.next = this.querySelector('[data-reel-step="1"]');
       this.current = -1;
       this.target = null;
-      this.settling = false;
-      this.wheel = null;
+      this.dragging = false;
       if (!this.track || this.frames.length < 2) return;
 
       // One controller for every listener, so a re-render or a move in the theme editor can't double them.
@@ -378,7 +380,6 @@
       };
       this.track.addEventListener('scroll', this.onScroll, passive);
       window.addEventListener('resize', this.onScroll, passive);
-      // The one place a scroll comes to rest: a smooth step or a settle is done.
       this.track.addEventListener('scrollend', () => this.#rest(), passive);
       for (const button of [this.prev, this.next]) {
         button?.addEventListener('click', () => this.#step(Number(button.dataset.reelStep)), { signal });
@@ -394,15 +395,8 @@
         },
         { signal }
       );
-      // A finger takes over from any settle still under way, with native snapping back on.
-      this.track.addEventListener(
-        'touchstart',
-        () => {
-          this.#interrupt();
-          this.track.classList.remove('is-free', 'is-dragging');
-        },
-        passive
-      );
+      // A finger takes over from anything still moving the strip, with native snapping back on.
+      this.track.addEventListener('touchstart', () => this.#interrupt(), passive);
       // Theme editor: selecting a frame's block brings it to the middle.
       this.addEventListener(
         'shopify:block:select',
@@ -420,13 +414,20 @@
     disconnectedCallback() {
       this.life?.abort();
       this.#interrupt();
-      clearTimeout(this.wheelIdle);
       cancelAnimationFrame(this.raf);
       this.raf = 0;
     }
 
     get #max() {
       return this.track.scrollWidth - this.track.clientWidth;
+    }
+
+    get #still() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    #clamp(i) {
+      return Math.max(0, Math.min(this.frames.length - 1, i));
     }
 
     /** Scroll position that puts frame `i` in the middle of the strip. */
@@ -451,18 +452,20 @@
     }
 
     /**
-     * Brings frame `i` to the middle. Remembers it as the target until the scroll comes to rest,
-     * so quick clicks on the arrows add up instead of stepping from a frame that is still leaving.
+     * Brings frame `i` to the middle. Remembers it as the target while the strip glides there, so
+     * quick clicks add up instead of stepping from a frame that is still leaving.
      * @param {number} i
      * @param {boolean} [smooth]
      */
     goTo(i, smooth = true) {
-      const target = Math.max(0, Math.min(this.frames.length - 1, i));
-      const still = !smooth || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      this.target = target;
-      clearTimeout(this.targetTimer);
-      this.targetTimer = setTimeout(() => (this.target = null), 1000);
-      this.track.scrollTo({ left: this.#leftFor(target), behavior: still ? 'auto' : 'smooth' });
+      const target = this.#clamp(i);
+      if (!smooth || this.#still) {
+        this.#interrupt();
+        this.track.scrollLeft = this.#leftFor(target);
+        this.#rest();
+        return;
+      }
+      this.#glide(target, this.glide ? this.velocity : 0);
     }
 
     #step(dir) {
@@ -471,35 +474,65 @@
       this.goTo((this.target ?? this.#nearest()) + dir);
     }
 
-    /** Lets the strip run free (no snapping), then settles it on frame `i`. */
-    #release(i) {
-      this.#interrupt();
-      this.settling = true;
-      this.goTo(i);
-      // Without a scrollend (older Safari), or when it was already in place, finish on time.
-      this.settleTimer = setTimeout(() => this.#rest(), 900);
+    /**
+     * Every programmatic move (arrows, keys, wheel, letting go after a drag) glides on the same
+     * critically damped spring: it starts from the speed the strip already has (px/ms, in scroll
+     * direction), never overshoots, and rests in about half a second. Snapping is off meanwhile.
+     */
+    #glide(i, velocity = 0) {
+      this.#interrupt(true);
+      const target = this.#clamp(i);
+      const to = this.#leftFor(target);
+      this.target = target;
+      this.track.classList.add('is-free');
+      const w = 12; // per second
+      const x0 = this.track.scrollLeft - to;
+      const v0 = velocity * 1000;
+      const b = v0 + w * x0;
+      const t0 = performance.now();
+      const frame = (now) => {
+        const t = (now - t0) / 1000;
+        const e = Math.exp(-w * t);
+        const x = (x0 + b * t) * e;
+        const v = (v0 - w * b * t) * e;
+        this.velocity = v / 1000;
+        if (Math.abs(x) < 0.5 && Math.abs(v) < 20) {
+          this.track.scrollLeft = to;
+          this.#settle();
+          return;
+        }
+        this.track.scrollLeft = to + x;
+        this.glide = requestAnimationFrame(frame);
+      };
+      this.glide = requestAnimationFrame(frame);
     }
 
-    /** A new gesture: forget any pending settle or target. */
-    #interrupt() {
-      this.settling = false;
+    #settle() {
+      this.glide = 0;
+      this.velocity = 0;
+      this.track.classList.remove('is-free');
+      this.#rest();
+    }
+
+    /**
+     * Anything that takes over the strip stops whatever was moving it.
+     * @param {boolean} [keepFree] Leave snapping off (a new glide or the hand takes over at once)
+     */
+    #interrupt(keepFree = false) {
+      cancelAnimationFrame(this.glide);
+      this.glide = 0;
       this.target = null;
-      clearTimeout(this.settleTimer);
-      clearTimeout(this.targetTimer);
+      if (!keepFree && !this.dragging) this.track.classList.remove('is-free');
     }
 
+    // The strip came to rest: the counter catches up and screen readers hear where it stopped.
     #rest() {
+      if (this.dragging || this.glide) return;
       this.target = null;
-      clearTimeout(this.targetTimer);
-      if (this.settling) {
-        this.settling = false;
-        clearTimeout(this.settleTimer);
-        this.track.classList.remove('is-free', 'is-dragging');
-      }
+      this.#count(this.#nearest());
       this.#announce();
     }
 
-    // Screen readers hear where the strip came to rest, once per stop.
     #announce() {
       if (!this.status) return;
       const i = this.#nearest();
@@ -511,7 +544,22 @@
       this.status.textContent = `${caption.join(', ')} (${i + 1}/${this.frames.length})`;
     }
 
-    // Counter, arrows, progress line and the word behind all follow the strip.
+    /** Rolls the counter to frame `best`: quick enough to keep up with a hand. */
+    #count(best) {
+      if (best === this.current || !this.index) return;
+      const first = this.current < 0;
+      const dir = best > this.current ? 1 : -1;
+      this.current = best;
+      const label = String(best + 1).padStart(2, '0');
+      if (!first && window.theme?.rollTo) window.theme.rollTo(this.index, label, dir, { duration: 420, stagger: 60 });
+      else {
+        this.index.textContent = label;
+        this.index.dataset.rollValue = label;
+      }
+    }
+
+    // Progress line, the word behind and the arrows follow the strip on every frame. The counter
+    // follows too, except on the way to a farther target: then it rolls once, on arrival.
     #update() {
       this.raf = 0;
       const max = this.#max;
@@ -519,45 +567,35 @@
       this.style.setProperty('--progress', (max > 0 ? left / max : 0).toFixed(4));
       this.prev?.setAttribute('aria-disabled', String(left <= 2));
       this.next?.setAttribute('aria-disabled', String(left >= max - 2));
-
       const best = this.#nearest();
-      if (best === this.current) return;
-      const first = this.current < 0;
-      const dir = best > this.current ? 1 : -1;
-      this.current = best;
-      if (!this.index) return;
-      const label = String(best + 1).padStart(2, '0');
-      if (!first && window.theme?.rollTo) window.theme.rollTo(this.index, label, dir);
-      else {
-        this.index.textContent = label;
-        this.index.dataset.rollValue = label;
-      }
+      if (this.target === null || this.target === best) this.#count(best);
     }
 
-    // Sideways wheel and trackpad scrolling (and Shift + wheel) move the strip freely and settle
-    // once they stop: a deliberate push goes on one frame in its direction even if it stopped
-    // short, a tiny one settles back. With snapping on, small wheel steps would each spring back.
-    // Vertical wheel scrolling is left alone, so the page carries on down.
+    // Sideways wheel and trackpad scrolling (and Shift + wheel): one deliberate push moves one
+    // frame, at once, in one glide, like a swipe; the rest of that gesture (its momentum tail) is
+    // swallowed. Vertical wheel scrolling is never touched, so the page carries on down.
     #wheel(signal) {
+      let sum = 0;
+      let locked = false;
+      let quiet = 0;
       this.track.addEventListener(
         'wheel',
         (event) => {
-          const dx = event.deltaX || (event.shiftKey ? event.deltaY : 0);
           if (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
-          if (!this.wheel) this.wheel = { start: this.target ?? this.#nearest(), sum: 0 };
-          this.wheel.sum += dx;
-          this.#interrupt();
-          this.track.classList.add('is-free');
-          clearTimeout(this.wheelIdle);
-          this.wheelIdle = setTimeout(() => {
-            const { start, sum } = this.wheel;
-            this.wheel = null;
-            const nearest = this.#nearest();
-            const push = Math.min(80, this.frames[0].offsetWidth * 0.15);
-            this.#release(nearest === start && Math.abs(sum) > push ? start + Math.sign(sum) : nearest);
-          }, 220);
+          event.preventDefault();
+          const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? this.track.clientWidth : 1;
+          clearTimeout(quiet);
+          quiet = setTimeout(() => {
+            sum = 0;
+            locked = false;
+          }, 150);
+          if (locked) return;
+          sum += (event.deltaX || event.deltaY) * unit;
+          if (Math.abs(sum) < 50) return;
+          locked = true;
+          this.goTo((this.target ?? this.#nearest()) + Math.sign(sum));
         },
-        { passive: true, signal }
+        { signal }
       );
     }
 
@@ -572,22 +610,19 @@
         // A hand that stopped before letting go is not flicking.
         const v = performance.now() - lastT > 100 ? 0 : drag.v;
         drag = null;
+        this.dragging = false;
+        track.classList.remove('is-dragging');
         if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
-        if (!moved) {
-          track.classList.remove('is-dragging');
-          return;
-        }
-        // A flick goes on one frame from where the drag began; otherwise settle on the nearest.
+        if (!moved) return;
+        // A flick goes on one frame from where the drag began; otherwise the nearest frame.
         const nearest = this.#nearest();
         const flick = Math.abs(v) > 0.35 ? -Math.sign(v) : 0;
-        this.#release(flick && nearest === start ? start + flick : nearest);
+        this.#glide(flick && nearest === start ? start + flick : nearest, -v);
       };
       track.addEventListener(
         'pointerdown',
         (event) => {
           if (event.pointerType !== 'mouse' || event.button !== 0) return;
-          event.preventDefault();
-          track.focus({ preventScroll: true });
           // Captured from the start, so letting go anywhere ends the drag.
           track.setPointerCapture(event.pointerId);
           const now = performance.now();
@@ -607,10 +642,11 @@
           if (!drag.moved) {
             if (Math.abs(dx) < 4) return;
             drag.moved = true;
-            this.#interrupt();
-            clearTimeout(this.wheelIdle);
-            this.wheel = null;
+            this.#interrupt(true);
+            this.dragging = true;
             track.classList.add('is-dragging', 'is-free');
+            // Start from where the strip is now, in case it was still moving.
+            drag.left = track.scrollLeft + dx;
           }
           track.scrollLeft = drag.left - dx;
           const now = performance.now();
