@@ -173,3 +173,10 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 ## 17. Bara t-shirten säljs (användaren, 2026-10-11)
 - **Bara OBJECT #001 (t-shirten, 699 kr) säljs.** Den långärmade (OBJECT #002) är **utkast** i Shopify och syns inte på sajten. Produkten, bilderna (`brand/products/langarmad/`) och kollektionen OBJECT #002 finns kvar om den ska tas fram igen.
 - Sajten: korset och textbandet visar bara #001, kampanjbandet har fem bilder (alla med t-shirten), heron v4 visar bara t-shirten.
+
+## 18. Kö-sida inför droppet (användaren, 2026-10-11)
+- **När domänen köps ska besökarna komma till en sida där de ställer sig i kö för droppet.** Det är butikens lösenordssida (`sections/main-password.liquid`, "Kö-sida"), som alla besökare ser så länge lösenordsskyddet är på.
+- Innehåll: hero-filmen i helskärm, ordmärket, "Drop 01 · OBJECT #001", rubriken "Ställ dig i kön", e-postfält och knapp, sedan t-shirten (ryggen) på betong med datarad. Längst ner kan man ange lösenordet.
+- Den som ställer sig i kön blir kund i Shopify med taggarna `newsletter` och `drop-01-ko`, så kön kan mejlas när droppet öppnar.
+- **Nedräkning** visas bara om ett släppdatum anges i temaredigeraren (Kö-sida → Släppdatum, t.ex. "2026-11-07 18:00"). Datumet är inte bestämt.
+- Sidan syns först när temat som har den är **publicerat**. Användaren publicerar själv.

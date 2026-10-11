@@ -8,6 +8,9 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 - **Fas 3:** användaren ville ha rörelse fullt ut, inte lugnt (brief avsnitt 16). Systemet beskrivs i `DESIGN.md` (Rörelse) och `docs/theme.md` (Rörelse). Levererat som ett **nytt opublicerat tema**, se tabellen nedan.
 - **Nästa fas: fas 4**, mobil, finslipning, tillgänglighet och prestanda. Testa fas 3 på riktiga telefoner (iPhone med Safari och Android med Chrome): introt, svep på plaggen, kampanjbandet, sidbytena och filmkornets prestanda.
 
+## Kö-sidan (2026-10-11)
+Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** för droppet: butikens lösenordssida, omgjord (`sections/main-password.liquid`, brief avsnitt 18). Den som skriver in sin e-post blir kund med taggen `drop-01-ko`. Nedräkning visas om Släppdatum fylls i i temaredigeraren. Sidan syns bara när lösenordsskyddet är på och temat som har den är publicerat. Lokalt: `/password` i `scripts/preview`.
+
 ## Första droppet (beslut 2026-10-06)
 - En färgställning i taget. Nu: **svart acid wash med kyssmotivet i camo**, litet på bröstet och stort på ryggen. Camon sitter i trycket, inte i tyget.
 - **Bara OBJECT #001 = t-shirt, 699 kr, säljs** (beslut 2026-10-11, brief avsnitt 17). OBJECT #002, den långärmade (999 kr), är **utkast** i Shopify och borttagen från sajten. Storlek S–XL.
@@ -29,7 +32,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 | OBJECT 07 – fas 2 med film | 205740474716 | **Publicerat** (gammalt: tre färger, gamla heron) |
 | OBJECT 07 – hero v3 (första droppet) | 205884195164 | Opublicerat, ersatt, kan tas bort |
 | OBJECT 07 – Drop 01 (bara #001) | 205885768028 | Opublicerat. Fas 2 utan fas 3-rörelse. Uppdaterat på plats 2026-10-11: bara #001 i korset, hero v4, kollektionssidor hoppar över tomma kollektioner (ändrade filer från commit 4ef5caf, uppladdade via staged upload). Har kvar köpfelet i `updateCount` som rättades i fas 3. |
-| **OBJECT 07 – Fas 3 (bara #001)** | **206036402524** | **Opublicerat, det senaste: fas 3 + bara t-shirten (uppdaterat på plats 2026-10-11). Ska förhandsgranskas och publiceras av användaren.** Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
+| **OBJECT 07 – Fas 3 (bara #001)** | **206036402524** | **Opublicerat, det senaste: fas 3 + bara t-shirten + kö-sidan (uppdaterat på plats 2026-10-11). Ska förhandsgranskas och publiceras av användaren.** Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
 Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206036402524`
 
 **Så kommer ändringar ut** (GitHub-kopplingen hittas inte i användarens Shopify, troligen avstängd under provperioden):
@@ -64,7 +67,7 @@ Görs i en separat chatt. Underlaget finns i `docs/leverantor-underlag.md` (zip:
 - ffmpeg och ImageMagick finns. Pillow, numpy och scipy installeras med pip.
 
 ## Att göra (användaren)
-1. Förhandsgranska och **publicera "Fas 3 (bara #001)"** (ersätter Drop 01). Ta sedan bort de äldre OBJECT-temana. Drop 01 har köpfelet ovan.
+1. Förhandsgranska och **publicera "Fas 3 (bara #001)"** (ersätter Drop 01). Behåll lösenordsskyddet på så att besökarna ser kö-sidan. Koppla domänen i Shopify (Inställningar → Domäner). Ta sedan bort de äldre OBJECT-temana. Drop 01 har köpfelet ovan.
 2. Fyll på **lager**.
 3. **Menyer** (`main-menu`, `footer`), **engelska** under Språk, **favicon** (emblemet).
 4. Uppgradera planen innan försäljning.

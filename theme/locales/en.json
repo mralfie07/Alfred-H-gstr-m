@@ -105,5 +105,12 @@
     "frame": "Frame",
     "campaign": "Campaign images",
     "ticker": "Archive band"
+  },
+  "queue": {
+    "days": "Days",
+    "hours": "Hrs",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "open": "The drop is open"
   }
 }

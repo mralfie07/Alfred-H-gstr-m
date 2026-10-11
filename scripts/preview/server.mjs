@@ -169,6 +169,7 @@ function resolveSettings(defs = [], given = {}) {
   Object.assign(out, given);
   for (const d of defs) {
     if (d.type === 'collection' && typeof out[d.id] === 'string') out[d.id] = collectionByHandle[out[d.id]] || null;
+    if (d.type === 'product' && typeof out[d.id] === 'string') out[d.id] = products[out[d.id]] || null;
     if (d.type === 'link_list') out[d.id] = MENUS[out[d.id]] || { links: [] };
     if ((d.type === 'video' || d.type === 'image_picker' || d.type === 'page' || d.type === 'url') && out[d.id] == null) out[d.id] = null;
   }
@@ -237,10 +238,12 @@ async function renderPage(templateName, extra = {}) {
     cart: cartObject(), template: { name: templateName }, settings: {}, collections,
     localization: { available_languages: [{ iso_code: 'sv', endonym_name: 'svenska' }], available_countries: [], language: { iso_code: 'sv' } },
     canonical_url: '', page_title: extra.page_title || 'OBJECT 07', content_for_header: '<link rel="stylesheet" href="/compiled/styles.css"><script src="/compiled/scripts.js" defer></script>',
-    current_page: 1, linklists: MENUS, ...extra,
+    current_page: 1, linklists: MENUS, all_products: products, ...extra,
   };
-  const content = await renderJson(path.join(THEME, 'templates', `${templateName}.json`), scope);
-  return engine.renderFile(path.join(THEME, 'layout', 'theme.liquid'), { ...scope, content_for_layout: content }, { globals: scope });
+  const file = path.join(THEME, 'templates', `${templateName}.json`);
+  const layout = JSON.parse(fs.readFileSync(file, 'utf8')).layout || 'theme';
+  const content = await renderJson(file, scope);
+  return engine.renderFile(path.join(THEME, 'layout', `${layout}.liquid`), { ...scope, content_for_layout: content }, { globals: scope });
 }
 
 /* ---------- server ---------- */
@@ -314,6 +317,7 @@ http.createServer(async (req, res) => {
     else if ((m = p.match(/^\/collections\/([^/]+)$/)) && collectionByHandle[m[1]]) html = await renderPage('collection', { collection: collectionByHandle[m[1]], page_title: collectionByHandle[m[1]].title });
     else if ((m = p.match(/\/products\/([^/?]+)$/)) && products[m[1]]) html = await renderPage('product', { product: products[m[1]], page_title: products[m[1]].title });
     else if (p === '/cart') html = await renderPage('cart');
+    else if (p === '/password') html = await renderPage('password');
     else if (p === '/pages/om') html = await renderPage('page', { page: { title: 'Om OBJECT 07', content: '<p>Text kommer.</p>' } });
     else { res.statusCode = 404; html = await renderPage('404'); }
     res.writeHead(res.statusCode || 200, { 'Content-Type': 'text/html; charset=utf-8' });
