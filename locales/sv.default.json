@@ -105,5 +105,12 @@
     "frame": "Bild",
     "campaign": "Kampanjbilder",
     "ticker": "Arkivband"
+  },
+  "queue": {
+    "days": "Dagar",
+    "hours": "Tim",
+    "minutes": "Min",
+    "seconds": "Sek",
+    "open": "Droppet är öppet"
   }
 }
