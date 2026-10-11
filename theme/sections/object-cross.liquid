@@ -68,7 +68,7 @@
   </div>
 {%- else -%}
   {%- capture start_number -%}{% render 'object-number', title: first_block.settings.collection.title, part: 'digits' %}{%- endcapture -%}
-  <object-cross class="cross concrete" id="droppet" data-start-color="{{ start_color }}" data-reveal="scene">
+  <object-cross class="cross concrete{% if section.blocks.size == 1 %} cross--single{% endif %}" id="droppet" data-start-color="{{ start_color }}" data-reveal="scene">
     <div class="cross__inner">
       {%- if section.settings.kicker != blank -%}
         <p class="cross__kicker ui ui--small" aria-hidden="true" data-scramble>{{ section.settings.kicker }}</p>
@@ -367,6 +367,26 @@
     font-size: clamp(1.5rem, 7vw, 2.125rem);
     line-height: 1;
     letter-spacing: -0.01em;
+  }
+
+  /* One object: the whole page is about it, so its tab sits centred over the garment. */
+  .cross--single {
+    & .cross__kicker {
+      text-align: center;
+    }
+
+    & .cross__tabs {
+      justify-self: center;
+      width: max-content;
+    }
+
+    & .cross__tab {
+      padding-inline: var(--s-2);
+    }
+  }
+
+  .cross.cross--single .cross__tabs .cross__tab-bar {
+    transform-origin: 50% 50%;
   }
 
   .cross__tab-bar {
