@@ -216,3 +216,11 @@ Befintliga startbilder (2752×1536, inga nya genereringar) nedladdade från Higg
 | campaign-09 | 9A d7c8f039 | trycket, makro | kampanjbandet |
 Obs: bilderna med den långärmade har samma äldre trycklook som heron.
 
+
+## Redigering v4 (2026-10-11, gäller)
+Bara t-shirten säljs, så klippen med den långärmade (2, 3, 4, 7) är borttagna. Kvar: 1 (tyget), 5 (trappan), 6 (ryggen), 8 (ansiktet), 9 (tyget, loopar till 1), lite längre per klipp: 1,0 / 1,0 / 1,2 / 1,0 / 0,9 s = 5,2 s. SEG i `scripts/hero-cut.sh`. Inga nya krediter.
+| Fil | Storlek |
+|---|---|
+| `brand/hero/hero-v4-original.mp4` (1928×1076, CRF 18) | 7,4 MB |
+| `theme/assets/hero-1080.mp4` och `hero-720.mp4` | 2,5 MB och 1,2 MB |
+Kampanjbandet i temat har också bara t-shirtbilderna kvar: campaign-01, 04, 06, 07, 09 (02, 03, 05, 08 med den långärmade är borttagna ur temat).

@@ -4,7 +4,7 @@
       "type": "hero",
       "settings": {
         "label": "Kampanjfilm Drop 01",
-        "kicker": "Drop 01 · OBJECT #001 & #002",
+        "kicker": "Drop 01 · OBJECT #001",
         "link_label": "Handla droppet",
         "link": ""
       }
@@ -18,21 +18,13 @@
             "collection": "object-001",
             "side": "bak"
           }
-        },
-        "object_002": {
-          "type": "object",
-          "settings": {
-            "collection": "object-002",
-            "side": "bak"
-          }
         }
       },
       "block_order": [
-        "object_001",
-        "object_002"
+        "object_001"
       ],
       "settings": {
-        "kicker": "Drop 01 · två objekt",
+        "kicker": "Drop 01",
         "color_order": "svart-camo,svart,bla",
         "default_color": "svart-camo"
       }
@@ -60,12 +52,6 @@
             "collection": "object-001"
           }
         },
-        "object_002": {
-          "type": "object",
-          "settings": {
-            "collection": "object-002"
-          }
-        },
         "est": {
           "type": "text",
           "settings": {
@@ -76,7 +62,6 @@
       "block_order": [
         "drop",
         "object_001",
-        "object_002",
         "est"
       ],
       "settings": {
@@ -94,32 +79,11 @@
             "caption": "Tyget i middagssol"
           }
         },
-        "frame_02": {
-          "type": "frame",
-          "settings": {
-            "fallback": "campaign-02",
-            "caption": "Mellan pelarna"
-          }
-        },
-        "frame_03": {
-          "type": "frame",
-          "settings": {
-            "fallback": "campaign-03",
-            "caption": "OBJECT #002"
-          }
-        },
         "frame_04": {
           "type": "frame",
           "settings": {
             "fallback": "campaign-04",
             "caption": "Ryggen, OBJECT #001"
-          }
-        },
-        "frame_05": {
-          "type": "frame",
-          "settings": {
-            "fallback": "campaign-05",
-            "caption": "Skuggor över bröstet"
           }
         },
         "frame_06": {
@@ -136,13 +100,6 @@
             "caption": "Blicken"
           }
         },
-        "frame_08": {
-          "type": "frame",
-          "settings": {
-            "fallback": "campaign-08",
-            "caption": "Korridoren"
-          }
-        },
         "frame_09": {
           "type": "frame",
           "settings": {
@@ -153,13 +110,9 @@
       },
       "block_order": [
         "frame_01",
-        "frame_02",
-        "frame_03",
         "frame_04",
-        "frame_05",
         "frame_06",
         "frame_07",
-        "frame_08",
         "frame_09"
       ],
       "settings": {

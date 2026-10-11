@@ -10,7 +10,9 @@ mkdir -p out
 # v2 (0,7 s per klipp, huvudbilden 1,0 s): "1 0.0 0.7" "2 2.3 0.7" "3 4.0 0.7" "4 1.8 0.7" "5 2.3 0.7" "6 3.4 1.0" "7 1.8 0.7" "8 4.0 0.7" "9 4.3 0.7"
 # v3 (2026-10-06, första droppet: bara t-shirt och långärmad). Klipp 1, 6, 9 från tagning 1; 2, 3, 4, 5, 7, 8 nya
 # (job_id i docs/hero-assets.md). Samma rytm som v2; startpunkterna i 3, 4 och 8 flyttade dit tagningen är bäst.
-SEG=( "1 0.0 0.7" "2 2.3 0.7" "3 0.4 0.7" "4 1.2 0.7" "5 2.3 0.7" "6 3.4 1.0" "7 1.8 0.7" "8 2.2 0.7" "9 4.3 0.7" )
+# v3 (första droppet, t-shirt + långärmad): "1 0.0 0.7" "2 2.3 0.7" "3 0.4 0.7" "4 1.2 0.7" "5 2.3 0.7" "6 3.4 1.0" "7 1.8 0.7" "8 2.2 0.7" "9 4.3 0.7"
+# v4 (2026-10-11, bara t-shirten säljs): bara klippen med t-shirten, något längre per klipp.
+SEG=( "1 0.0 1.0" "5 2.3 1.0" "6 3.4 1.2" "8 2.2 1.0" "9 4.1 0.9" )
 INPUTS=(); F=""; n=0
 GRADE="eq=contrast=1.05:saturation=0.9:gamma=0.98"
 for s in "${SEG[@]}"; do set -- $s

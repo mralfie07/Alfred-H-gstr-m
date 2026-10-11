@@ -1,4 +1,4 @@
-# Överlämning – läget 2026-10-08
+# Överlämning – läget 2026-10-11
 
 Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (särskilt avsnitt 13–16). Allt arbete ligger på grenen **`claude/fas-2-tema`** (ingen PR gjord, inte ihopslagen med `master`).
 
@@ -10,7 +10,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 
 ## Första droppet (beslut 2026-10-06)
 - En färgställning i taget. Nu: **svart acid wash med kyssmotivet i camo**, litet på bröstet och stort på ryggen. Camon sitter i trycket, inte i tyget.
-- **OBJECT #001 = t-shirt, 699 kr. OBJECT #002 = långärmad t-shirt, 999 kr.** Storlek S–XL.
+- **Bara OBJECT #001 = t-shirt, 699 kr, säljs** (beslut 2026-10-11, brief avsnitt 17). OBJECT #002, den långärmade (999 kr), är **utkast** i Shopify och borttagen från sajten. Storlek S–XL.
 - **Ingen färg ska synas** på sajten: inga "Färg"-etiketter, inget "Svart-camo" (användarens beslut).
 - Senare drops: samma plagg i svart och blå, och sidtrycket (motiv över sidsömmen).
 
@@ -18,7 +18,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 | Produkt | id | Handle | Typ | Pris | Kollektion |
 |---|---|---|---|---|---|
 | OBJECT #001 | 15864364237148 | `object-001-svart-camo` | T-shirt | 699 kr | OBJECT #001 (701028172124) |
-| OBJECT #002 | 15871757517148 | `object-002-svart-camo` | Långärmad t-shirt | 999 kr | OBJECT #002 (701028237660) |
+| OBJECT #002 (utkast) | 15871757517148 | `object-002-svart-camo` | Långärmad t-shirt | 999 kr | OBJECT #002 (701028237660, tom på sajten) |
 - Båda har bara tillvalet **Storlek** (Färg-tillvalet är borttaget). Lagret är 0 överallt, så allt visas som slutsålt tills användaren fyller på.
 - Fem gamla produkter är **utkast**: Sidtryck – Svart / Blå / Svart-camo, Kyss – Svart / Blå (handles `sidtryck-*`, `kyss-*`).
 - Publiceringskanaler: Webbshop `gid://shopify/Publication/371235684700`, Shop `…371235717468`.
@@ -34,7 +34,7 @@ Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=20603640252
 
 **Så kommer ändringar ut** (GitHub-kopplingen hittas inte i användarens Shopify, troligen avstängd under provperioden):
 1. Ändra i `theme/`, kör `shopify theme check` (CLI installeras med `npm i @shopify/cli` i scratchpad).
-2. Uppdatera grenen som bara innehåller temat: `git branch -f shopify-theme $(git subtree split --prefix theme)` och `git push -f origin shopify-theme`. **Obs:** fråga användaren först, eftersom sessionen bara får pusha till sin egen gren. I fas 3 gjordes det inte, så `shopify-theme` står kvar på fas 2.
+2. Uppdatera grenen som bara innehåller temat: `git branch -f shopify-theme $(git subtree split --prefix theme)` och `git push -f origin shopify-theme`. **Obs:** fråga användaren först, eftersom sessionen bara får pusha till sin egen gren. Uppdaterad 2026-10-11 (fas 3 + bara t-shirten).
 3. **Opublicerat tema:** `themeFilesUpsert` med `body: {type: URL, value: "https://raw.githubusercontent.com/mralfie07/Alfred-H-gstr-m/shopify-theme/<fil>"}`, jämför sedan `checksumMd5` med `md5sum` lokalt.
 4. **Nytt tema** (om det senaste är publicerat): zippa `theme/`, `stagedUploadsCreate` (resource FILE, PUT), `curl -X PUT` zipen, sedan `themeCreate(role: UNPUBLISHED)`.
 5. Shopify-kopplingen får **inte** skriva till det publicerade temat. Användaren publicerar själv. Fråga alltid innan något publiceras.
@@ -44,7 +44,7 @@ Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=20603640252
 
 ## Temat (`theme/`, guide i `docs/theme.md`)
 - Header, sidfot, varukorgslåda och varukorgssida, startsida (hero-film, korset, drop-anmälan), kollektions- och produktsidor, 404, sök, lösenordssida. Svenska och engelska. Temakontrollen visar inga fel.
-- **Korset** (`sections/object-cross.liquid`): flikar = kollektionerna #001 och #002. Färgaxeln döljs när droppet har en färg. Datarad: "OBJECT #001 · T-shirt · 699 kr". Ryggen visas först.
+- **Korset** (`sections/object-cross.liquid`): flikar = kollektionerna, nu bara #001. Kollektionssidornas länkar till andra kollektioner hoppar över tomma kollektioner. Färgaxeln döljs när droppet har en färg. Datarad: "OBJECT #001 · T-shirt · 699 kr". Ryggen visas först.
 - **Färg** läses av `snippets/object-color.liquid`, **plaggtyp** = Shopifys produkttyp.
 - **Frilagda plagg** i `theme/assets/cutout-<handle>-<fram|bak>.webp` (1200 px, plagget ca 911–941 px högt så att båda tröjorna blir lika stora).
 - **Hero-filmen** följer med temat (`assets/hero-1080.mp4`, `hero-720.mp4`), eftersom provkonton inte får ladda upp filmer.
@@ -52,9 +52,8 @@ Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=20603640252
 - **Rättat i fas 3:** efter ett köp ersattes varukorgslådans innehåll med antalet (fel i `updateCount`). Finns kvar i de äldre temana i butiken.
 
 ## Bilder och film
-- Hero v3: `brand/hero/hero-v3-original.mp4`. Bara t-shirten och den långärmade. Klipp, job_id och val loggas i `docs/hero-assets.md`, klippningen i `scripts/hero-cut.sh`.
+- Hero v4 (gäller): `brand/hero/hero-v4-original.mp4`, bara t-shirten (klipp 1, 5, 6, 8, 9). v3 med den långärmade finns kvar som historik. Klipp, job_id och val loggas i `docs/hero-assets.md`, klippningen i `scripts/hero-cut.sh`.
 - Den långärmade: `brand/products/langarmad/` (AI-genererat plagg, trycket överfört från t-shirtens foton med `scripts/transfer-print.py`). Frilagda: `brand/products/cutout/langarmad-kyss_*.webp`.
-- **Obs:** i hero-filmen har den långärmade fortfarande den äldre trycklooken (ren tryckfil, före överföringen). Om användaren vill ha den uppdaterad måste klipp 2, 3, 4 och 7 göras om (kostar krediter, fråga först).
 
 ## Tillverkare
 Görs i en separat chatt. Underlaget finns i `docs/leverantor-underlag.md` (zip: `OBJECT07-tillverkare.zip` i repots rot, ignoreras av git).

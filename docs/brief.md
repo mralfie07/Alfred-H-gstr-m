@@ -169,3 +169,7 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Higgsfield:** inget nytt får skapas, men befintliga bilder och klipp får användas. Kampanjbandet, kollektionernas bakgrunder och anmälans porträtt är de godkända startbilderna v3 samt 1B, 6B och 9A (se `docs/hero-assets.md`).
 - **Leverans:** som ett **nytt opublicerat tema**. Befintliga teman i butiken (publicerat och Drop 01) rörs inte.
 - Tillkom på startsidan: arkivband och kampanjband. Tillkom i sidfoten: ordmärket stort. Allt kan tas bort i temaredigeraren.
+
+## 17. Bara t-shirten säljs (användaren, 2026-10-11)
+- **Bara OBJECT #001 (t-shirten, 699 kr) säljs.** Den långärmade (OBJECT #002) är **utkast** i Shopify och syns inte på sajten. Produkten, bilderna (`brand/products/langarmad/`) och kollektionen OBJECT #002 finns kvar om den ska tas fram igen.
+- Sajten: korset och textbandet visar bara #001, kampanjbandet har fem bilder (alla med t-shirten), heron v4 visar bara t-shirten.

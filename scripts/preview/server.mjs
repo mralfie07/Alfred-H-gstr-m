@@ -32,7 +32,8 @@ const p2 = makeProduct(15871757517148, 'object-002-svart-camo', 'OBJECT #002', '
 ]);
 if (process.env.ALL_AVAILABLE) for (const p of [p1, p2]) { p.available = true; p.variants.forEach((v) => (v.available = true)); }
 const c1 = { id: 701028172124, handle: 'object-001', title: 'OBJECT #001', url: '/collections/object-001', products: [p1], products_count: 1, description: '' };
-const c2 = { id: 701028237660, handle: 'object-002', title: 'OBJECT #002', url: '/collections/object-002', products: [p2], products_count: 1, description: '' };
+// OBJECT #002 (långärmad) är utkast sedan 2026-10-11: kollektionen finns kvar men är tom.
+const c2 = { id: 701028237660, handle: 'object-002', title: 'OBJECT #002', url: '/collections/object-002', products: [], products_count: 0, description: '' };
 p1.collections = [c1]; p2.collections = [c2];
 const products = { [p1.handle]: p1, [p2.handle]: p2 };
 const collections = [c1, c2];
@@ -176,7 +177,6 @@ function resolveSettings(defs = [], given = {}) {
 const MENUS = {
   'main-menu': { links: [
     { title: 'OBJECT #001', url: '/collections/object-001' },
-    { title: 'OBJECT #002', url: '/collections/object-002' },
     { title: 'Om', url: '/pages/om' },
   ] },
   footer: { links: [{ title: 'Sök', url: '/search' }, { title: 'Kontakt', url: '/pages/kontakt' }] },

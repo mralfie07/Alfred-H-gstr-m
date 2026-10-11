@@ -149,7 +149,7 @@
       for c in collections
         if c.handle != collection.handle and prefix != blank
           assign start = c.handle | slice: 0, prefix.size
-          if start == prefix
+          if start == prefix and c.products_count > 0
             assign sibling_count = sibling_count | plus: 1
           endif
         endif
@@ -161,7 +161,7 @@
         <ul role="list">
           {%- for c in collections -%}
             {%- assign start = c.handle | slice: 0, prefix.size -%}
-            {%- if c.handle != collection.handle and start == prefix -%}
+            {%- if c.handle != collection.handle and start == prefix and c.products_count > 0 -%}
               <li data-reveal="mask">
                 <a class="collection__sibling" href="{{ c.url }}" data-magnetic>
                   <span class="numeral">{% render 'object-number', title: c.title, part: 'number' %}</span>
@@ -466,7 +466,7 @@
       "type": "text",
       "id": "campaign_images",
       "label": "Temats kampanjbilder per kollektion",
-      "default": "object-001:campaign-06, object-002:campaign-08",
+      "default": "object-001:campaign-06",
       "info": "Används när kollektionen saknar egen bild. Format: webbadress:bild, kommaseparerat."
     },
     {

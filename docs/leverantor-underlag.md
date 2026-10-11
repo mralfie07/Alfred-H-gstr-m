@@ -8,7 +8,9 @@ Startpunkt för en ny chatt om tillverkning. Allt nedan kommer från `docs/brief
 - Målgrupp: 18–25, handlar i mobilen. Ribba för kvalitet och finish: Aimé Leon Dore, Kith, Palace, Stüssy.
 
 ## Första droppet (beslutat 2026-10-06)
-Märket släpper en färgställning i taget. Första droppet är **"svart-camo": svart acid wash-plagg med kyssmotivet i camo.** Camon sitter i trycket, inte i tyget. Två plagg i samma tyg och färg:
+Märket släpper en färgställning i taget. Första droppet är **"svart-camo": svart acid wash-plagg med kyssmotivet i camo.** Camon sitter i trycket, inte i tyget. **Uppdatering 2026-10-11: bara t-shirten (OBJECT #001) produceras och säljs nu.** Den långärmade är pausad, men står kvar nedan som möjlig senare modell.
+
+Två plagg i samma tyg och färg:
 
 | Plagg | Färg | Tryck |
 |---|---|---|
@@ -21,7 +23,7 @@ Märket släpper en färgställning i taget. Första droppet är **"svart-camo":
   - Vävd nacketikett, svart, med "OBJECT 07" och storlek.
   - Liten vävd flagga på ärmkanten med "OBJECT 07". På den långärmade ska ni bestämma var den sitter.
   - Logotypen finns som PNG (`logo/`). Vektor saknas.
-- **Numrering och pris i butiken:** t-shirten är OBJECT #001, 699 kr. Den långärmade är OBJECT #002, 999 kr.
+- **Numrering och pris i butiken:** t-shirten är OBJECT #001, 699 kr (den enda som säljs nu). Den långärmade (OBJECT #002, 999 kr) är pausad.
 - Senare drops: samma modeller i svart och blå acid wash, och ett andra motiv (ett tryck som går över sidsömmen). Ingår inte nu, men bra att veta för tillverkaren.
 
 ## Trycket
