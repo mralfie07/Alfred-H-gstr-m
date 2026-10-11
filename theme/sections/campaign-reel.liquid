@@ -1,7 +1,7 @@
 {%- liquid
   assign frames = section.blocks.size
 -%}
-<campaign-reel class="reel" aria-label="{{ 'motion.campaign' | t }}">
+<campaign-reel class="reel" role="region" aria-label="{{ 'motion.campaign' | t }}">
   <div class="reel__head page-width">
     {%- if section.settings.kicker != blank -%}
       <p class="ui" data-scramble>{{ section.settings.kicker }}</p>
@@ -12,12 +12,14 @@
           <span class="reel__index" data-reel-index data-roll-value="01">01</span>
           <span class="reel__total">/ {% if frames < 10 %}0{% endif %}{{ frames }}</span>
         </p>
-        <button class="reel__nav reel__nav--prev" type="button" data-reel-step="-1" aria-label="{{ 'motion.prev' | t }}" disabled>
+        {%- comment -%} aria-disabled, not disabled: a focused button that disables itself would drop focus. {%- endcomment -%}
+        <button class="reel__nav reel__nav--prev" type="button" data-reel-step="-1" aria-label="{{ 'motion.prev' | t }}" aria-disabled="true">
           {%- render 'icon', name: 'arrow' -%}
         </button>
-        <button class="reel__nav" type="button" data-reel-step="1" aria-label="{{ 'motion.next' | t }}">
+        <button class="reel__nav" type="button" data-reel-step="1" aria-label="{{ 'motion.next' | t }}" aria-disabled="false">
           {%- render 'icon', name: 'arrow' -%}
         </button>
+        <p class="visually-hidden" aria-live="polite" data-reel-status></p>
       </div>
     {%- endif -%}
   </div>
@@ -42,6 +44,8 @@
       {%- for block in section.blocks -%}
         {%- liquid
           assign fallback = block.settings.fallback | strip
+          # The figcaption names the picture; only a merchant's own alt text is added.
+          assign alt = block.settings.image.alt | default: ''
           assign loading = 'lazy'
           if forloop.index <= 2
             assign loading = 'eager'
@@ -59,14 +63,14 @@
                     sizes: '(min-width: 900px) 62vw, 80vw',
                     loading: loading,
                     draggable: 'false',
-                    alt: block.settings.image.alt | default: block.settings.caption
+                    alt: alt
                 }}
               {%- elsif fallback != blank -%}
                 <img
                   src="{{ fallback | append: '-1600.webp' | asset_url }}"
                   srcset="{{ fallback | append: '-800.webp' | asset_url }} 800w, {{ fallback | append: '-1600.webp' | asset_url }} 1600w"
                   sizes="(min-width: 900px) 62vw, 80vw"
-                  alt="{{ block.settings.caption | escape }}"
+                  alt=""
                   width="1600"
                   height="893"
                   loading="{{ loading }}"
@@ -94,6 +98,7 @@
      nothing more: scrolling down passes straight through it. */
   .reel {
     --frame-w: min(80vw, 420px);
+    --frame-ratio: 4 / 5;
 
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -104,6 +109,13 @@
 
     @media (min-width: 900px) {
       --frame-w: min(62vw, 104svh);
+      --frame-ratio: 1600 / 893;
+    }
+
+    /* A phone on its side: wide frames that fit under the header with their caption. */
+    @media (max-width: 899px) and (orientation: landscape) {
+      --frame-w: min(72vw, calc((100svh - var(--header-h) - 7.5rem) * 1.79));
+      --frame-ratio: 1600 / 893;
     }
   }
 
@@ -148,20 +160,25 @@
       height: 18px;
     }
 
-    &:active:not(:disabled) {
+    &:active:not([aria-disabled="true"]) {
       scale: 0.94;
     }
 
-    &:disabled {
+    &[aria-disabled="true"] {
       opacity: 0.3;
       cursor: default;
     }
 
     @media (hover: hover) and (pointer: fine) {
-      &:hover:not(:disabled) {
+      &:hover:not([aria-disabled="true"]) {
         border-color: var(--bone);
       }
     }
+  }
+
+  /* The arrows, counter and progress line only work with the script, so they wait for it. */
+  campaign-reel:not(:defined) :is(.reel__controls, .reel__progress) {
+    visibility: hidden;
   }
 
   .reel__nav--prev svg {
@@ -202,7 +219,7 @@
   /* A mouse can grab the strip; while it drags, the strip follows the hand and settles on a
      frame when let go. */
   @media (hover: hover) and (pointer: fine) {
-    .reel__track {
+    campaign-reel:defined .reel__track {
       cursor: grab;
     }
   }
@@ -233,13 +250,9 @@
 
   .reel__media {
     position: relative;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: var(--frame-ratio);
     overflow: clip;
     background: var(--char);
-
-    @media (min-width: 900px) {
-      aspect-ratio: 1600 / 893;
-    }
 
     & img {
       width: 100%;
@@ -310,7 +323,8 @@
       animation-timeline: view(inline);
     }
 
-    .motion .reel__frame figure {
+    /* Only the picture dims, so the captions beside it stay readable. */
+    .motion .reel__media {
       animation: reel-focus linear both;
       animation-timeline: view(inline);
     }
@@ -344,40 +358,71 @@
       this.track = this.querySelector('[data-reel-track]');
       this.frames = [...this.querySelectorAll('.reel__frame')];
       this.index = this.querySelector('[data-reel-index]');
+      this.status = this.querySelector('[data-reel-status]');
       this.prev = this.querySelector('[data-reel-step="-1"]');
       this.next = this.querySelector('[data-reel-step="1"]');
-      this.current = 0;
-      this.raf = 0;
+      this.current = -1;
+      this.target = null;
+      this.settling = false;
+      this.wheel = null;
       if (!this.track || this.frames.length < 2) return;
+
+      // One controller for every listener, so a re-render or a move in the theme editor can't double them.
+      this.life?.abort();
+      this.life = new AbortController();
+      const { signal } = this.life;
+      const passive = { passive: true, signal };
 
       this.onScroll = () => {
         if (!this.raf) this.raf = requestAnimationFrame(() => this.#update());
       };
-      this.track.addEventListener('scroll', this.onScroll, { passive: true });
-      window.addEventListener('resize', this.onScroll, { passive: true });
+      this.track.addEventListener('scroll', this.onScroll, passive);
+      window.addEventListener('resize', this.onScroll, passive);
+      // The one place a scroll comes to rest: a smooth step or a settle is done.
+      this.track.addEventListener('scrollend', () => this.#rest(), passive);
       for (const button of [this.prev, this.next]) {
-        button?.addEventListener('click', () => this.goTo(this.#nearest() + Number(button.dataset.reelStep)));
+        button?.addEventListener('click', () => this.#step(Number(button.dataset.reelStep)), { signal });
       }
-      this.#drag();
-      this.#wheel();
       // Home and End jump to the first and last frame (arrow keys scroll the strip natively).
-      this.track.addEventListener('keydown', (event) => {
-        const to = { Home: 0, End: this.frames.length - 1 }[event.key];
-        if (to === undefined) return;
-        event.preventDefault();
-        this.goTo(to);
-      });
+      this.track.addEventListener(
+        'keydown',
+        (event) => {
+          const to = { Home: 0, End: this.frames.length - 1 }[event.key];
+          if (to === undefined) return;
+          event.preventDefault();
+          this.goTo(to);
+        },
+        { signal }
+      );
+      // A finger takes over from any settle still under way, with native snapping back on.
+      this.track.addEventListener(
+        'touchstart',
+        () => {
+          this.#interrupt();
+          this.track.classList.remove('is-free', 'is-dragging');
+        },
+        passive
+      );
       // Theme editor: selecting a frame's block brings it to the middle.
-      this.addEventListener('shopify:block:select', (event) => {
-        const i = this.frames.indexOf(event.target);
-        if (i >= 0) this.goTo(i, false);
-      });
+      this.addEventListener(
+        'shopify:block:select',
+        (event) => {
+          const i = this.frames.indexOf(event.target);
+          if (i >= 0) this.goTo(i, false);
+        },
+        { signal }
+      );
+      this.#drag(signal);
+      this.#wheel(signal);
       this.#update();
     }
 
     disconnectedCallback() {
-      window.removeEventListener('resize', this.onScroll);
+      this.life?.abort();
+      this.#interrupt();
+      clearTimeout(this.wheelIdle);
       cancelAnimationFrame(this.raf);
+      this.raf = 0;
     }
 
     get #max() {
@@ -406,104 +451,178 @@
     }
 
     /**
+     * Brings frame `i` to the middle. Remembers it as the target until the scroll comes to rest,
+     * so quick clicks on the arrows add up instead of stepping from a frame that is still leaving.
      * @param {number} i
      * @param {boolean} [smooth]
      */
     goTo(i, smooth = true) {
       const target = Math.max(0, Math.min(this.frames.length - 1, i));
       const still = !smooth || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.target = target;
+      clearTimeout(this.targetTimer);
+      this.targetTimer = setTimeout(() => (this.target = null), 1000);
       this.track.scrollTo({ left: this.#leftFor(target), behavior: still ? 'auto' : 'smooth' });
+    }
+
+    #step(dir) {
+      const button = dir < 0 ? this.prev : this.next;
+      if (button?.getAttribute('aria-disabled') === 'true') return;
+      this.goTo((this.target ?? this.#nearest()) + dir);
+    }
+
+    /** Lets the strip run free (no snapping), then settles it on frame `i`. */
+    #release(i) {
+      this.#interrupt();
+      this.settling = true;
+      this.goTo(i);
+      // Without a scrollend (older Safari), or when it was already in place, finish on time.
+      this.settleTimer = setTimeout(() => this.#rest(), 900);
+    }
+
+    /** A new gesture: forget any pending settle or target. */
+    #interrupt() {
+      this.settling = false;
+      this.target = null;
+      clearTimeout(this.settleTimer);
+      clearTimeout(this.targetTimer);
+    }
+
+    #rest() {
+      this.target = null;
+      clearTimeout(this.targetTimer);
+      if (this.settling) {
+        this.settling = false;
+        clearTimeout(this.settleTimer);
+        this.track.classList.remove('is-free', 'is-dragging');
+      }
+      this.#announce();
+    }
+
+    // Screen readers hear where the strip came to rest, once per stop.
+    #announce() {
+      if (!this.status) return;
+      const i = this.#nearest();
+      if (i === this.announced) return;
+      const first = this.announced === undefined;
+      this.announced = i;
+      if (first) return;
+      const caption = [...this.frames[i].querySelectorAll('figcaption span')].map((span) => span.textContent.trim());
+      this.status.textContent = `${caption.join(', ')} (${i + 1}/${this.frames.length})`;
     }
 
     // Counter, arrows, progress line and the word behind all follow the strip.
     #update() {
       this.raf = 0;
       const max = this.#max;
-      const progress = max > 0 ? this.track.scrollLeft / max : 0;
-      this.style.setProperty('--progress', progress.toFixed(4));
-      if (this.prev) this.prev.disabled = this.track.scrollLeft <= 2;
-      if (this.next) this.next.disabled = this.track.scrollLeft >= max - 2;
+      const left = this.track.scrollLeft;
+      this.style.setProperty('--progress', (max > 0 ? left / max : 0).toFixed(4));
+      this.prev?.setAttribute('aria-disabled', String(left <= 2));
+      this.next?.setAttribute('aria-disabled', String(left >= max - 2));
 
       const best = this.#nearest();
       if (best === this.current) return;
+      const first = this.current < 0;
       const dir = best > this.current ? 1 : -1;
       this.current = best;
-      const label = String(best + 1).padStart(2, '0');
       if (!this.index) return;
-      if (window.theme?.rollTo) window.theme.rollTo(this.index, label, dir);
-      else this.index.textContent = label;
+      const label = String(best + 1).padStart(2, '0');
+      if (!first && window.theme?.rollTo) window.theme.rollTo(this.index, label, dir);
+      else {
+        this.index.textContent = label;
+        this.index.dataset.rollValue = label;
+      }
     }
 
-    /** Lets the strip run free, then settles it on the nearest frame (or `i`). */
-    #release(i) {
-      clearTimeout(this.settleTimer);
-      const done = () => {
-        clearTimeout(this.settleTimer);
-        this.track.classList.remove('is-free', 'is-dragging');
-      };
-      this.goTo(i ?? this.#nearest());
-      this.track.addEventListener('scrollend', done, { once: true });
-      this.settleTimer = setTimeout(done, 900);
-    }
-
-    // Sideways wheel and trackpad scrolling (and Shift + wheel) move the strip freely and settle on a
-    // frame once they stop; with snapping on, small wheel steps would each spring back. Vertical
-    // wheel scrolling is left alone, so the page carries on down.
-    #wheel() {
-      let idle = 0;
+    // Sideways wheel and trackpad scrolling (and Shift + wheel) move the strip freely and settle
+    // once they stop: a deliberate push goes on one frame in its direction even if it stopped
+    // short, a tiny one settles back. With snapping on, small wheel steps would each spring back.
+    // Vertical wheel scrolling is left alone, so the page carries on down.
+    #wheel(signal) {
       this.track.addEventListener(
         'wheel',
         (event) => {
+          const dx = event.deltaX || (event.shiftKey ? event.deltaY : 0);
           if (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
-          clearTimeout(this.settleTimer);
+          if (!this.wheel) this.wheel = { start: this.target ?? this.#nearest(), sum: 0 };
+          this.wheel.sum += dx;
+          this.#interrupt();
           this.track.classList.add('is-free');
-          clearTimeout(idle);
-          idle = setTimeout(() => this.#release(), 160);
+          clearTimeout(this.wheelIdle);
+          this.wheelIdle = setTimeout(() => {
+            const { start, sum } = this.wheel;
+            this.wheel = null;
+            const nearest = this.#nearest();
+            const push = Math.min(80, this.frames[0].offsetWidth * 0.15);
+            this.#release(nearest === start && Math.abs(sum) > push ? start + Math.sign(sum) : nearest);
+          }, 220);
         },
-        { passive: true }
+        { passive: true, signal }
       );
     }
 
     // A mouse can drag the strip (touch and trackpads scroll it natively). The page's own
     // vertical scrolling is never touched.
-    #drag() {
+    #drag(signal) {
       let drag = null;
       const track = this.track;
-      track.addEventListener('pointerdown', (event) => {
-        if (event.pointerType !== 'mouse' || event.button !== 0) return;
-        event.preventDefault();
-        const now = performance.now();
-        drag = { id: event.pointerId, x: event.clientX, left: track.scrollLeft, moved: false, lastX: event.clientX, lastT: now, v: 0 };
-      });
-      track.addEventListener('pointermove', (event) => {
-        if (!drag || event.pointerId !== drag.id) return;
-        const dx = event.clientX - drag.x;
-        if (!drag.moved) {
-          if (Math.abs(dx) < 4) return;
-          drag.moved = true;
-          track.setPointerCapture(drag.id);
-          clearTimeout(this.settleTimer);
-          track.classList.add('is-dragging', 'is-free');
-        }
-        track.scrollLeft = drag.left - dx;
-        const now = performance.now();
-        drag.v = (event.clientX - drag.lastX) / Math.max(1, now - drag.lastT);
-        drag.lastX = event.clientX;
-        drag.lastT = now;
-      });
       const end = (event) => {
         if (!drag || event.pointerId !== drag.id) return;
-        const { moved, lastT } = drag;
+        const { moved, lastT, start } = drag;
         // A hand that stopped before letting go is not flicking.
         const v = performance.now() - lastT > 100 ? 0 : drag.v;
         drag = null;
-        if (!moved) return;
-        // A flick moves on one frame in its direction; otherwise settle on the nearest.
+        if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+        if (!moved) {
+          track.classList.remove('is-dragging');
+          return;
+        }
+        // A flick goes on one frame from where the drag began; otherwise settle on the nearest.
+        const nearest = this.#nearest();
         const flick = Math.abs(v) > 0.35 ? -Math.sign(v) : 0;
-        this.#release(this.#nearest() + flick);
+        this.#release(flick && nearest === start ? start + flick : nearest);
       };
-      track.addEventListener('pointerup', end);
-      track.addEventListener('pointercancel', end);
+      track.addEventListener(
+        'pointerdown',
+        (event) => {
+          if (event.pointerType !== 'mouse' || event.button !== 0) return;
+          event.preventDefault();
+          track.focus({ preventScroll: true });
+          // Captured from the start, so letting go anywhere ends the drag.
+          track.setPointerCapture(event.pointerId);
+          const now = performance.now();
+          drag = { id: event.pointerId, x: event.clientX, left: track.scrollLeft, start: this.#nearest(), moved: false, lastX: event.clientX, lastT: now, v: 0 };
+        },
+        { signal }
+      );
+      track.addEventListener(
+        'pointermove',
+        (event) => {
+          if (!drag || event.pointerId !== drag.id) return;
+          if (!(event.buttons & 1)) {
+            end(event);
+            return;
+          }
+          const dx = event.clientX - drag.x;
+          if (!drag.moved) {
+            if (Math.abs(dx) < 4) return;
+            drag.moved = true;
+            this.#interrupt();
+            clearTimeout(this.wheelIdle);
+            this.wheel = null;
+            track.classList.add('is-dragging', 'is-free');
+          }
+          track.scrollLeft = drag.left - dx;
+          const now = performance.now();
+          drag.v = (event.clientX - drag.lastX) / Math.max(1, now - drag.lastT);
+          drag.lastX = event.clientX;
+          drag.lastT = now;
+        },
+        { signal }
+      );
+      for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+        track.addEventListener(type, end, { signal });
+      }
     }
   }
 
@@ -513,7 +632,7 @@
 {% schema %}
 {
   "name": "Kampanjband",
-  "tag": "section",
+  "tag": "div",
   "class": "section-reel",
   "settings": [
     {
