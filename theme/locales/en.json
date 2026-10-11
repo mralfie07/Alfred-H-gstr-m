@@ -100,11 +100,11 @@
     }
   },
   "motion": {
-    "flip": "Turn",
-    "open": "Open",
     "frame": "Frame",
     "campaign": "Campaign images",
-    "ticker": "Archive band"
+    "prev": "Previous image",
+    "next": "Next image",
+    "strip": "Campaign images. Scroll sideways."
   },
   "queue": {
     "days": "Days",

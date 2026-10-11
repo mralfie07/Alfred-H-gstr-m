@@ -37,38 +37,6 @@
         "fallback": "campaign-07"
       }
     },
-    "ticker": {
-      "type": "archive-ticker",
-      "blocks": {
-        "drop": {
-          "type": "text",
-          "settings": {
-            "text": "Drop 01"
-          }
-        },
-        "object_001": {
-          "type": "object",
-          "settings": {
-            "collection": "object-001"
-          }
-        },
-        "est": {
-          "type": "text",
-          "settings": {
-            "text": "Est. 2007"
-          }
-        }
-      },
-      "block_order": [
-        "drop",
-        "object_001",
-        "est"
-      ],
-      "settings": {
-        "speed": 40,
-        "repeat": 2
-      }
-    },
     "reel": {
       "type": "campaign-reel",
       "blocks": {
@@ -123,7 +91,6 @@
   },
   "order": [
     "hero",
-    "ticker",
     "cross",
     "reel",
     "signup"

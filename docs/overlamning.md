@@ -53,7 +53,7 @@ Förhandsvisning kö: `https://egkwr4-wr.myshopify.com/?preview_theme_id=2062120
 - **Färg** läses av `snippets/object-color.liquid`, **plaggtyp** = Shopifys produkttyp.
 - **Frilagda plagg** i `theme/assets/cutout-<handle>-<fram|bak>.webp` (1200 px, plagget ca 911–941 px högt så att båda tröjorna blir lika stora).
 - **Hero-filmen** följer med temat (`assets/hero-1080.mp4`, `hero-720.mp4`), eftersom provkonton inte får ladda upp filmer.
-- **Fas 3:** `assets/motion.css`, `motion.js`, `snippets/motion-head.liquid`, `numeral-roll.liquid`, nya sektioner `archive-ticker` och `campaign-reel`, kampanjbilder `assets/campaign-01…09` (befintliga Higgsfield-startbilder, logg i `docs/hero-assets.md`).
+- **Fas 3:** `assets/motion.css`, `motion.js`, `snippets/motion-head.liquid`, `numeral-roll.liquid`, ny sektion `campaign-reel` (kampanjbandet, scrollas i sidled; arkivbandet och den runda markören togs bort 2026-10-11, brief avsnitt 19), kampanjbilder `assets/campaign-01…09` (befintliga Higgsfield-startbilder, logg i `docs/hero-assets.md`).
 - **Rättat i fas 3:** efter ett köp ersattes varukorgslådans innehåll med antalet (fel i `updateCount`). Finns kvar i de äldre temana i butiken.
 
 ## Bilder och film

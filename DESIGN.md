@@ -56,7 +56,7 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
   - Under plagget: en växel **Framsida | Baksida** (1 px ram, benvitt block under vald sida).
   - Sedan datarad (objekt · färg · pris), storlekar S–XL och köpknapp.
 - **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram. Kampanjporträttet (campaign-07) mörkt bakom, valbart.
-- **Arkivband** (`archive-ticker`), **kampanjband** (`campaign-reel`), **ordmärket stort i sidfoten** och **kampanjfoto bakom kollektionsnumret**: tillkom i fas 3, se Rörelse. Alla kan stängas av eller bytas i temaredigeraren.
+- **Kampanjband** (`campaign-reel`), **ordmärket stort i sidfoten** och **kampanjfoto bakom kollektionsnumret**: tillkom i fas 3, se Rörelse. Alla kan stängas av eller bytas i temaredigeraren. (Arkivbandet, jättetext som löpte, togs bort 2026-10-11.)
 - **Avisering:** benvit ruta nertill med miniatyr, objekt, färg, storlek och pris.
 
 ## Rörelse
@@ -67,14 +67,13 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 - `--ease-in-out` `cubic-bezier(.77, 0, .175, 1)`: rörelse över skärmen (ridåer, horisonten, plagg som flyger mellan sidor).
 - `--ease-spring` (`linear()`, dämpad fjäder ζ 0,55, ca 12 % översving): sådant som landar (plagg, stjärnan).
 - Bara `transform`, `translate`, `scale`, `rotate`, `opacity` och `clip-path`. Hover-rörelse bara för mus (`hover: hover` och `pointer: fine`).
-- `<html class="motion">` sätts före första bildrutan när besökaren tillåter rörelse. All rörelse hänger på den. Utan (avstängd rörelse, inget JS, eller om `motion.js` inte laddas inom 6 s) står allt stilla och synligt. `prefers-reduced-motion`: allt av, heron som stillbild, kampanjbandet blir en remsa att svepa i.
+- `<html class="motion">` sätts före första bildrutan när besökaren tillåter rörelse. All rörelse hänger på den. Utan (avstängd rörelse, inget JS, eller om `motion.js` inte laddas inom 6 s) står allt stilla och synligt. `prefers-reduced-motion`: allt av, heron som stillbild, kampanjbandet bläddrar utan glidning och utan effekter.
 
 ### Iscensatta ögonblick
 - **Intro (första besöket på startsidan per session):** svart skärm, stjärnan vrider sig ett kvarts varv i taget och "EST. 2007" rullar fram som ett räkneverk medan filmen laddar (minst 1,9 s, högst 3,6 s, klick eller tangent hoppar över). Stjärnan sträcks ut till en horisontlinje, skärmen klyvs längs den och halvorna glider isär (1,3 s), filmen zoomar ut från 1,18, headern glider ner och raden avkodas. Hoppas över i temaredigeraren.
 - **Sidbyten (View Transitions, Chrome och Safari 18.2+):** nästa sida öppnar sig från en horisontlinje mitt på skärmen (0,85 s) medan den gamla sjunker bakåt och mörknar. Headern står still. Plagget och arkivnumret flyger mellan kort/kors och produktsida åt båda hållen och lyfter lite på vägen (0,9 s). Produktsidan öppnar på samma sida (fram/bak) som visades i korset.
 - **Korset byggs i två steg:** när korset kommer in stiger flikarna, axlarna ritas ut från stjärnan och stjärnan snurrar in med fjäder. När plaggytan kommer in rullar numret fram och plagget faller ner på sitt golv. Sedan "visa hur" som förut.
-- **Kampanjbandet:** nio kampanjbilder som filmremsa. Sidan scrollar nedåt, rutorna åker i sidled under en fast rubrik, varje bild glider inuti sitt fönster, rutan i mitten är skarp och de andra dämpade, ett jätteord ("OBJECT 07") glider bakom i en tredjedels fart och rutnumret rullar.
-- **Arkivbandet:** jättetext med riktiga produktdata som löper. Scroll gör det snabbare och lutar det, scroll uppåt vänder det.
+- **Kampanjbandet** (ändrat 2026-10-11): en filmremsa man scrollar i sidled. Den låser aldrig sidan: lodrät scroll (finger, mushjul) går rakt förbi. Svep, styrplatta, Skift + mushjul, pilknapparna, piltangenterna (Home/End till första och sista) eller dra med musen bläddrar. Rutorna snäpper till mitten, en åt gången, med grannarna synliga i kanterna. Rörelsen drivs av remsans egen sidledsscroll: bilden glider inuti sitt fönster, rutan i mitten är skarp och de andra dämpade, jätteordet glider bakom, rutnumret rullar och en hårlinje fylls. Remsan glider in från höger första gången den kommer i bild.
 
 ### Arkivnummer
 Siffrorna rullar på plats som ett räkneverk (`snippets/numeral-roll.liquid`, `theme.rollTo`): kollektionens #001, produktsidans nummer, korsets nummer (rullar framåt eller bakåt vid flikbyte), introts år, 404 och kampanjbandets räknare.
@@ -82,7 +81,7 @@ Siffrorna rullar på plats som ett räkneverk (`snippets/numeral-roll.liquid`, `
 ### Plagget
 - Svävar i vila (7–8 px, 7 s) med golvskugga, i korset och på produktsidan.
 - **Dra i sidled:** plagget följer fingret med motstånd och vänds när man släpper långt eller snabbt nog, annars fjädrar det tillbaka. Tryck vänder också.
-- **Mus:** plagget lutar i 3D mot pekaren (högst ca 11°), numret glider åt andra hållet för djup. En benvit markör säger "VÄND" (och "ÖPPNA" på kollektionskorten).
+- **Mus:** plagget lutar i 3D mot pekaren (högst ca 11°), numret glider åt andra hållet för djup. Vanlig muspekare (den runda markören togs bort 2026-10-11).
 - **Köp:** knappens text ger plats åt stjärnan som vrider sig medan korgen svarar. Sedan flyger en kopia av plagget i en båge in i väskan, som gungar till.
 - Fram/bak: framsidan ligger till vänster om baksidan, som i växeln. Det nya glider in från rätt håll (56 px), och blocket i växeln glider under vald sida.
 

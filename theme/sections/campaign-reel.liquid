@@ -1,34 +1,53 @@
 {%- liquid
   assign frames = section.blocks.size
-  assign last = frames | minus: 1 | at_least: 1
 -%}
-<section class="reel" aria-label="{{ 'motion.campaign' | t }}" style="--frames: {{ frames }}" data-reel>
-  <div class="reel__sticky">
-    <div class="reel__head page-width">
-      {%- if section.settings.kicker != blank -%}
-        <p class="ui" data-scramble>{{ section.settings.kicker }}</p>
-      {%- endif -%}
-      <p class="reel__count ui" aria-hidden="true">
-        <span class="reel__index" data-reel-index data-roll-value="01">01</span>
-        <span class="reel__total">/ {% if frames < 10 %}0{% endif %}{{ frames }}</span>
-      </p>
-    </div>
+<campaign-reel class="reel" aria-label="{{ 'motion.campaign' | t }}">
+  <div class="reel__head page-width">
+    {%- if section.settings.kicker != blank -%}
+      <p class="ui" data-scramble>{{ section.settings.kicker }}</p>
+    {%- endif -%}
+    {%- if frames > 1 -%}
+      <div class="reel__controls">
+        <p class="reel__count ui" aria-hidden="true">
+          <span class="reel__index" data-reel-index data-roll-value="01">01</span>
+          <span class="reel__total">/ {% if frames < 10 %}0{% endif %}{{ frames }}</span>
+        </p>
+        <button class="reel__nav reel__nav--prev" type="button" data-reel-step="-1" aria-label="{{ 'motion.prev' | t }}" disabled>
+          {%- render 'icon', name: 'arrow' -%}
+        </button>
+        <button class="reel__nav" type="button" data-reel-step="1" aria-label="{{ 'motion.next' | t }}">
+          {%- render 'icon', name: 'arrow' -%}
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
 
+  <div class="reel__stage">
     {%- if section.settings.word != blank -%}
       <p class="reel__word" aria-hidden="true">{{ section.settings.word }}</p>
     {%- endif -%}
 
-    <ul class="reel__track" role="list">
+    {%- comment -%}
+      A plain sideways scroller: swipe, trackpad, keyboard (when focused), the arrows, or drag with a
+      mouse. Scrolling down always carries on down the page; nothing is pinned or hijacked.
+    {%- endcomment -%}
+    <ul
+      class="reel__track"
+      role="list"
+      tabindex="0"
+      aria-label="{{ 'motion.strip' | t }}"
+      data-reel-track
+      data-reveal="slide"
+    >
       {%- for block in section.blocks -%}
         {%- liquid
-          assign p = forloop.index0 | times: 100 | divided_by: last
           assign fallback = block.settings.fallback | strip
           assign loading = 'lazy'
           if forloop.index <= 2
             assign loading = 'eager'
           endif
         -%}
-        <li class="reel__frame" style="--p: {{ p }}%" {{ block.shopify_attributes }}>
+        <li class="reel__frame" {{ block.shopify_attributes }}>
           <figure>
             <div class="reel__media">
               {%- if block.settings.image != blank -%}
@@ -39,6 +58,7 @@
                     widths: '600, 900, 1200, 1600',
                     sizes: '(min-width: 900px) 62vw, 80vw',
                     loading: loading,
+                    draggable: 'false',
                     alt: block.settings.image.alt | default: block.settings.caption
                 }}
               {%- elsif fallback != blank -%}
@@ -50,6 +70,7 @@
                   width="1600"
                   height="893"
                   loading="{{ loading }}"
+                  draggable="false"
                 >
               {%- endif -%}
             </div>
@@ -61,35 +82,49 @@
         </li>
       {%- endfor -%}
     </ul>
+
+    {%- if frames > 1 -%}
+      <div class="reel__progress page-width" aria-hidden="true"><span></span></div>
+    {%- endif -%}
   </div>
-</section>
+</campaign-reel>
 
 {% stylesheet %}
-  /* Without scroll-driven animations (or with motion off) the reel is a strip you swipe through. */
+  /* The campaign as a film strip you scroll sideways. It takes up its own height on the page and
+     nothing more: scrolling down passes straight through it. */
   .reel {
-    position: relative;
-    padding-block: var(--s-7);
-    background: var(--ink);
-    overflow: clip;
-  }
+    --frame-w: min(80vw, 420px);
 
-  .reel__sticky {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--s-5);
+    padding-block: var(--s-7);
+    background: var(--ink);
+    overflow: clip;
+
+    @media (min-width: 900px) {
+      --frame-w: min(62vw, 104svh);
+    }
   }
 
   .reel__head {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     gap: var(--s-4);
     width: 100%;
+  }
+
+  .reel__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
   }
 
   .reel__count {
     display: flex;
     gap: 0.5em;
+    margin-inline-end: var(--s-2);
     font-variant-numeric: tabular-nums;
   }
 
@@ -97,40 +132,102 @@
     color: var(--bone-dim);
   }
 
-  .reel__word {
-    display: none;
+  .reel__nav {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--bone-dim);
+    color: var(--bone);
+    background: none;
+    transition: border-color 0.2s, opacity 0.2s, scale 0.15s var(--ease-out);
+
+    & svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:active:not(:disabled) {
+      scale: 0.94;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover:not(:disabled) {
+        border-color: var(--bone);
+      }
+    }
   }
 
+  .reel__nav--prev svg {
+    rotate: 180deg;
+  }
+
+  .reel__stage {
+    position: relative;
+    display: grid;
+    gap: var(--s-4);
+    isolation: isolate;
+  }
+
+  /* Frames snap to the middle, with the neighbours showing at both edges. */
   .reel__track {
+    position: relative;
     display: flex;
     gap: clamp(0.75rem, 3vw, 2rem);
     margin: 0;
-    padding: 0 var(--gutter);
+    padding: 0 max(var(--gutter), calc((100% - var(--frame-w)) / 2));
     list-style: none;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--gutter);
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 
     &::-webkit-scrollbar {
       display: none;
     }
+
+    &:focus-visible {
+      outline: 2px solid var(--bone);
+      outline-offset: -2px;
+    }
+  }
+
+  /* A mouse can grab the strip; while it drags, the strip follows the hand and settles on a
+     frame when let go. */
+  @media (hover: hover) and (pointer: fine) {
+    .reel__track {
+      cursor: grab;
+    }
+  }
+
+  .reel__track.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Dragging, or a sideways wheel/trackpad scroll in progress: no snapping until it settles. */
+  .reel__track.is-free {
+    scroll-snap-type: none;
   }
 
   .reel__frame {
     flex: none;
-    width: min(80vw, 420px);
-    scroll-snap-align: start;
+    width: var(--frame-w);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
 
     & figure {
       display: grid;
       gap: var(--s-3);
       margin: 0;
-    }
-
-    @media (min-width: 900px) {
-      width: min(62vw, 104svh);
     }
   }
 
@@ -148,6 +245,8 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      pointer-events: none;
+      -webkit-user-drag: none;
     }
   }
 
@@ -157,163 +256,264 @@
     color: var(--bone);
   }
 
-  /* Pinned film strip: the page scrolls down, the frames travel sideways under a fixed head. */
-  @supports (animation-timeline: view()) {
-    .motion .reel {
-      height: calc(var(--frames) * 62svh + 100svh);
-      padding: 0;
-      overflow: visible;
-      view-timeline: --reel block;
-    }
+  /* How far along the strip you are: a hairline that fills as you scroll sideways. */
+  .reel__progress {
+    width: 100%;
 
-    .motion .reel__sticky {
-      position: sticky;
-      top: var(--header-h);
-      height: calc(100svh - var(--header-h));
-      align-content: center;
-      overflow: clip;
+    & span {
+      display: block;
+      height: 1px;
+      background: linear-gradient(var(--bone), var(--bone)) 0 0 / calc(var(--progress, 0) * 100%) 100% no-repeat, var(--rule);
     }
+  }
 
-    .motion .reel__track {
-      width: max-content;
-      overflow: visible;
-      scroll-snap-type: none;
-      animation: reel-travel linear both;
-      animation-timeline: --reel;
-      animation-range: contain 0% contain 100%;
-    }
+  .reel__word {
+    display: none;
+  }
 
-    /* Each frame's picture drifts inside its window as it crosses, a little slower than the strip. */
+  /* Motion, driven by the strip's own sideways scroll. */
+  .motion .reel__word {
+    position: absolute;
+    inset: auto 0 12% 0;
+    z-index: -1;
+    display: block;
+    margin: 0;
+    white-space: nowrap;
+    font-stretch: 125%;
+    font-weight: 300;
+    font-size: clamp(8rem, 38vw, 30rem);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    color: rgb(236 230 220 / 0.05);
+    pointer-events: none;
+    translate: calc(8% - var(--progress, 0) * 40%) 0;
+    transition: translate 0.6s var(--ease-out);
+  }
+
+  .reel__track[data-reveal="slide"][data-reveal-state="waiting"] {
+    opacity: 0;
+    translate: 25% 0;
+  }
+
+  .reel__track[data-reveal="slide"] {
+    transition:
+      opacity 0.9s var(--ease-out) var(--reveal-delay, 0s),
+      translate 1.4s var(--ease-out) var(--reveal-delay, 0s);
+  }
+
+  @supports (animation-timeline: view(inline)) {
+    /* Each picture drifts inside its window as it crosses; the frame in the middle is sharp. */
     .motion .reel__media img {
-      scale: 1.18;
+      scale: 1.16;
       animation: reel-drift linear both;
-      animation-timeline: --reel;
-      animation-range: contain calc(var(--p) - 45%) contain calc(var(--p) + 45%);
+      animation-timeline: view(inline);
     }
 
     .motion .reel__frame figure {
       animation: reel-focus linear both;
-      animation-timeline: --reel;
-      animation-range: contain calc(var(--p) - 30%) contain calc(var(--p) + 30%);
-    }
-
-    /* A giant word behind the strip, moving at a third of its speed. */
-    .motion .reel__word {
-      position: absolute;
-      inset: auto 0 6% 0;
-      z-index: -1;
-      display: block;
-      margin: 0;
-      white-space: nowrap;
-      font-stretch: 125%;
-      font-weight: 300;
-      font-size: clamp(8rem, 38vw, 30rem);
-      line-height: 0.8;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-      color: rgb(236 230 220 / 0.05);
-      animation: reel-word linear both;
-      animation-timeline: --reel;
-      animation-range: contain 0% contain 100%;
-    }
-
-    .motion .reel__sticky {
-      isolation: isolate;
-    }
-  }
-
-  @keyframes reel-travel {
-    from {
-      translate: 0 0;
-    }
-    to {
-      translate: calc(-100% + 100vw) 0;
+      animation-timeline: view(inline);
     }
   }
 
   @keyframes reel-drift {
     from {
-      translate: 8% 0;
+      translate: 7% 0;
     }
     to {
-      translate: -8% 0;
+      translate: -7% 0;
     }
   }
 
   @keyframes reel-focus {
     0%,
     100% {
-      opacity: 0.45;
-      scale: 0.94;
+      opacity: 0.4;
+      scale: 0.93;
     }
     50% {
       opacity: 1;
       scale: 1;
     }
   }
-
-  @keyframes reel-word {
-    from {
-      translate: 10% 0;
-    }
-    to {
-      translate: -40% 0;
-    }
-  }
 {% endstylesheet %}
 
 {% javascript %}
-  (() => {
-    // The frame counter rolls to the frame nearest the middle of the screen.
-    for (const reel of document.querySelectorAll('[data-reel]')) {
-      const index = reel.querySelector('[data-reel-index]');
-      const frames = [...reel.querySelectorAll('.reel__frame')];
-      if (!index || frames.length < 2) continue;
-      let current = 0;
-      let raf = 0;
-      const update = () => {
-        raf = 0;
-        const mid = window.innerWidth / 2;
-        let best = 0;
-        let bestDistance = Infinity;
-        frames.forEach((frame, i) => {
-          const r = frame.getBoundingClientRect();
-          const d = Math.abs(r.left + r.width / 2 - mid);
-          if (d < bestDistance) {
-            bestDistance = d;
-            best = i;
-          }
-        });
-        if (best === current) return;
-        const dir = best > current ? 1 : -1;
-        current = best;
-        const label = String(best + 1).padStart(2, '0');
-        if (window.theme?.rollTo) window.theme.rollTo(index, label, dir);
-        else index.textContent = label;
+  class CampaignReel extends HTMLElement {
+    connectedCallback() {
+      this.track = this.querySelector('[data-reel-track]');
+      this.frames = [...this.querySelectorAll('.reel__frame')];
+      this.index = this.querySelector('[data-reel-index]');
+      this.prev = this.querySelector('[data-reel-step="-1"]');
+      this.next = this.querySelector('[data-reel-step="1"]');
+      this.current = 0;
+      this.raf = 0;
+      if (!this.track || this.frames.length < 2) return;
+
+      this.onScroll = () => {
+        if (!this.raf) this.raf = requestAnimationFrame(() => this.#update());
       };
-      const request = () => {
-        if (!raf) raf = requestAnimationFrame(update);
-      };
-      let watching = false;
-      new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting && !watching) {
-          watching = true;
-          window.addEventListener('scroll', request, { passive: true });
-          reel.querySelector('.reel__track').addEventListener('scroll', request, { passive: true });
-          request();
-        } else if (!entry.isIntersecting && watching) {
-          watching = false;
-          window.removeEventListener('scroll', request);
-        }
-      }).observe(reel);
+      this.track.addEventListener('scroll', this.onScroll, { passive: true });
+      window.addEventListener('resize', this.onScroll, { passive: true });
+      for (const button of [this.prev, this.next]) {
+        button?.addEventListener('click', () => this.goTo(this.#nearest() + Number(button.dataset.reelStep)));
+      }
+      this.#drag();
+      this.#wheel();
+      // Home and End jump to the first and last frame (arrow keys scroll the strip natively).
+      this.track.addEventListener('keydown', (event) => {
+        const to = { Home: 0, End: this.frames.length - 1 }[event.key];
+        if (to === undefined) return;
+        event.preventDefault();
+        this.goTo(to);
+      });
+      // Theme editor: selecting a frame's block brings it to the middle.
+      this.addEventListener('shopify:block:select', (event) => {
+        const i = this.frames.indexOf(event.target);
+        if (i >= 0) this.goTo(i, false);
+      });
+      this.#update();
     }
-  })();
+
+    disconnectedCallback() {
+      window.removeEventListener('resize', this.onScroll);
+      cancelAnimationFrame(this.raf);
+    }
+
+    get #max() {
+      return this.track.scrollWidth - this.track.clientWidth;
+    }
+
+    /** Scroll position that puts frame `i` in the middle of the strip. */
+    #leftFor(i) {
+      const frame = this.frames[i];
+      const left = frame.offsetLeft + frame.offsetWidth / 2 - this.track.clientWidth / 2;
+      return Math.max(0, Math.min(this.#max, left));
+    }
+
+    #nearest() {
+      const middle = this.track.scrollLeft + this.track.clientWidth / 2;
+      let best = 0;
+      let distance = Infinity;
+      this.frames.forEach((frame, i) => {
+        const d = Math.abs(frame.offsetLeft + frame.offsetWidth / 2 - middle);
+        if (d < distance) {
+          distance = d;
+          best = i;
+        }
+      });
+      return best;
+    }
+
+    /**
+     * @param {number} i
+     * @param {boolean} [smooth]
+     */
+    goTo(i, smooth = true) {
+      const target = Math.max(0, Math.min(this.frames.length - 1, i));
+      const still = !smooth || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.track.scrollTo({ left: this.#leftFor(target), behavior: still ? 'auto' : 'smooth' });
+    }
+
+    // Counter, arrows, progress line and the word behind all follow the strip.
+    #update() {
+      this.raf = 0;
+      const max = this.#max;
+      const progress = max > 0 ? this.track.scrollLeft / max : 0;
+      this.style.setProperty('--progress', progress.toFixed(4));
+      if (this.prev) this.prev.disabled = this.track.scrollLeft <= 2;
+      if (this.next) this.next.disabled = this.track.scrollLeft >= max - 2;
+
+      const best = this.#nearest();
+      if (best === this.current) return;
+      const dir = best > this.current ? 1 : -1;
+      this.current = best;
+      const label = String(best + 1).padStart(2, '0');
+      if (!this.index) return;
+      if (window.theme?.rollTo) window.theme.rollTo(this.index, label, dir);
+      else this.index.textContent = label;
+    }
+
+    /** Lets the strip run free, then settles it on the nearest frame (or `i`). */
+    #release(i) {
+      clearTimeout(this.settleTimer);
+      const done = () => {
+        clearTimeout(this.settleTimer);
+        this.track.classList.remove('is-free', 'is-dragging');
+      };
+      this.goTo(i ?? this.#nearest());
+      this.track.addEventListener('scrollend', done, { once: true });
+      this.settleTimer = setTimeout(done, 900);
+    }
+
+    // Sideways wheel and trackpad scrolling (and Shift + wheel) move the strip freely and settle on a
+    // frame once they stop; with snapping on, small wheel steps would each spring back. Vertical
+    // wheel scrolling is left alone, so the page carries on down.
+    #wheel() {
+      let idle = 0;
+      this.track.addEventListener(
+        'wheel',
+        (event) => {
+          if (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+          clearTimeout(this.settleTimer);
+          this.track.classList.add('is-free');
+          clearTimeout(idle);
+          idle = setTimeout(() => this.#release(), 160);
+        },
+        { passive: true }
+      );
+    }
+
+    // A mouse can drag the strip (touch and trackpads scroll it natively). The page's own
+    // vertical scrolling is never touched.
+    #drag() {
+      let drag = null;
+      const track = this.track;
+      track.addEventListener('pointerdown', (event) => {
+        if (event.pointerType !== 'mouse' || event.button !== 0) return;
+        event.preventDefault();
+        const now = performance.now();
+        drag = { id: event.pointerId, x: event.clientX, left: track.scrollLeft, moved: false, lastX: event.clientX, lastT: now, v: 0 };
+      });
+      track.addEventListener('pointermove', (event) => {
+        if (!drag || event.pointerId !== drag.id) return;
+        const dx = event.clientX - drag.x;
+        if (!drag.moved) {
+          if (Math.abs(dx) < 4) return;
+          drag.moved = true;
+          track.setPointerCapture(drag.id);
+          clearTimeout(this.settleTimer);
+          track.classList.add('is-dragging', 'is-free');
+        }
+        track.scrollLeft = drag.left - dx;
+        const now = performance.now();
+        drag.v = (event.clientX - drag.lastX) / Math.max(1, now - drag.lastT);
+        drag.lastX = event.clientX;
+        drag.lastT = now;
+      });
+      const end = (event) => {
+        if (!drag || event.pointerId !== drag.id) return;
+        const { moved, lastT } = drag;
+        // A hand that stopped before letting go is not flicking.
+        const v = performance.now() - lastT > 100 ? 0 : drag.v;
+        drag = null;
+        if (!moved) return;
+        // A flick moves on one frame in its direction; otherwise settle on the nearest.
+        const flick = Math.abs(v) > 0.35 ? -Math.sign(v) : 0;
+        this.#release(this.#nearest() + flick);
+      };
+      track.addEventListener('pointerup', end);
+      track.addEventListener('pointercancel', end);
+    }
+  }
+
+  if (!customElements.get('campaign-reel')) customElements.define('campaign-reel', CampaignReel);
 {% endjavascript %}
 
 {% schema %}
 {
   "name": "Kampanjband",
-  "tag": "div",
+  "tag": "section",
   "class": "section-reel",
   "settings": [
     {
@@ -343,7 +543,7 @@
           "type": "text",
           "id": "fallback",
           "label": "Temats bild",
-          "info": "Används när ingen bild är vald, t.ex. campaign-01 … campaign-09."
+          "info": "Används när ingen bild är vald, t.ex. campaign-01, campaign-04, campaign-06, campaign-07 eller campaign-09."
         },
         {
           "type": "text",

@@ -1,5 +1,5 @@
 /* OBJECT 07 — motion helpers shared by the sections: scroll reveals, scrambled labels, rolling
-   archive numbers, the cursor, magnetic controls, drag-to-turn, tilt, and the flight into the bag.
+   archive numbers, magnetic controls, drag-to-turn, tilt, and the flight into the bag.
    Everything degrades to a plain state change when motion is off (`.motion` missing on <html>). */
 
 (() => {
@@ -193,54 +193,6 @@ function observeReveals(scope = document) {
   window.addEventListener('scroll', atBottom, { passive: true });
 }
 
-/* ---------- Cursor: a bone disc that names the action over a garment ---------- */
-function initCursor() {
-  if (!motion || !fine) return;
-  const cursor = document.createElement('div');
-  cursor.className = 'cursor';
-  cursor.setAttribute('aria-hidden', 'true');
-  document.body.append(cursor);
-  root.classList.add('has-cursor');
-  let x = 0;
-  let y = 0;
-  let cx = 0;
-  let cy = 0;
-  let raf = 0;
-  let zone = null;
-  const tick = () => {
-    cx += (x - cx) * 0.22;
-    cy += (y - cy) * 0.22;
-    cursor.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
-    raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.2 ? requestAnimationFrame(tick) : 0;
-  };
-  document.addEventListener(
-    'pointermove',
-    (event) => {
-      if (event.pointerType !== 'mouse') return;
-      x = event.clientX;
-      y = event.clientY;
-      const next = event.target.closest?.('[data-cursor]') || null;
-      if (next !== zone) {
-        if (next && !zone) {
-          cx = x;
-          cy = y;
-        }
-        zone = next;
-        if (zone) cursor.textContent = zone.dataset.cursor;
-        cursor.classList.toggle('cursor--on', !!zone);
-      }
-      if (!raf) raf = requestAnimationFrame(tick);
-    },
-    { passive: true }
-  );
-  document.documentElement.addEventListener('mouseleave', () => {
-    zone = null;
-    cursor.classList.remove('cursor--on');
-  });
-  document.addEventListener('pointerdown', () => cursor.classList.add('cursor--press'));
-  document.addEventListener('pointerup', () => cursor.classList.remove('cursor--press'));
-}
-
 /* ---------- Magnetic controls ---------- */
 function initMagnetic(scope = document) {
   if (!motion || !fine) return;
@@ -415,7 +367,6 @@ Object.assign(theme, { motion, scramble, rollTo, observeReveals, dragFlip, tilt,
 
 const init = () => {
   observeReveals();
-  initCursor();
   initMagnetic();
 };
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

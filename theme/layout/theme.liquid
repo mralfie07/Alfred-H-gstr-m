@@ -50,8 +50,7 @@
           soldOut: {{ 'products.sold_out' | t | json }},
           cartError: {{ 'cart.error' | t | json }},
           cartOne: {{ 'cart.label_one' | t | json }},
-          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }},
-          flip: {{ 'motion.flip' | t | json }}
+          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }}
         }
       };
     </script>

@@ -312,54 +312,6 @@
   100% { translate: 0 0; }
 }
 
-/* ---------------------------------------------------------------------------------------------
-   Cursor: over a garment, a bone disc says what a click does. Fine pointers only.
-   --------------------------------------------------------------------------------------------- */
-.cursor {
-  display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .has-cursor .cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 70;
-    display: grid;
-    place-items: center;
-    width: 84px;
-    height: 84px;
-    margin: -42px 0 0 -42px;
-    border-radius: 50%;
-    pointer-events: none;
-    color: var(--ink);
-    background: var(--bone);
-    font-stretch: 112%;
-    font-weight: 500;
-    font-size: 0.625rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    opacity: 0;
-    scale: 0.4;
-    transition: opacity 0.25s var(--ease-out), scale 0.45s var(--ease-out);
-    will-change: transform;
-  }
-
-  .has-cursor .cursor--on {
-    opacity: 1;
-    scale: 1;
-  }
-
-  .has-cursor .cursor--press {
-    scale: 0.86;
-  }
-
-  .has-cursor [data-cursor],
-  .has-cursor [data-cursor] * {
-    cursor: none;
-  }
-}
-
 /* Magnetic controls drift toward the pointer and settle back. */
 [data-magnetic] {
   transition: translate 0.7s var(--ease-spring);

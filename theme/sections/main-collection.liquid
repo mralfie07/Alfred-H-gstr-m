@@ -95,7 +95,7 @@
             data-vt-object="{{ product.handle }}"
             {% if forloop.index <= 3 %}data-enter="drop" style="--enter-i: {{ forloop.index | plus: 2 }}"{% else %}data-reveal="drop"{% endif %}
           >
-            <a class="object-card__link" href="{{ product.url }}" data-cursor="{{ 'motion.open' | t }}">
+            <a class="object-card__link" href="{{ product.url }}">
               <div class="object-card__media concrete">
                 {%- if card_digits != blank -%}
                   <span class="object-card__digits numeral" aria-hidden="true"><span data-vt="numeral">{{ card_digits }}</span></span>

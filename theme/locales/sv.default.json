@@ -100,11 +100,11 @@
     }
   },
   "motion": {
-    "flip": "Vänd",
-    "open": "Öppna",
     "frame": "Bild",
     "campaign": "Kampanjbilder",
-    "ticker": "Arkivband"
+    "prev": "Föregående bild",
+    "next": "Nästa bild",
+    "strip": "Kampanjbilder. Bläddra i sidled."
   },
   "queue": {
     "days": "Dagar",

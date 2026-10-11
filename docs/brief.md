@@ -168,7 +168,7 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Sidbyten:** plagget följer med mellan sidorna. **Hero:** stjärnan, horisonten och att sidan klyvs vid första besöket. **Hero-filmen** görs inte om nu (den långärmade har kvar den äldre trycklooken).
 - **Higgsfield:** inget nytt får skapas, men befintliga bilder och klipp får användas. Kampanjbandet, kollektionernas bakgrunder och anmälans porträtt är de godkända startbilderna v3 samt 1B, 6B och 9A (se `docs/hero-assets.md`).
 - **Leverans:** som ett **nytt opublicerat tema**. Befintliga teman i butiken (publicerat och Drop 01) rörs inte.
-- Tillkom på startsidan: arkivband och kampanjband. Tillkom i sidfoten: ordmärket stort. Allt kan tas bort i temaredigeraren.
+- Tillkom på startsidan: kampanjband (och ett arkivband, borttaget 2026-10-11, se avsnitt 19). Tillkom i sidfoten: ordmärket stort. Allt kan tas bort i temaredigeraren.
 
 ## 17. Bara t-shirten säljs (användaren, 2026-10-11)
 - **Bara OBJECT #001 (t-shirten, 699 kr) säljs.** Den långärmade (OBJECT #002) är **utkast** i Shopify och syns inte på sajten. Produkten, bilderna (`brand/products/langarmad/`) och kollektionen OBJECT #002 finns kvar om den ska tas fram igen.
@@ -180,3 +180,9 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - Den som ställer sig i kön blir kund i Shopify med taggarna `newsletter` och `drop-01-ko`, så kön kan mejlas när droppet öppnar.
 - **Nedräkning** visas bara om ett släppdatum anges i temaredigeraren (Kö-sida → Släppdatum, t.ex. "2026-11-07 18:00"). Datumet är inte bestämt.
 - **Före droppet ska man inte kunna handla alls** (användaren): ett eget tema, "OBJECT 07 – Kö (bara e-post)" (`theme-ko/`, byggs med `scripts/build-ko-theme.sh`), visar kö-sidan på alla adresser. Butikstemat "Butik Drop 01 (till släppet)" publiceras när droppet öppnar. Användaren publicerar själv.
+
+## 19. Ändringar i fas 3 (användaren, 2026-10-11)
+- **Arkivbandet är borttaget** (jättetexten som löpte under heron).
+- **Kampanjbandet låser inte sidan längre.** Man scrollar åt sidan för att se alla bilder, och scrollar man nedåt fortsätter man ner på sidan.
+- **Den runda markören är borttagen** (benvita cirkeln med "VÄND", "ÖPPNA" och "DRA"). Vanlig muspekare överallt; på kampanjbandet en grip-hand.
+

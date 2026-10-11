@@ -13,22 +13,22 @@ Eget Shopify-tema i `theme/`. Byggt efter `DESIGN.md` (riktningen Korset) och go
 | Varukorg | `sections/cart-drawer.liquid`, `sections/main-cart.liquid` | Låda från höger (öppnas från väskan och från aviseringen efter köp) och en vanlig varukorgssida. |
 | Övrigt | `main-page`, `main-404`, `main-search`, `main-list-collections` | Enkla sidor i samma stil. |
 | Kö-sida | `main-password` (layout `password`) | Lösenordssidan = kö till droppet: film, e-post (kund med taggen `drop-01-ko`), valfri nedräkning (inställning Släppdatum), t-shirten, lösenordsfält (bara på lösenordssidan). Det separata kö-temat `theme-ko/` (alla mallar = kö-sidan, ingen butik) byggs med `scripts/build-ko-theme.sh`. Se brief avsnitt 18. |
-| Startsida (fas 3) | `archive-ticker.liquid`, `campaign-reel.liquid` | **Arkivband** (jättetext med produktdata, reagerar på scroll) efter heron och **kampanjband** (nio kampanjbilder som filmremsa) efter korset. |
+| Startsida (fas 3) | `campaign-reel.liquid` | **Kampanjband** efter korset: kampanjbilderna i en remsa som scrollas i sidled (svep, styrplatta, pilar, dra med musen). Låser aldrig sidan. Arkivbandet är borttaget (2026-10-11). |
 
 ## Rörelse (fas 3)
 Hela systemet beskrivs i `DESIGN.md` (Rörelse). Filerna:
 | Fil | Vad |
 |---|---|
 | `snippets/motion-head.liquid` | Körs i `<head>` före första bildrutan: klassen `motion`, introt (`intro`), namnger plagg och nummer för sidbyten. |
-| `assets/motion.css` | Sidbyten, entréer, avslöjanden, räkneverk, filmkorn, markör, ridåmeny, små saker. |
-| `assets/motion.js` | `theme.scramble`, `theme.rollTo`, `theme.dragFlip`, `theme.tilt`, `theme.flyToCart`, avslöjanden vid scroll, markör, magnetiska knappar, laddlinjen i headern. |
+| `assets/motion.css` | Sidbyten, entréer, avslöjanden, räkneverk, filmkorn, ridåmeny, små saker. |
+| `assets/motion.js` | `theme.scramble`, `theme.rollTo`, `theme.dragFlip`, `theme.tilt`, `theme.flyToCart`, avslöjanden vid scroll, magnetiska knappar, laddlinjen i headern. |
 | `snippets/numeral-roll.liquid` | Arkivnummer som rullar fram. |
 | `assets/grain.png` | Filmkornet (framtaget i Python). |
 | `assets/campaign-01…09-{800,1600}.webp` | Kampanjbilder (befintliga startbilder från Higgsfield, se `docs/hero-assets.md`). |
 
-Attribut i markupen: `data-enter` (in vid laddning), `data-reveal` (in vid scroll: tomt, `drop`, `mask`, `scene`), `data-scramble` (avkodas), `data-cursor="Vänd"` (markörens text), `data-magnetic`, `data-vt-object`/`data-vt` (plagg och nummer som flyger mellan sidor).
+Attribut i markupen: `data-enter` (in vid laddning), `data-reveal` (in vid scroll: tomt, `drop`, `mask`, `scene`, `slide`), `data-scramble` (avkodas), `data-magnetic`, `data-vt-object`/`data-vt` (plagg och nummer som flyger mellan sidor).
 
-Inställningar i temaredigeraren: Kollektion → kampanjbild bakom numret (av/på, kollektionens egen bild går före temats). Drop-anmälan → bakgrundsbild. Sidfot → ordmärket stort längst ner. Arkivbandet och kampanjbandet är vanliga sektioner (bilder kan bytas mot egna).
+Inställningar i temaredigeraren: Kollektion → kampanjbild bakom numret (av/på, kollektionens egen bild går före temats). Drop-anmälan → bakgrundsbild. Sidfot → ordmärket stort längst ner. Kampanjbandet är en vanlig sektion (bilder kan bytas mot egna).
 
 Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbare och mjukare. `prefers-reduced-motion` stänger av rörelsen och visar heron som stillbild.
 
