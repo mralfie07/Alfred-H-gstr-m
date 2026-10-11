@@ -233,7 +233,7 @@ function compiled(kind) {
 
 async function renderPage(templateName, extra = {}) {
   const scope = {
-    shop: { name: 'OBJECT 07' }, request: { locale: { iso_code: 'sv' } },
+    shop: { name: 'OBJECT 07' }, request: { locale: { iso_code: 'sv' }, page_type: templateName },
     routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '/search', collections_url: '/collections' },
     cart: cartObject(), template: { name: templateName }, settings: {}, collections,
     localization: { available_languages: [{ iso_code: 'sv', endonym_name: 'svenska' }], available_countries: [], language: { iso_code: 'sv' } },

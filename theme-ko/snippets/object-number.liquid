@@ -1,0 +1,25 @@
+{% doc %}
+  Splits a product title like "OBJECT #001 – Svart" into its archive number and colour.
+  Outputs the requested part.
+
+  @param {string} title - Product or collection title
+  @param {string} part - 'number' (e.g. "#001"), 'digits' (e.g. "001") or 'color' (e.g. "Svart")
+
+  @example
+  {% render 'object-number', title: product.title, part: 'color' %}
+{% enddoc %}
+{%- liquid
+  assign pieces = title | split: ' – '
+  assign head = pieces.first | strip
+  assign number = head | remove: 'OBJECT' | strip
+  case part
+    when 'number'
+      echo number
+    when 'digits'
+      echo number | remove: '#'
+    when 'color'
+      if pieces.size > 1
+        echo pieces.last | strip
+      endif
+  endcase
+-%}

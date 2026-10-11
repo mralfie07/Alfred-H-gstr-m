@@ -1,0 +1,22 @@
+{
+  "layout": "theme",
+  "sections": {
+    "main": {
+      "type": "main-password",
+      "settings": {
+        "kicker": "Drop 01 · OBJECT #001",
+        "heading": "Ställ dig i kön",
+        "text": "<p>Droppet är begränsat. Lämna din e-post så får du ett mejl när det öppnar, före alla andra.</p>",
+        "button": "Ställ dig i kön",
+        "success": "Du står i kön. Vi mejlar dig innan droppet öppnar.",
+        "drop_date": "",
+        "tags": "newsletter,drop-01-ko",
+        "product": "object-001-svart-camo",
+        "show_video": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
