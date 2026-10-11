@@ -32,8 +32,9 @@ Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** fö
 | OBJECT 07 – fas 2 med film | 205740474716 | **Publicerat** (gammalt: tre färger, gamla heron) |
 | OBJECT 07 – hero v3 (första droppet) | 205884195164 | Opublicerat, ersatt, kan tas bort |
 | OBJECT 07 – Drop 01 (bara #001) | 205885768028 | Opublicerat. Fas 2 utan fas 3-rörelse. Uppdaterat på plats 2026-10-11: bara #001 i korset, hero v4, kollektionssidor hoppar över tomma kollektioner (ändrade filer från commit 4ef5caf, uppladdade via staged upload). Har kvar köpfelet i `updateCount` som rättades i fas 3. |
-| **OBJECT 07 – Fas 3 (bara #001)** | **206036402524** | **Opublicerat, det senaste: fas 3 + bara t-shirten + kö-sidan (uppdaterat på plats 2026-10-11). Ska förhandsgranskas och publiceras av användaren.** Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
-Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206036402524`
+| OBJECT 07 – Fas 3 (bara #001) | 206036402524 | Opublicerat, ersatt av "Kö till Drop 01" (samma innehåll, kö-sidan uppladdad på plats 2026-10-11). Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
+| **OBJECT 07 – Kö till Drop 01** | **206211711324** | **Opublicerat, det senaste (2026-10-11): fas 3 + bara t-shirten + kö-sidan, skapat rent från commit af588b1 utan den långärmades filer. Ska förhandsgranskas och publiceras av användaren.** |
+Förhandsvisning: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206211711324`
 
 **Så kommer ändringar ut** (GitHub-kopplingen hittas inte i användarens Shopify, troligen avstängd under provperioden):
 1. Ändra i `theme/`, kör `shopify theme check` (CLI installeras med `npm i @shopify/cli` i scratchpad).
@@ -67,7 +68,7 @@ Görs i en separat chatt. Underlaget finns i `docs/leverantor-underlag.md` (zip:
 - ffmpeg och ImageMagick finns. Pillow, numpy och scipy installeras med pip.
 
 ## Att göra (användaren)
-1. Förhandsgranska och **publicera "Fas 3 (bara #001)"** (ersätter Drop 01). Behåll lösenordsskyddet på så att besökarna ser kö-sidan. Koppla domänen i Shopify (Inställningar → Domäner). Ta sedan bort de äldre OBJECT-temana. Drop 01 har köpfelet ovan.
+1. Förhandsgranska och **publicera "Kö till Drop 01"** (ersätter alla andra OBJECT-teman). Behåll lösenordsskyddet på så att besökarna ser kö-sidan. Koppla domänen i Shopify (Inställningar → Domäner). Ta sedan bort de äldre OBJECT-temana (fas 2 med film, hero v3, Drop 01, Fas 3). Drop 01 har köpfelet ovan.
 2. Fyll på **lager**.
 3. **Menyer** (`main-menu`, `footer`), **engelska** under Språk, **favicon** (emblemet).
 4. Uppgradera planen innan försäljning.
