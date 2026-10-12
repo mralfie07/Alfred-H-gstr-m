@@ -384,19 +384,39 @@
       for (const button of [this.prev, this.next]) {
         button?.addEventListener('click', () => this.#step(Number(button.dataset.reelStep)), { signal });
       }
-      // Home and End jump to the first and last frame (arrow keys scroll the strip natively).
+      // Arrow keys step like the arrow buttons (and add up the same way); Home and End go to the ends.
       this.track.addEventListener(
         'keydown',
         (event) => {
+          const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
           const to = { Home: 0, End: this.frames.length - 1 }[event.key];
-          if (to === undefined) return;
+          if (step === undefined && to === undefined) return;
           event.preventDefault();
-          this.goTo(to);
+          if (step) this.goTo((this.target ?? this.#nearest()) + step);
+          else this.goTo(to);
         },
         { signal }
       );
-      // A finger takes over from anything still moving the strip, with native snapping back on.
-      this.track.addEventListener('touchstart', () => this.#interrupt(), passive);
+      // A finger on a gliding strip stops it where it is (switching snapping back on now would jump it
+      // under a still finger). Letting go: a pan hands over to native snapping; a tap or hold settles.
+      this.track.addEventListener(
+        'touchstart',
+        () => {
+          if (!this.glide) return;
+          this.#interrupt(true);
+          this.touchFrom = this.track.scrollLeft;
+        },
+        passive
+      );
+      const lift = () => {
+        if (this.touchFrom === undefined) return;
+        const panned = Math.abs(this.track.scrollLeft - this.touchFrom) > 1;
+        this.touchFrom = undefined;
+        if (panned) this.track.classList.remove('is-free');
+        else this.#glide(this.#nearest());
+      };
+      this.track.addEventListener('touchend', lift, passive);
+      this.track.addEventListener('touchcancel', lift, passive);
       // Theme editor: selecting a frame's block brings it to the middle.
       this.addEventListener(
         'shopify:block:select',
@@ -482,7 +502,7 @@
      * direction), never overshoots, and rests in about half a second. Snapping is off meanwhile.
      * With reduced motion it jumps straight there.
      */
-    #glide(i, velocity = 0) {
+    #glide(i, velocity = 0, since) {
       const target = this.#clamp(i);
       const to = this.#leftFor(target);
       if (this.#still) {
@@ -491,6 +511,7 @@
         this.#rest();
         return;
       }
+      const running = this.glide;
       this.#interrupt(true);
       this.target = target;
       this.track.classList.add('is-free');
@@ -500,7 +521,9 @@
       // A start speed towards the target above w·|x0| would carry it past; cap it there.
       if (v0 * x0 < 0) v0 = Math.sign(v0) * Math.min(Math.abs(v0), w * Math.abs(x0));
       const b = v0 + w * x0;
-      const t0 = performance.now();
+      // The clock starts when the position it starts from was written: the last frame of a running
+      // glide, or the hand's last move. So a re-aimed glide or a release carries on without a stall.
+      const t0 = since ?? (running ? this.lastFrame : undefined) ?? performance.now();
       const frame = (now) => {
         // A frame can start a moment before the event that began the glide; never run time backwards.
         const t = Math.max(0, now - t0) / 1000;
@@ -508,6 +531,7 @@
         const x = (x0 + b * t) * e;
         const v = (v0 - w * b * t) * e;
         this.velocity = v / 1000;
+        this.lastFrame = now;
         if (Math.abs(x) < 0.5 && Math.abs(v) < 20) {
           this.track.scrollLeft = to;
           this.#settle();
@@ -590,20 +614,45 @@
       let sum = 0;
       let locked = false;
       let quiet = 0;
+      let last = 0; // size of the previous event in this stream
+      let lastAt = 0;
+      let sign = 0;
+      let decaying = false; // the stream has started to fade (a momentum tail)
       this.track.addEventListener(
         'wheel',
         (event) => {
           if (!event.shiftKey && Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
           event.preventDefault();
           const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? this.track.clientWidth : 1;
+          const d = (event.deltaX || event.deltaY) * unit;
+          const size = Math.abs(d);
+          const now = performance.now();
+          // A new push inside a running stream: the direction flips, a decaying momentum tail
+          // suddenly grows again, or a mouse wheel clicks a whole notch after a pause.
+          const notch = event.deltaMode === 1 || (size >= 100 && Number.isInteger(d) && now - lastAt > 50);
+          const regrow = locked && decaying && size > Math.max(8, last * 1.6);
+          const fresh = (sign && Math.sign(d) !== sign && size > 4) || regrow || notch;
+          if (fresh) {
+            sum = 0;
+            locked = false;
+            decaying = false;
+          } else if (last && size < last) {
+            decaying = true;
+          }
+          last = size;
+          lastAt = now;
+          sign = Math.sign(d);
           clearTimeout(quiet);
           quiet = setTimeout(() => {
             sum = 0;
             locked = false;
+            sign = 0;
+            last = 0;
+            decaying = false;
           }, 150);
           if (locked) return;
-          sum += (event.deltaX || event.deltaY) * unit;
-          if (Math.abs(sum) < 50) return;
+          sum += d;
+          if (Math.abs(sum) < 50 && !notch) return;
           locked = true;
           this.goTo((this.target ?? this.#nearest()) + Math.sign(sum));
         },
@@ -619,6 +668,7 @@
       const end = (event) => {
         if (!drag || event.pointerId !== drag.id) return;
         const { moved, lastT, start } = drag;
+        const wrote = drag.wrote;
         // A hand that stopped before letting go is not flicking.
         const v = performance.now() - lastT > 100 ? 0 : drag.v;
         drag = null;
@@ -629,7 +679,7 @@
         // A flick goes on one frame from where the drag began; otherwise the nearest frame.
         const nearest = this.#nearest();
         const flick = Math.abs(v) > 0.35 ? -Math.sign(v) : 0;
-        this.#glide(flick && nearest === start ? start + flick : nearest, -v);
+        this.#glide(flick && nearest === start ? start + flick : nearest, -v, v ? wrote : undefined);
       };
       track.addEventListener(
         'pointerdown',
@@ -662,6 +712,7 @@
           }
           track.scrollLeft = drag.left - dx;
           const now = performance.now();
+          drag.wrote = now;
           drag.v = (event.clientX - drag.lastX) / Math.max(1, now - drag.lastT);
           drag.lastX = event.clientX;
           drag.lastT = now;
