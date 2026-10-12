@@ -19,7 +19,7 @@
         <button class="reel__nav" type="button" data-reel-step="1" aria-label="{{ 'motion.next' | t }}" aria-disabled="false">
           {%- render 'icon', name: 'arrow' -%}
         </button>
-        <p class="visually-hidden" aria-live="polite" data-reel-status></p>
+        <p class="visually-hidden" aria-live="polite" data-reel-status data-position="{{ 'motion.position' | t: index: '__i__', total: '__n__' }}"></p>
       </div>
     {%- endif -%}
   </div>
@@ -409,6 +409,8 @@
       this.#drag(signal);
       this.#wheel(signal);
       this.#update();
+      // Where it starts is not news; the first move is.
+      this.announced = this.#nearest();
     }
 
     disconnectedCallback() {
@@ -478,20 +480,30 @@
      * Every programmatic move (arrows, keys, wheel, letting go after a drag) glides on the same
      * critically damped spring: it starts from the speed the strip already has (px/ms, in scroll
      * direction), never overshoots, and rests in about half a second. Snapping is off meanwhile.
+     * With reduced motion it jumps straight there.
      */
     #glide(i, velocity = 0) {
-      this.#interrupt(true);
       const target = this.#clamp(i);
       const to = this.#leftFor(target);
+      if (this.#still) {
+        this.#interrupt();
+        this.track.scrollLeft = to;
+        this.#rest();
+        return;
+      }
+      this.#interrupt(true);
       this.target = target;
       this.track.classList.add('is-free');
       const w = 12; // per second
       const x0 = this.track.scrollLeft - to;
-      const v0 = velocity * 1000;
+      let v0 = velocity * 1000;
+      // A start speed towards the target above w·|x0| would carry it past; cap it there.
+      if (v0 * x0 < 0) v0 = Math.sign(v0) * Math.min(Math.abs(v0), w * Math.abs(x0));
       const b = v0 + w * x0;
       const t0 = performance.now();
       const frame = (now) => {
-        const t = (now - t0) / 1000;
+        // A frame can start a moment before the event that began the glide; never run time backwards.
+        const t = Math.max(0, now - t0) / 1000;
         const e = Math.exp(-w * t);
         const x = (x0 + b * t) * e;
         const v = (v0 - w * b * t) * e;
@@ -537,11 +549,11 @@
       if (!this.status) return;
       const i = this.#nearest();
       if (i === this.announced) return;
-      const first = this.announced === undefined;
       this.announced = i;
-      if (first) return;
-      const caption = [...this.frames[i].querySelectorAll('figcaption span')].map((span) => span.textContent.trim());
-      this.status.textContent = `${caption.join(', ')} (${i + 1}/${this.frames.length})`;
+      // "Trappan, 3 av 5": the caption, then the position in words.
+      const caption = this.frames[i].querySelector('figcaption .muted')?.textContent.trim();
+      const position = (this.status.dataset.position || '__i__ / __n__').replace('__i__', i + 1).replace('__n__', this.frames.length);
+      this.status.textContent = [caption, position].filter(Boolean).join(', ');
     }
 
     /** Rolls the counter to frame `best`: quick enough to keep up with a hand. */
@@ -681,7 +693,8 @@
       "type": "text",
       "id": "word",
       "label": "Stort ord bakom bilderna",
-      "default": "Object 07"
+      "default": "Object 07",
+      "info": "Visas bara på bred skärm (från 900 px) och när rörelse är på."
     }
   ],
   "blocks": [

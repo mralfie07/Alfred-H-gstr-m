@@ -104,7 +104,8 @@
     "campaign": "Campaign images",
     "prev": "Previous image",
     "next": "Next image",
-    "strip": "Campaign images. Scroll sideways."
+    "strip": "Campaign images. Scroll sideways.",
+    "position": "{{ index }} of {{ total }}"
   },
   "queue": {
     "days": "Days",

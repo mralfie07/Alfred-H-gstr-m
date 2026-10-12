@@ -104,7 +104,8 @@
     "campaign": "Kampanjbilder",
     "prev": "Föregående bild",
     "next": "Nästa bild",
-    "strip": "Kampanjbilder. Bläddra i sidled."
+    "strip": "Kampanjbilder. Bläddra i sidled.",
+    "position": "{{ index }} av {{ total }}"
   },
   "queue": {
     "days": "Dagar",
