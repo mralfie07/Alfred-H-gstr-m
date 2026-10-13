@@ -85,7 +85,7 @@ engine.registerFilter('t', (key, ...args) => {
 });
 engine.registerFilter('asset_url', (name) => `/assets/${name}`);
 engine.registerFilter('money', (c) => (c == null ? '' : `${Math.round(c / 100)} kr`));
-engine.registerFilter('money_with_currency', (c) => (c == null ? '' : `${(c / 100).toFixed(2).replace('.', ',')} SEK`));
+engine.registerFilter('money_with_currency', (c) => (c == null ? '' : `${(c / 100).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+,)/g, ' ')} SEK`));
 engine.registerFilter('money_without_currency', (c) => (c == null ? '' : `${Math.round(c / 100)}`));
 engine.registerFilter('image_url', (img) => (img && img.src) || '');
 engine.registerFilter('image_tag', (src, ...args) => {

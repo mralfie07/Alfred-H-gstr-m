@@ -56,7 +56,7 @@
     "placeholder": "Your email address",
     "submit": "Sign up",
     "success": "Done. You'll get an email before the next object drops.",
-    "error": "Enter a valid email address, like name@mail.com."
+    "error": "Enter a valid email address, like name@example.com."
   },
   "pages": {
     "placeholder": "Text coming soon.",
@@ -110,8 +110,8 @@
   "queue": {
     "days": "Days",
     "hours": "Hrs",
-    "minutes": "Min",
-    "seconds": "Sec",
+    "minutes": "Mins",
+    "seconds": "Secs",
     "open": "The drop is open"
   }
 }
