@@ -1,0 +1,22 @@
+{
+  "layout": "theme",
+  "sections": {
+    "main": {
+      "type": "main-password",
+      "settings": {
+        "kicker": "Drop 01 · OBJECT #001",
+        "heading": "Join the queue",
+        "text": "<p>The drop is limited. Leave your email and we'll let you know when it opens, before anyone else.</p>",
+        "button": "Join the queue",
+        "success": "You're in the queue. We'll email you before the drop opens.",
+        "drop_date": "",
+        "tags": "newsletter,drop-01-ko",
+        "product": "object-001-svart-camo",
+        "show_video": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -8,7 +8,8 @@ import { Liquid, Hash } from 'liquidjs';
 
 const THEME = process.env.THEME || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../theme');
 const PORT = Number(process.env.PORT || 4321);
-const locale = JSON.parse(fs.readFileSync(path.join(THEME, 'locales/sv.default.json'), 'utf8'));
+const localeFile = fs.readdirSync(path.join(THEME, 'locales')).find((f) => /^[\w-]+\.default\.json$/.test(f));
+const locale = JSON.parse(fs.readFileSync(path.join(THEME, 'locales', localeFile), 'utf8'));
 
 /* ---------- data (from Shopify Admin, 2026-10-08) ---------- */
 function makeProduct(id, handle, title, type, price, sizes) {
@@ -84,6 +85,7 @@ engine.registerFilter('t', (key, ...args) => {
 });
 engine.registerFilter('asset_url', (name) => `/assets/${name}`);
 engine.registerFilter('money', (c) => (c == null ? '' : `${Math.round(c / 100)} kr`));
+engine.registerFilter('money_with_currency', (c) => (c == null ? '' : `${(c / 100).toFixed(2).replace('.', ',')} SEK`));
 engine.registerFilter('money_without_currency', (c) => (c == null ? '' : `${Math.round(c / 100)}`));
 engine.registerFilter('image_url', (img) => (img && img.src) || '');
 engine.registerFilter('image_tag', (src, ...args) => {
