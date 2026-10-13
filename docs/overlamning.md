@@ -1,4 +1,4 @@
-# Överlämning – läget 2026-10-12
+# Överlämning – läget 2026-10-13
 
 Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (särskilt avsnitt 13–16). Allt arbete ligger på grenen **`claude/fas-2-tema`** (ingen PR gjord, inte ihopslagen med `master`).
 
@@ -35,7 +35,8 @@ Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** fö
 | OBJECT 07 – Fas 3 (bara #001) | 206036402524 | Opublicerat, ersatt av "Kö till Drop 01" (samma innehåll, kö-sidan uppladdad på plats 2026-10-11). Kampanjbandet, arkivbandet och markören uppdaterade på plats 2026-10-12 (samma som butikstemat nedan). Innehåller oanvända filer från den långärmade (cutout/swatch object-002, campaign-02/03/05/08), eftersom `themeFilesDelete` är blockerad; de används inte. |
 | OBJECT 07 - Drop #001 (hette "Butik Drop 01 (till släppet)") | 206211711324 | Opublicerat. Hela butiken (fas 3 + bara t-shirten + kö-sidan som lösenordssida), skapat rent från commit af588b1. Uppdaterat på plats 2026-10-12 med commit 9c467c2: arkivbandet borttaget, kampanjbandet scrollas förbi, ingen rund markör (10 filer, checksummor kontrollerade). `sections/archive-ticker.liquid` finns kvar som tom fil eftersom `themeFilesDelete` är blockerad; den visar inget och kan raderas under Redigera kod. **Publiceras när droppet öppnar.** |
 | **OBJECT 07 – Kö (bara e-post)** | **206212039004** | **Publicerat (2026-10-11, av användaren).** Shopify-kopplingen kan inte ändra det; ändringar görs i ett nytt opublicerat tema som användaren publicerar. Bara kö-sidan: varje adress (startsida, produkt, kollektion, varukorg …) visar kön, man kan inte handla. Byggs ur `theme/` med `scripts/build-ko-theme.sh` till `theme-ko/` (31 filer). |
-Förhandsvisning kö: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206212039004` · butik: `?preview_theme_id=206211711324`
+| OBJECT 07 – Kö (engelska) | 206337474908 | Opublicerat (2026-10-13). Samma kö-sida på engelska ("Join the queue", pris "699 SEK"), samma taggar `newsletter,drop-01-ko`. Byggs med `scripts/build-ko-theme.sh en` till `theme-ko-en/` (30 filer, bara `en.default.json`: butikens enda språk är svenska och utan svensk fil använder Shopify standardfilen). Checksummor kontrollerade. **Användaren publicerar det själv om kön ska vara på engelska.** |
+Förhandsvisning kö: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206212039004` · kö på engelska: `?preview_theme_id=206337474908` · butik: `?preview_theme_id=206211711324`
 
 **Så kommer ändringar ut** (GitHub-kopplingen hittas inte i användarens Shopify, troligen avstängd under provperioden):
 1. Ändra i `theme/`, kör `shopify theme check` (CLI installeras med `npm i @shopify/cli` i scratchpad).
