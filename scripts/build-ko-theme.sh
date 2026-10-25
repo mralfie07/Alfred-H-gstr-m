@@ -25,7 +25,7 @@ mkdir -p "$OUT"/{assets,config,layout,locales,sections,snippets,templates}
 cp "$SRC"/sections/main-password.liquid "$OUT"/sections/
 cp "$SRC"/snippets/{icon,meta-tags,object-image,object-number}.liquid "$OUT"/snippets/
 if [ "$SPRAK" = en ]; then
-  # Bara engelska. Butikens språk är svenska, men utan en svensk fil använder Shopify standardfilen.
+  # Bara engelska: utan svensk fil visar Shopify engelskan oavsett butikens språk.
   cp "$SRC"/locales/en.json "$OUT"/locales/en.default.json
 else
   cp "$SRC"/locales/{sv.default,en}.json "$OUT"/locales/
