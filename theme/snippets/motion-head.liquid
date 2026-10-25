@@ -1,7 +1,6 @@
 {% doc %}
   Motion bootstrap, inline in <head> so it runs before the first paint.
   - Adds `motion` to <html> when the visitor allows motion; every animation in the theme hangs on it.
-  - First visit to the home page in a session: adds `intro` (the horizon opening, see sections/hero.liquid).
   - Page transitions: names the garment and its archive number on both pages, so they fly from the
     card (or the cross) to the product page and back. Arriving through a transition adds `vt`, which
     skips the load entrances (the page is already moving).
@@ -16,16 +15,8 @@
     root.classList.add('motion');
     // If the motion script never arrives, fall back to the still site rather than leave things hidden.
     setTimeout(() => {
-      if (!window.theme?.observeReveals) root.classList.remove('motion', 'intro');
+      if (!window.theme?.observeReveals) root.classList.remove('motion');
     }, 6000);
-    {%- if template.name == 'index' and request.design_mode != true %}
-      try {
-        if (!sessionStorage.getItem('o7-intro')) {
-          root.classList.add('intro');
-          sessionStorage.setItem('o7-intro', '1');
-        }
-      } catch (error) {}
-    {%- endif %}
 
     const handleOf = (url) => {
       try {

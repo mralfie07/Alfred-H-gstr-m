@@ -6,7 +6,7 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (s�
 - **Fas 1** (koncept, designsystem, prototyp), **fas 2** (temats grund i Liquid) och **fas 3** (motion i hela sajten, 2026-10-08) är klara.
 - Efter fas 2 ändrade användaren upplägget till **första droppet**, och sajten och heron är omgjorda efter det.
 - **Fas 3:** användaren ville ha rörelse fullt ut, inte lugnt (brief avsnitt 16). Systemet beskrivs i `DESIGN.md` (Rörelse) och `docs/theme.md` (Rörelse). Levererat som ett **nytt opublicerat tema**, se tabellen nedan.
-- **Nästa fas: fas 4**, mobil, finslipning, tillgänglighet och prestanda. Testa fas 3 på riktiga telefoner (iPhone med Safari och Android med Chrome): introt, svep på plaggen, kampanjbandet, sidbytena och filmkornets prestanda.
+- **Nästa fas: fas 4**, mobil, finslipning, tillgänglighet och prestanda. Testa fas 3 på riktiga telefoner (iPhone med Safari och Android med Chrome): svep på plaggen, kampanjbandet, sidbytena och filmkornets prestanda.
 
 ## Kö-sidan (2026-10-11)
 Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** för droppet och inte kunna handla. Kö-sidan är `sections/main-password.liquid` (brief avsnitt 18). Ett eget tema, **"Kö (bara e-post)"**, visar den på alla adresser; samma sektion är också lösenordssida i butikstemat. Den som skriver in sin e-post blir kund med taggen `drop-01-ko`. Nedräkning visas om Släppdatum fylls i i temaredigeraren. Sidan syns bara när lösenordsskyddet är på och temat som har den är publicerat. Lokalt: `/password` i `scripts/preview`.

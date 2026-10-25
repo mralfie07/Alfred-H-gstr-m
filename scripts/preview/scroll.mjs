@@ -2,7 +2,6 @@ import { chromium } from 'playwright';
 const [,, out, url, w, h, ...stops] = process.argv;
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
 const ctx = await browser.newContext({ viewport: { width: +w, height: +h }, hasTouch: +w < 600, isMobile: +w < 600 });
-await ctx.addInitScript(() => { try { sessionStorage.setItem('o7-intro', '1'); } catch (e) {} });
 const page = await ctx.newPage();
 const errors = [];
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));

@@ -165,7 +165,7 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 
 ## 16. Fas 3: motion (användaren, 2026-10-08)
 - **Rörelse fullt ut.** Först valdes "lugnt + några ögonblick", men under sessionen ändrade användaren sig: inte lika simpelt som förut, "helt sjuka animationer", "den ultimata hemsidan", som med en budget på en miljon dollar. Det som står om lugn rörelse i avsnitt 3 och i äldre versioner av DESIGN.md gäller inte längre. Märkets element bär fortfarande rörelsen.
-- **Sidbyten:** plagget följer med mellan sidorna. **Hero:** stjärnan, horisonten och att sidan klyvs vid första besöket. **Hero-filmen** görs inte om nu (den långärmade har kvar den äldre trycklooken).
+- **Sidbyten:** plagget följer med mellan sidorna. **Hero:** stjärnan, horisonten och att sidan klyvs vid första besöket (borttaget 2026-10-25, avsnitt 20). **Hero-filmen** görs inte om nu (den långärmade har kvar den äldre trycklooken).
 - **Higgsfield:** inget nytt får skapas, men befintliga bilder och klipp får användas. Kampanjbandet, kollektionernas bakgrunder och anmälans porträtt är de godkända startbilderna v3 samt 1B, 6B och 9A (se `docs/hero-assets.md`).
 - **Leverans:** som ett **nytt opublicerat tema**. Befintliga teman i butiken (publicerat och Drop 01) rörs inte.
 - Tillkom på startsidan: kampanjband (och ett arkivband, borttaget 2026-10-11, se avsnitt 19). Tillkom i sidfoten: ordmärket stort. Allt kan tas bort i temaredigeraren.
@@ -187,3 +187,5 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Kampanjbandet låser inte sidan längre.** Man scrollar åt sidan för att se alla bilder, och scrollar man nedåt fortsätter man ner på sidan.
 - **Den runda markören är borttagen** (benvita cirkeln med "VÄND", "ÖPPNA" och "DRA"). Vanlig muspekare överallt; på kampanjbandet en grip-hand.
 
+## 20. Ingen intro på startsidan (användaren, 2026-10-25)
+- **Introt är borttaget** (svart skärm, stjärnan och "EST. 2007" som räknade fram innan sidan klövs). Man kommer direkt in i butiken: filmen, headern och korset syns från början.

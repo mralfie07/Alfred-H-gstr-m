@@ -19,7 +19,7 @@ Eget Shopify-tema i `theme/`. Byggt efter `DESIGN.md` (riktningen Korset) och go
 Hela systemet beskrivs i `DESIGN.md` (Rörelse). Filerna:
 | Fil | Vad |
 |---|---|
-| `snippets/motion-head.liquid` | Körs i `<head>` före första bildrutan: klassen `motion`, introt (`intro`), namnger plagg och nummer för sidbyten. |
+| `snippets/motion-head.liquid` | Körs i `<head>` före första bildrutan: klassen `motion`, namnger plagg och nummer för sidbyten. |
 | `assets/motion.css` | Sidbyten, entréer, avslöjanden, räkneverk, filmkorn, ridåmeny, små saker. |
 | `assets/motion.js` | `theme.scramble`, `theme.rollTo`, `theme.dragFlip`, `theme.tilt`, `theme.flyToCart`, avslöjanden vid scroll, magnetiska knappar, laddlinjen i headern. |
 | `snippets/numeral-roll.liquid` | Arkivnummer som rullar fram. |
