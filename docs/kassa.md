@@ -77,7 +77,7 @@ Länkarna hamnar längst ner i kassan och bygger förtroende. Ångerrätten mås
 > You have 14 days to change your mind.
 >
 > **Right of withdrawal**
-> You may cancel your purchase within 14 days of the day you receive your order, without giving a reason. To do so, email us at alfredhogstrom@outlook.com with your order number and the item you want to return. We will reply with the return address.
+> You may cancel your purchase within 14 days of the day you receive your order, without giving a reason. To do so, email us at object07mail@gmail.com with your order number and the item you want to return. We will reply with the return address.
 >
 > **Sending it back**
 > - Send the item back within 14 days of telling us you want to return it.
