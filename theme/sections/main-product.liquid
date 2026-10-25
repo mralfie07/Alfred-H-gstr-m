@@ -25,6 +25,12 @@
   assign color = color | strip
 
   assign size_option = product.options_with_values.last
+  # The option is named in the admin ("Storlek"); show the translated word so it follows the store's language.
+  assign size_label = size_option.name
+  assign size_name = size_option.name | downcase
+  if size_name == 'storlek' or size_name == 'size'
+    assign size_label = 'products.size' | t
+  endif
   assign current = product.selected_or_first_available_variant
 -%}
 
@@ -142,7 +148,7 @@
           <input type="hidden" name="id" value="{{ current.id }}">
         {%- else -%}
           <fieldset class="sizes">
-            <legend class="product__legend ui ui--small">{{ size_option.name }}</legend>
+            <legend class="product__legend ui ui--small">{{ size_label }}</legend>
             {%- for variant in product.variants -%}
               <label class="size">
                 <input
@@ -177,6 +183,9 @@
         <p class="product__error" data-form-error role="alert"></p>
       {%- endform -%}
     </product-form>
+    {%- if product.available -%}
+      <div class="product__perks">{% render 'perks', amount: current.price %}</div>
+    {%- endif -%}
 
     <div class="product__details">
       {%- for block in section.blocks -%}
@@ -583,6 +592,14 @@
 
   .product__error:empty {
     display: none;
+  }
+
+  .product__perks {
+    margin-top: var(--s-4);
+
+    &:empty {
+      display: none;
+    }
   }
 
   .product__details {

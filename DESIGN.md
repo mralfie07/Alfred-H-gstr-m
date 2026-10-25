@@ -58,6 +58,8 @@ Rubriker har `text-wrap: balance`. Priser och räknare är `tabular-nums`.
 - **Anmälan:** "Få nästa droppet först", e-postfält med pilknapp i benvit ram. Kampanjporträttet (campaign-07) mörkt bakom, valbart.
 - **Kampanjband** (`campaign-reel`), **ordmärket stort i sidfoten** och **kampanjfoto bakom kollektionsnumret**: tillkom i fas 3, se Rörelse. Alla kan stängas av eller bytas i temaredigeraren. (Arkivbandet, jättetext som löpte, togs bort 2026-10-11.)
 - **Avisering:** benvit ruta nertill med miniatyr, objekt, färg, storlek och pris.
+- **Trygghetsrader** (`snippets/perks.liquid`, 2026-10-25): under köpknappen och under kassaknappen i varukorgen, tre rader i små versaler med emblemets stjärna som punkt: fri frakt inom Sverige (bara när beloppet når gränsen i Temainställningar → Köp), 14 dagars ångerrätt, 10 % på nästa order. Döljs när plagget är slutsålt.
+- **Kassan** (Shopify, Basic): mörk som sajten, ink-bakgrund, benvita fyrkantiga knappar, vitt ordmärke, Archivo. Ställs in för hand i kassaredigeraren, se `docs/kassa.md`.
 
 ## Rörelse
 **Fas 3 (2026-10-08):** användaren valde bort "lugnt" och vill ha rörelse fullt ut ("helt sjuka animationer", den ultimata sajten). Allt utgår ändå från märkets egna element: stjärnan, horisonten den skär genom ovalen, arkivnumren och betongen. Byggt i `theme/assets/motion.css`, `motion.js`, `snippets/motion-head.liquid` och i varje sektions egen stylesheet/javascript.

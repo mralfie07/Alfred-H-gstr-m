@@ -68,7 +68,7 @@
   </div>
 {%- else -%}
   {%- capture start_number -%}{% render 'object-number', title: first_block.settings.collection.title, part: 'digits' %}{%- endcapture -%}
-  <object-cross class="cross concrete{% if section.blocks.size == 1 %} cross--single{% endif %}" id="droppet" data-start-color="{{ start_color }}" data-reveal="scene">
+  <object-cross class="cross concrete{% if section.blocks.size == 1 %} cross--single{% endif %}" id="drop" data-start-color="{{ start_color }}" data-reveal="scene">
     <div class="cross__inner">
       {%- if section.settings.kicker != blank -%}
         <p class="cross__kicker ui ui--small" aria-hidden="true" data-scramble>{{ section.settings.kicker }}</p>

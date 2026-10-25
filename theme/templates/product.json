@@ -6,29 +6,29 @@
         "description": {
           "type": "description",
           "settings": {
-            "title": "Om objektet",
+            "title": "About the object",
             "open": true
           }
         },
         "size": {
           "type": "accordion",
           "settings": {
-            "title": "Storlek och passform",
-            "content": "<p>Oversized passform. Måttguide kommer.</p>"
+            "title": "Size and fit",
+            "content": "<p>Oversized fit. Size guide coming soon.</p>"
           }
         },
         "care": {
           "type": "accordion",
           "settings": {
-            "title": "Material och skötsel",
-            "content": "<p>Tung t-shirt i acid wash. Material och tvättråd kommer.</p>"
+            "title": "Material and care",
+            "content": "<p>Heavyweight acid-wash t-shirt. Material and care details coming soon.</p>"
           }
         },
         "shipping": {
           "type": "accordion",
           "settings": {
-            "title": "Frakt och retur",
-            "content": "<p>Information om frakt och retur kommer.</p>"
+            "title": "Shipping and returns",
+            "content": "<p>Free shipping in Sweden, express 99 kr. EU and international shipping 299 kr.</p><p>14 days to change your mind. You pay the return shipping. <a href=\"/policies/refund-policy\">Return policy</a></p>"
           }
         }
       },

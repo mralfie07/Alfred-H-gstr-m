@@ -189,3 +189,9 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 
 ## 20. Ingen intro på startsidan (användaren, 2026-10-25)
 - **Introt är borttaget** (svart skärm, stjärnan och "EST. 2007" som räknade fram innan sidan klövs). Man kommer direkt in i butiken: filmen, headern och korset syns från början.
+
+## 21. Engelska och kassan (användaren, 2026-10-25)
+- **Butiken är på engelska.** Användaren bytte butikens huvudspråk till engelska, så kassan är engelsk. Butikstemat "Drop #001" är också helt engelskt: mallarnas texter, menyerna (Home, Shop, Contact, Search) och sidfotens rad.
+- **Kassan ska få fler att slutföra köpet.** Den görs mörk som sajten, med ink-bakgrund, benvita fyrkantiga knappar, vitt ordmärke och Archivo. Butiken har Basic, så användaren ställer in den själv i kassaredigeraren; guide i `docs/kassa.md`.
+- **10 % på nästa order:** rabattkoden OBJECT10 skickas i orderbekräftelsen. Den gäller en gång per kund och bara för kunder som redan har handlat. Erbjudandet syns också före kassan, under köpknappen och i varukorgen, tillsammans med fri frakt inom Sverige och 14 dagars ångerrätt.
+- **Retur:** 14 dagars ångerrätt, kunden betalar returfrakten.

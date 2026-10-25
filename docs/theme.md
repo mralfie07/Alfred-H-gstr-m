@@ -10,7 +10,7 @@ Eget Shopify-tema i `theme/`. Byggt efter `DESIGN.md` (riktningen Korset) och go
 | Startsida | `templates/index.json` | **Hero** (`hero.liquid`), **Korset** (`object-cross.liquid`), **Drop-anmälan** (`drop-signup.liquid`) |
 | Kollektion #001 / #002 | `sections/main-collection.liquid` | Stort arkivnummer på betong, en ruta per färg med frilagt plagg, pris och storlekar i lager, länk till de andra kollektionerna. #002 visar ryggen. |
 | Produkt | `sections/main-product.liquid` | Plagget på betong med Framsida/Baksida, färgerna i samma kollektion som länkar, storlek S–XL, köpknapp som ligger kvar nertill i mobilen, dragspel (beskrivning, storlek, material, frakt) och Shopifys produktbilder i ett svepbart band. |
-| Varukorg | `sections/cart-drawer.liquid`, `sections/main-cart.liquid` | Låda från höger (öppnas från väskan och från aviseringen efter köp) och en vanlig varukorgssida. |
+| Varukorg | `sections/cart-drawer.liquid`, `sections/main-cart.liquid` | Låda från höger (öppnas från väskan och från aviseringen efter köp) och en vanlig varukorgssida. Under kassaknappen och köpknappen: trygghetsraderna (`snippets/perks.liquid`, inställningar under Temainställningar → Köp). Kassan själv: `docs/kassa.md`. |
 | Övrigt | `main-page`, `main-404`, `main-search`, `main-list-collections` | Enkla sidor i samma stil. |
 | Kö-sida | `main-password` (layout `password`) | Lösenordssidan = kö till droppet: film, e-post (kund med taggen `drop-01-ko`), valfri nedräkning (inställning Släppdatum), t-shirten, lösenordsfält (bara på lösenordssidan). Det separata kö-temat `theme-ko/` (alla mallar = kö-sidan, ingen butik) byggs med `scripts/build-ko-theme.sh`, den engelska `theme-ko-en/` med `scripts/build-ko-theme.sh en` (bara `en.default.json`, `lang="en"`, engelska texter i mallarna, pris "699 SEK"). Se brief avsnitt 18. |
 | Startsida (fas 3) | `campaign-reel.liquid` | **Kampanjband** efter korset: kampanjbilderna i en remsa som scrollas i sidled (svep, styrplatta, pilar, dra med musen). Låser aldrig sidan. Arkivbandet är borttaget (2026-10-11). |
@@ -51,8 +51,8 @@ Allt fungerar utan JavaScript (formulär och länkar), skriptet gör det snabbar
 2. **Heron:** filmen följer med temat (`assets/hero-1080.mp4` 3,1 MB och `hero-720.mp4` 1,4 MB för mobil, komprimerade från `hero-v3-original.mp4`), eftersom Shopify inte tillåter uppladdade filmer på provkonton. Efter uppgradering kan en film väljas i temaredigeraren (Hero-film → Film) i stället.
 3. **Lager:** fyll på lagersaldot per storlek. Nu står allt på 0, så allt visas som slutsålt.
 4. **Menyer:** `main-menu` (header) och `footer` (sidfot) under Innehåll → Menyer.
-5. **Engelska:** lägg till engelska under Inställningar → Språk och publicera. Då syns språkväljaren. Produktnamn och färger översätts i Translate & Adapt.
-6. **Favicon:** emblemet behöver beskäras tätt och testas i 16–32 px (se briefen). Läggs in under Temainställningar → Favicon.
+5. **Språk:** butikens huvudspråk är engelska sedan oktober 2026 (användarens beslut, brief avsnitt 21). Temat använder då `locales/en.json`, och texterna i mallarna är engelska. `sv.default.json` finns kvar som reservfil. Lokalt: `LOCALE=en node server.mjs`.
+6. **Favicon:** `brand/checkout/favicon-emblem.png` (emblemet på svart, 512 px). Läggs in under Temainställningar → Favicon och i kassaredigeraren.
 
 ## Kvar till senare faser
 - ~~Fas 3: motion i hela sajten~~ klar 2026-10-08 (se Rörelse ovan).

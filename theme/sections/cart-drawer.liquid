@@ -16,7 +16,7 @@
       {%- else -%}
         <div class="cart-empty">
           <p>{{ 'cart.empty' | t }}</p>
-          <a class="button button--ghost" href="{{ routes.root_url }}#droppet">{{ 'cart.continue' | t }}</a>
+          <a class="button button--ghost" href="{{ routes.root_url }}#drop">{{ 'cart.continue' | t }}</a>
         </div>
       {%- endif -%}
     </div>
@@ -31,6 +31,7 @@
         <form action="{{ routes.cart_url }}" method="post">
           <button class="button button--full" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
         </form>
+        {% render 'perks', amount: cart.total_price %}
         <a class="ui link" href="{{ routes.cart_url }}" style="justify-self: center">{{ 'cart.view_full' | t }}</a>
       </div>
     {%- endif -%}

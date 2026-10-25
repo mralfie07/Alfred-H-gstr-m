@@ -80,6 +80,11 @@
     "tax_included": "Moms ingår.",
     "description_missing": "Material, passform och tvättråd kommer snart."
   },
+  "perks": {
+    "shipping": "Fri frakt inom Sverige",
+    "returns": "14 dagars ångerrätt",
+    "next_order": "10 % på nästa order"
+  },
   "search": {
     "title": "Sök",
     "label": "Sök i butiken",

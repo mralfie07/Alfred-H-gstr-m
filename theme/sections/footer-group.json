@@ -5,6 +5,7 @@
     "footer": {
       "type": "footer",
       "settings": {
+        "text": "<p>Numbered objects in limited drops.</p>",
         "menu": "footer",
         "show_policies": true
       }

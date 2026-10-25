@@ -1,0 +1,33 @@
+{% doc %}
+  Reassurance under the buy and checkout buttons: free shipping, returns and the next-order code,
+  each with the emblem's star. The lines are translations, so they follow the store's language.
+  Free shipping shows only when `amount` reaches the theme setting "Fri frakt från" (blank hides it);
+  the other two have their own on/off settings.
+
+  @param {number} amount - The cart total or the product price, in cents
+
+  @example
+  {% render 'perks', amount: cart.total_price %}
+{% enddoc %}
+{%- liquid
+  assign free_shipping = false
+  if settings.free_shipping_from != blank
+    assign threshold = settings.free_shipping_from | times: 100
+    if amount >= threshold
+      assign free_shipping = true
+    endif
+  endif
+-%}
+{%- if free_shipping or settings.show_returns or settings.show_next_order -%}
+  <ul class="perks ui ui--small" role="list">
+    {%- if free_shipping -%}
+      <li>{% render 'icon', name: 'star' %}{{ 'perks.shipping' | t }}</li>
+    {%- endif -%}
+    {%- if settings.show_returns -%}
+      <li>{% render 'icon', name: 'star' %}{{ 'perks.returns' | t }}</li>
+    {%- endif -%}
+    {%- if settings.show_next_order -%}
+      <li>{% render 'icon', name: 'star' %}{{ 'perks.next_order' | t }}</li>
+    {%- endif -%}
+  </ul>
+{%- endif -%}

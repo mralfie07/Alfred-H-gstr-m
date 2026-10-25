@@ -3,7 +3,7 @@
     "main": {
       "type": "main-collection",
       "settings": {
-        "kicker": "Drop 01 · Kollektion",
+        "kicker": "Drop 01 · Collection",
         "side": "bak",
         "sibling_prefix": "object-",
         "back_first": ""
@@ -12,8 +12,8 @@
     "signup": {
       "type": "drop-signup",
       "settings": {
-        "heading": "Få nästa droppet först",
-        "text": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>"
+        "heading": "Get the next drop first",
+        "text": "<p>Sign up and we'll email you before the next object drops.</p>"
       }
     }
   },

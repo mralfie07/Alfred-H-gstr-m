@@ -3,9 +3,9 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "label": "Kampanjfilm Drop 01",
+        "label": "Drop 01 campaign film",
         "kicker": "Drop 01 · OBJECT #001",
-        "link_label": "Handla droppet",
+        "link_label": "Shop the drop",
         "link": ""
       }
     },
@@ -32,8 +32,8 @@
     "signup": {
       "type": "drop-signup",
       "settings": {
-        "heading": "Få nästa droppet först",
-        "text": "<p>Anmäl dig så får du ett mejl innan nästa objekt släpps.</p>",
+        "heading": "Get the next drop first",
+        "text": "<p>Sign up and we'll email you before the next object drops.</p>",
         "fallback": "campaign-07"
       }
     },
@@ -44,35 +44,35 @@
           "type": "frame",
           "settings": {
             "fallback": "campaign-01",
-            "caption": "Tyget i middagssol"
+            "caption": "The fabric in midday sun"
           }
         },
         "frame_04": {
           "type": "frame",
           "settings": {
             "fallback": "campaign-04",
-            "caption": "Ryggen, OBJECT #001"
+            "caption": "The back, OBJECT #001"
           }
         },
         "frame_06": {
           "type": "frame",
           "settings": {
             "fallback": "campaign-06",
-            "caption": "Trappan"
+            "caption": "The stairs"
           }
         },
         "frame_07": {
           "type": "frame",
           "settings": {
             "fallback": "campaign-07",
-            "caption": "Blicken"
+            "caption": "The look"
           }
         },
         "frame_09": {
           "type": "frame",
           "settings": {
             "fallback": "campaign-09",
-            "caption": "Trycket"
+            "caption": "The print"
           }
         }
       },
@@ -84,7 +84,7 @@
         "frame_09"
       ],
       "settings": {
-        "kicker": "Drop 01 · Kampanj",
+        "kicker": "Drop 01 · Campaign",
         "word": "Object 07"
       }
     }

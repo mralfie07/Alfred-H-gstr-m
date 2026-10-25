@@ -8,8 +8,18 @@ import { Liquid, Hash } from 'liquidjs';
 
 const THEME = process.env.THEME || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../theme');
 const PORT = Number(process.env.PORT || 4321);
-const localeFile = fs.readdirSync(path.join(THEME, 'locales')).find((f) => /^[\w-]+\.default\.json$/.test(f));
+// LOCALE=en renders with locales/en.json, as when English is the store's language; otherwise the default file.
+const localeFile = process.env.LOCALE
+  ? `${process.env.LOCALE}.json`
+  : fs.readdirSync(path.join(THEME, 'locales')).find((f) => /^[\w-]+\.default\.json$/.test(f));
 const locale = JSON.parse(fs.readFileSync(path.join(THEME, 'locales', localeFile), 'utf8'));
+// Theme settings at their defaults from config/settings_schema.json.
+const themeSettings = Object.fromEntries(
+  JSON.parse(fs.readFileSync(path.join(THEME, 'config/settings_schema.json'), 'utf8'))
+    .flatMap((group) => group.settings || [])
+    .filter((setting) => setting.id && 'default' in setting)
+    .map((setting) => [setting.id, setting.default]),
+);
 
 /* ---------- data (from Shopify Admin, 2026-10-08) ---------- */
 function makeProduct(id, handle, title, type, price, sizes) {
@@ -177,12 +187,14 @@ function resolveSettings(defs = [], given = {}) {
   }
   return out;
 }
+// As in the store (Navigation, 2026-10-25).
 const MENUS = {
   'main-menu': { links: [
-    { title: 'OBJECT #001', url: '/collections/object-001' },
-    { title: 'Om', url: '/pages/om' },
+    { title: 'Home', url: '/' },
+    { title: 'Shop', url: '/collections/all' },
+    { title: 'Contact', url: '/pages/contact' },
   ] },
-  footer: { links: [{ title: 'Sök', url: '/search' }, { title: 'Kontakt', url: '/pages/kontakt' }] },
+  footer: { title: 'Footer menu', links: [{ title: 'Search', url: '/search' }] },
 };
 
 async function renderSection(id, data, scope) {
@@ -237,7 +249,7 @@ async function renderPage(templateName, extra = {}) {
   const scope = {
     shop: { name: 'OBJECT 07' }, request: { locale: { iso_code: 'sv' }, page_type: templateName },
     routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '/search', collections_url: '/collections' },
-    cart: cartObject(), template: { name: templateName }, settings: {}, collections,
+    cart: cartObject(), template: { name: templateName }, settings: themeSettings, collections,
     localization: { available_languages: [{ iso_code: 'sv', endonym_name: 'svenska' }], available_countries: [], language: { iso_code: 'sv' } },
     canonical_url: '', page_title: extra.page_title || 'OBJECT 07', content_for_header: '<link rel="stylesheet" href="/compiled/styles.css"><script src="/compiled/scripts.js" defer></script>',
     current_page: 1, linklists: MENUS, all_products: products, ...extra,
@@ -258,7 +270,7 @@ async function body(req) {
 }
 async function drawerSection() {
   const scope = {
-    cart: cartObject(), routes: { root_url: '/', cart_url: '/cart', cart_change_url: '/cart/change' }, shop: { name: 'OBJECT 07' },
+    cart: cartObject(), routes: { root_url: '/', cart_url: '/cart', cart_change_url: '/cart/change' }, shop: { name: 'OBJECT 07' }, settings: themeSettings,
   };
   return renderSection('cart-drawer', { type: 'cart-drawer', settings: {} }, scope);
 }

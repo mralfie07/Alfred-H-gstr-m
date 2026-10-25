@@ -80,6 +80,11 @@
     "tax_included": "VAT included.",
     "description_missing": "Material, fit and care coming soon."
   },
+  "perks": {
+    "shipping": "Free shipping in Sweden",
+    "returns": "14-day returns",
+    "next_order": "10% off your next order"
+  },
   "search": {
     "title": "Search",
     "label": "Search the store",

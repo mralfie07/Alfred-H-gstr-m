@@ -60,42 +60,45 @@ open(path, "w", encoding="utf-8").write(text.replace(old, new))
 PY
 }
 
-MALL="$SRC"/templates/password.json
 if [ "$SPRAK" = en ]; then
-  # Sidan är engelsk även om butikens språk (request.locale) är svenska.
+  # Sidan är engelsk även om request.locale skulle vara svenska.
   byt "$OUT"/layout/theme.liquid '<html lang="{{ request.locale.iso_code }}">' '<html lang="en">'
   # "699 SEK" i stället för "699,00 kr". Ören som inte är noll står kvar.
   byt "$OUT"/sections/main-password.liquid '{{ product.price | money }}' "{{ product.price | money_with_currency | remove: ',00' }}"
-  # Texterna i kö-sidans inställningar; allt annat (taggar, produkt, datum, film) som i den svenska.
-  # Ändras en svensk text i theme/ stoppar bygget, så att den engelska översättningen uppdateras också.
-  MALL="$OUT"/password-en.json
-  python3 - "$SRC"/templates/password.json "$MALL" <<'PY'
+fi
+
+# Kö-sidans texter står på engelska i theme/templates/password.json (butikens språk sedan oktober 2026).
+# Det svenska kö-temat översätter dem; allt annat (taggar, produkt, datum, film) är detsamma.
+# Ändras en text i theme/ stoppar bygget, så att översättningen uppdateras också.
+MALL="$OUT"/password-mall.json
+python3 - "$SRC"/templates/password.json "$MALL" "$SPRAK" <<'PY'
 import json, re, sys
-src, out = sys.argv[1:]
+src, out, sprak = sys.argv[1:]
 template = json.load(open(src, encoding="utf-8"))
 settings = template["sections"]["main"]["settings"]
-english = {  # svenska → engelska
-    "heading": ("Ställ dig i kön", "Join the queue"),
+swedish = {  # engelska → svenska
+    "heading": ("Join the queue", "Ställ dig i kön"),
     "text": (
-        "<p>Droppet är begränsat. Lämna din e-post så får du ett mejl när det öppnar, före alla andra.</p>",
         "<p>The drop is limited. Leave your email and we'll let you know when it opens, before anyone else.</p>",
+        "<p>Droppet är begränsat. Lämna din e-post så får du ett mejl när det öppnar, före alla andra.</p>",
     ),
-    "button": ("Ställ dig i kön", "Join the queue"),
+    "button": ("Join the queue", "Ställ dig i kön"),
     "success": (
-        "Du står i kön. Vi mejlar dig innan droppet öppnar.",
         "You're in the queue. We'll email you before the drop opens.",
+        "Du står i kön. Vi mejlar dig innan droppet öppnar.",
     ),
 }
-for key, (swedish, translation) in english.items():
-    if settings.get(key) != swedish:
-        sys.exit(f"Kö-sidans {key!r} är ändrad i {src}: översätt den nya texten i scripts/build-ko-theme.sh")
-    settings[key] = translation
-left = [k for k, v in settings.items() if isinstance(v, str) and re.search("[åäöÅÄÖ]", v)]
-if left:
-    sys.exit(f"Svensk text kvar i kö-sidans inställningar: {left}")
+for key, (english, translation) in swedish.items():
+    if settings.get(key) != english:
+        sys.exit(f"Kö-sidans {key!r} är ändrad i {src}: uppdatera översättningen i scripts/build-ko-theme.sh")
+    if sprak == "sv":
+        settings[key] = translation
+if sprak == "en":
+    left = [k for k, v in settings.items() if isinstance(v, str) and re.search("[åäöÅÄÖ]", v)]
+    if left:
+        sys.exit(f"Svensk text i kö-sidans inställningar: {left}")
 json.dump(template, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 PY
-fi
 cp "$OUT"/layout/theme.liquid "$OUT"/layout/password.liquid
 
 # Alla mallar = kö-sidan, med samma inställningar som lösenordsmallen.
@@ -103,7 +106,7 @@ for t in index product collection list-collections cart page search 404 blog art
   sed 's/"layout": "password"/"layout": "theme"/' "$MALL" > "$OUT"/templates/$t.json
 done
 sed -i 's/"layout": "theme"/"layout": "password"/' "$OUT"/templates/password.json
-rm -f "$OUT"/password-en.json
+rm -f "$OUT"/password-mall.json
 
 rm -rf "$DEST"
 mv "$OUT" "$DEST"

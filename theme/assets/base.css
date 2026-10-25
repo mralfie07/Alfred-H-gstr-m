@@ -594,6 +594,29 @@ p {
   border-top: 1px solid var(--rule);
 }
 
+/* Reassurance under the buy and checkout buttons (snippets/perks). */
+.perks {
+  display: grid;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--stone);
+
+  & li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  & svg {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    color: var(--bone-dim);
+  }
+}
+
 /* Mobile menu */
 .menu__list {
   display: grid;

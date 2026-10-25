@@ -17,5 +17,34 @@
         "info": "Kvadratisk bild, minst 64 × 64 px. Emblemet ska beskäras tätt runt ovalen."
       }
     ]
+  },
+  {
+    "name": "Köp",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Raderna med stjärna under köpknappen och i varukorgen. Texterna följer butikens språk."
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_from",
+        "label": "Fri frakt inom Sverige från (kr)",
+        "default": 470,
+        "info": "Samma gräns som under Frakt i Shopify. Lämna tomt för att dölja raden."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_returns",
+        "label": "Visa \"14 dagars ångerrätt\"",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_next_order",
+        "label": "Visa \"10 % på nästa order\"",
+        "default": true,
+        "info": "Koden OBJECT10 skickas i orderbekräftelsen."
+      }
+    ]
   }
 ]
