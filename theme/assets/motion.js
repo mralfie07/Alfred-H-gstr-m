@@ -12,9 +12,12 @@ const SPRING =
   'linear(0, 0.056 3.1%, 0.191 6.2%, 0.368 9.4%, 0.552 12.5%, 0.724 15.6%, 0.868 18.8%, 0.98 21.9%, 1.057 25%, 1.103 28.1%, 1.124 31.2%, 1.125 34.4%, 1.112 37.5%, 1.092 40.6%, 1.069 43.8%, 1.046 46.9%, 1.026 50%, 1.01 53.1%, 0.998 56.2%, 0.99 59.4%, 0.985 62.5%, 0.984 65.6%, 0.985 68.8%, 0.987 71.9%, 0.99 75%, 0.993 78.1%, 0.995 81.2%, 0.998 84.4%, 1 87.5%, 1.001 90.6%, 1)';
 
 /* ---------- Leaving for another page: a hairline draws under the header ---------- */
-document.addEventListener('click', (event) => {
+// On window, so it runs after the document's handlers: a link they take over (the bag opens the drawer)
+// is no longer a page change by then.
+window.addEventListener('click', (event) => {
   const link = event.target.closest?.('a[href]');
   if (!link || event.defaultPrevented || event.button !== 0) return;
+  if (link.hasAttribute('data-open-dialog')) return;
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   if ((link.target && link.target !== '_self') || link.hasAttribute('download')) return;
   const url = new URL(link.href, location.href);
