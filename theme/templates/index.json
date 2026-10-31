@@ -4,9 +4,13 @@
       "type": "hero",
       "settings": {
         "label": "Drop 01 campaign film",
-        "kicker": "Drop 01 · OBJECT #001",
+        "full_desktop": true,
+        "kicker": "Drop 01",
+        "heading": "OBJECT #001",
         "link_label": "Shop the drop",
-        "link": ""
+        "link": "",
+        "link_2_label": "See the campaign",
+        "link_2": ""
       }
     },
     "cross": {

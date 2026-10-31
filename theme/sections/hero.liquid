@@ -38,7 +38,7 @@
     assign large_url = 'hero-1080.mp4' | asset_url
   endif
 -%}
-<section class="hero" aria-label="{{ section.settings.label | escape }}">
+<section class="hero{% if section.settings.full_desktop %} hero--full{% endif %}" aria-label="{{ section.settings.label | escape }}">
   {%- if large_url != blank -%}
     <video
       class="hero__media"
@@ -78,12 +78,36 @@
 
   <div class="hero__copy page-width">
     {%- if section.settings.kicker != blank -%}
-      <p class="ui" data-scramble>{{ section.settings.kicker }}</p>
+      <p class="ui ui--small" data-scramble>{{ section.settings.kicker }}</p>
     {%- endif -%}
-    {%- if section.settings.link_label != blank -%}
-      <a class="ui link" href="{{ section.settings.link | default: '#drop' }}">{{ section.settings.link_label }}</a>
+    {%- if section.settings.heading != blank -%}
+      <h1 class="hero__heading heading">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if section.settings.link_label != blank or section.settings.link_2_label != blank -%}
+      <p class="hero__links">
+        {%- if section.settings.link_label != blank -%}
+          <a class="ui link" href="{{ section.settings.link | default: '#drop' }}">{{ section.settings.link_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.link_2_label != blank -%}
+          <a class="ui link" href="{{ section.settings.link_2 | default: '#campaign' }}">{{ section.settings.link_2_label }}</a>
+        {%- endif -%}
+      </p>
     {%- endif -%}
   </div>
+
+  {%- if large_url != blank -%}
+    <button
+      class="icon-button hero__toggle"
+      type="button"
+      data-hero-toggle
+      data-label-pause="{{ 'hero.pause' | t | escape }}"
+      data-label-play="{{ 'hero.play' | t | escape }}"
+      aria-label="{{ 'hero.pause' | t | escape }}"
+    >
+      <span class="hero__toggle-pause">{% render 'icon', name: 'pause' %}</span>
+      <span class="hero__toggle-play">{% render 'icon', name: 'play' %}</span>
+    </button>
+  {%- endif -%}
 </section>
 
 {% stylesheet %}
@@ -118,6 +142,14 @@
     }
   }
 
+  /* Full screen on desktop: the film fills the window, the header floats on top of it. */
+  .hero--full .hero__media {
+    @media (min-width: 900px) {
+      height: 100svh;
+      aspect-ratio: auto;
+    }
+  }
+
   .hero__veil {
     position: absolute;
     inset: 0;
@@ -127,19 +159,88 @@
     pointer-events: none;
   }
 
+  /* Centred at the foot of the film: the line, the object's name, then the links side by side. */
   .hero__copy {
     position: absolute;
     inset-inline: 0;
-    bottom: var(--s-4);
+    bottom: var(--s-5);
     z-index: 2;
     display: grid;
     gap: var(--s-2);
-    justify-items: start;
+    justify-items: center;
+    padding-inline: var(--gutter);
 
     @media (min-width: 900px) {
-      bottom: var(--s-6);
+      padding-inline: 56px; /* clear of the pause button in the corner */
+    }
+    text-align: center;
+
+    @media (min-width: 900px) {
+      bottom: var(--s-7);
       gap: var(--s-3);
     }
+  }
+
+  .hero__heading {
+    margin: 0;
+    font-size: clamp(1.75rem, 4.4vw, 3.25rem);
+  }
+
+  .hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-2) var(--s-4);
+    margin: var(--s-1) 0 0;
+
+    & .ui {
+      @media (max-width: 899px) {
+        font-size: 0.6875rem; /* both links on one line on a phone */
+      }
+    }
+
+    @media (min-width: 900px) {
+      column-gap: var(--s-5);
+    }
+  }
+
+  /* Pause: top right under the header on a phone (the links fill the foot), bottom left on desktop. */
+  .hero__toggle {
+    position: absolute;
+    top: calc(var(--header-h) + env(safe-area-inset-top, 0px));
+    right: calc(var(--gutter) - 10px);
+    z-index: 3;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    & svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (min-width: 900px) {
+      top: auto;
+      right: auto;
+      bottom: calc(var(--s-7) - 10px);
+      left: calc(var(--gutter) - 10px);
+    }
+  }
+
+  .hero__toggle-play,
+  .hero__toggle[data-paused] .hero__toggle-pause {
+    display: none;
+  }
+
+  .hero__toggle[data-paused] .hero__toggle-play {
+    display: contents;
+  }
+
+  .hero__toggle-pause {
+    display: contents;
   }
 
   /* Leaving the hero: the film pushes in and sinks into ink, the line lifts away faster. */
@@ -186,17 +287,33 @@
 {% javascript %}
   (() => {
     const video = document.querySelector('[data-hero-video]');
+    const toggle = document.querySelector('[data-hero-toggle]');
     const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // The visitor's own choice with the button wins over reduced motion and over scrolling back.
+    let choice = null;
+    const show = () => {
+      if (!toggle || !video) return;
+      const paused = video.paused;
+      toggle.toggleAttribute('data-paused', paused);
+      toggle.setAttribute('aria-label', paused ? toggle.dataset.labelPlay : toggle.dataset.labelPause);
+    };
     const play = () => {
-      if (still.matches) {
+      if (choice === 'pause' || (still.matches && choice !== 'play')) {
         video?.pause();
         return;
       }
-      video?.play().catch(() => {});
+      video?.play().catch(show);
     };
+    video?.addEventListener('play', show);
+    video?.addEventListener('pause', show);
+    toggle?.addEventListener('click', () => {
+      choice = video.paused ? 'play' : 'pause';
+      play();
+    });
 
     if (video) {
       play();
+      show();
       still.addEventListener('change', play);
       // Pause when off screen to save battery on phones.
       new IntersectionObserver(([entry]) => {
@@ -240,22 +357,47 @@
       "default": "Kampanjfilm Drop 01"
     },
     {
+      "type": "checkbox",
+      "id": "full_desktop",
+      "label": "Helskärm på dator",
+      "default": true,
+      "info": "Filmen fyller hela fönstret från 900 px bredd. I mobilen visas den som en kvadrat."
+    },
+    {
       "type": "text",
       "id": "kicker",
       "label": "Rad",
-      "default": "Drop 01 · OBJECT #001 & #002"
+      "default": "Drop 01"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Rubrik",
+      "default": "OBJECT #001"
     },
     {
       "type": "text",
       "id": "link_label",
       "label": "Länktext",
-      "default": "Handla droppet"
+      "default": "Shop the drop"
     },
     {
       "type": "url",
       "id": "link",
       "label": "Länk",
       "info": "Lämna tomt för att länka till korset längre ner."
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Andra länkens text",
+      "default": "See the campaign"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Andra länken",
+      "info": "Lämna tomt för att länka till kampanjbilderna längre ner."
     }
   ],
   "presets": [

@@ -6,44 +6,52 @@
     assign cart_label = 'cart.label_other' | t: count: cart.item_count
   endif
 -%}
-<header class="site-header">
+{%- comment -%}
+  Three columns: menu and search, the wordmark in the middle, contact, account and bag.
+  With "Över filmen" on, a page that opens with the hero shows the header on the film without a
+  background; it turns ink once the page scrolls (see base.css, "Over the film").
+{%- endcomment -%}
+<header class="site-header{% if section.settings.overlay %} site-header--overlay{% endif %}" data-site-header>
   <div class="site-header__inner page-width">
+    <div class="site-header__start">
+      <button
+        class="site-header__tool"
+        type="button"
+        data-open-dialog="menu-drawer"
+        aria-haspopup="dialog"
+      >
+        {% render 'icon', name: 'menu' %}
+        <span class="site-header__label">{{ 'header.menu' | t }}</span>
+      </button>
+      <a class="site-header__tool" href="{{ routes.search_url }}">
+        {% render 'icon', name: 'search' %}
+        <span class="site-header__label">{{ 'header.search' | t }}</span>
+      </a>
+    </div>
+
     <a class="site-header__logo" href="{{ routes.root_url }}">
       {%- if section.settings.logo != blank -%}
         {{
           section.settings.logo
           | image_url: width: 600
-          | image_tag: alt: shop.name, widths: '200, 400, 600', sizes: '190px', loading: 'eager'
+          | image_tag: alt: shop.name, widths: '200, 400, 600', sizes: '(min-width: 990px) 248px, 34vw', loading: 'eager'
         }}
       {%- else -%}
         <img src="{{ 'wordmark.png' | asset_url }}" alt="{{ shop.name }}" width="1180" height="140" loading="eager">
       {%- endif -%}
     </a>
 
-    <nav class="site-header__nav" aria-label="{{ 'header.nav_label' | t }}">
-      {%- if menu.links.size > 0 -%}
-        <ul class="site-header__links ui" role="list">
-          {%- for link in menu.links -%}
-            <li>
-              <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>
-                {%- comment -%} The span rolls up on hover and its copy (data-text) takes its place. {%- endcomment -%}
-                <span data-text="{{ link.title | escape }}">{{ link.title }}</span>
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
+    <div class="site-header__end">
+      {%- if section.settings.contact_link != blank -%}
+        <a class="site-header__tool site-header__contact" href="{{ section.settings.contact_link }}">
+          <span>{{ 'header.contact' | t }}</span>
+        </a>
       {%- endif -%}
-
-      <button
-        class="icon-button site-header__menu-button"
-        type="button"
-        data-open-dialog="menu-drawer"
-        aria-haspopup="dialog"
-        aria-label="{{ 'header.menu' | t }}"
-      >
-        {% render 'icon', name: 'menu' %}
-      </button>
-
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="icon-button site-header__account" href="{{ routes.account_url }}" aria-label="{{ 'header.account' | t }}">
+          {% render 'icon', name: 'account' %}
+        </a>
+      {%- endif -%}
       <a
         class="icon-button"
         href="{{ routes.cart_url }}"
@@ -56,7 +64,7 @@
           {{- cart.item_count -}}
         </span>
       </a>
-    </nav>
+    </div>
   </div>
 </header>
 
@@ -91,6 +99,27 @@
   </div>
 </dialog>
 
+{% javascript %}
+  (() => {
+    // Over the film the header is see-through; it turns ink as soon as the page moves.
+    const header = document.querySelector('[data-site-header].site-header--overlay');
+    if (!header) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      header.classList.toggle('is-solid', window.scrollY > 8);
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!frame) frame = requestAnimationFrame(update);
+      },
+      { passive: true }
+    );
+    update();
+  })();
+{% endjavascript %}
+
 {% schema %}
 {
   "name": "Header",
@@ -107,7 +136,21 @@
       "type": "link_list",
       "id": "menu",
       "label": "Meny",
-      "default": "main-menu"
+      "default": "main-menu",
+      "info": "Visas när man trycker på Meny."
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Länk för Kontakt",
+      "info": "Lämna tomt för att dölja Kontakt i headern."
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Över filmen",
+      "default": true,
+      "info": "När sidan börjar med hero-filmen ligger headern på filmen utan bakgrund och blir svart när man scrollar."
     }
   ]
 }

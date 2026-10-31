@@ -10,7 +10,14 @@
   },
   "header": {
     "menu": "Meny",
-    "nav_label": "Huvudmeny"
+    "nav_label": "Huvudmeny",
+    "search": "Sök",
+    "contact": "Kontakt",
+    "account": "Konto"
+  },
+  "hero": {
+    "pause": "Pausa filmen",
+    "play": "Spela filmen"
   },
   "footer": {
     "follow": "Följ"
@@ -78,7 +85,16 @@
     "size": "Storlek",
     "gallery": "Bilder",
     "tax_included": "Moms ingår.",
-    "description_missing": "Material, passform och tvättråd kommer snart."
+    "description_missing": "Material, passform och tvättråd kommer snart.",
+    "stock_last": "Sista i {{ size }}",
+    "stock_few": "Bara {{ count }} kvar i {{ size }}",
+    "stock_sizes": "Få kvar i {{ sizes }}",
+    "stock_single_last": "Sista exemplaret",
+    "stock_single_few": "Bara {{ count }} kvar",
+    "next_drop_toggle": "Slutsåld i din storlek? Få nästa drop först",
+    "next_drop_toggle_all": "Slutsåld. Få nästa drop först",
+    "next_drop_fine": "Vi mejlar dig innan nästa objekt släpps. Avsluta när du vill.",
+    "payment_methods": "Betalsätt"
   },
   "perks": {
     "shipping": "Fri frakt inom Sverige",

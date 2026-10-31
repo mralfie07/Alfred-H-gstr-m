@@ -1,7 +1,7 @@
 {%- liquid
   assign frames = section.blocks.size
 -%}
-<campaign-reel class="reel" role="region" aria-label="{{ 'motion.campaign' | t }}">
+<campaign-reel class="reel" id="campaign" role="region" aria-label="{{ 'motion.campaign' | t }}">
   <div class="reel__head page-width">
     {%- if section.settings.kicker != blank -%}
       <p class="ui" data-scramble>{{ section.settings.kicker }}</p>

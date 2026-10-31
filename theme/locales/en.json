@@ -10,7 +10,14 @@
   },
   "header": {
     "menu": "Menu",
-    "nav_label": "Main menu"
+    "nav_label": "Main menu",
+    "search": "Search",
+    "contact": "Contact",
+    "account": "Account"
+  },
+  "hero": {
+    "pause": "Pause film",
+    "play": "Play film"
   },
   "footer": {
     "follow": "Follow"
@@ -78,7 +85,16 @@
     "size": "Size",
     "gallery": "Images",
     "tax_included": "VAT included.",
-    "description_missing": "Material, fit and care coming soon."
+    "description_missing": "Material, fit and care coming soon.",
+    "stock_last": "Last one in {{ size }}",
+    "stock_few": "Only {{ count }} left in {{ size }}",
+    "stock_sizes": "Few left in {{ sizes }}",
+    "stock_single_last": "Last one",
+    "stock_single_few": "Only {{ count }} left",
+    "next_drop_toggle": "Sold out in your size? Get the next drop first",
+    "next_drop_toggle_all": "Sold out. Get the next drop first",
+    "next_drop_fine": "We'll email you before the next object drops. Unsubscribe anytime.",
+    "payment_methods": "Payment methods"
   },
   "perks": {
     "shipping": "Free shipping in Sweden",
