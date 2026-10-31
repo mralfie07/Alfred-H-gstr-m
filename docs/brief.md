@@ -195,3 +195,7 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Kassan ska få fler att slutföra köpet.** Den görs mörk som sajten, med ink-bakgrund, benvita fyrkantiga knappar, vitt ordmärke och Archivo. Butiken har Basic, så användaren ställer in den själv i kassaredigeraren; guide i `docs/kassa.md`.
 - **10 % på nästa order:** rabattkoden OBJECT10 skickas i orderbekräftelsen. Den gäller en gång per kund och bara för kunder som redan har handlat. Erbjudandet syns också före kassan, under köpknappen och i varukorgen, tillsammans med fri frakt inom Sverige och 14 dagars ångerrätt.
 - **Retur:** 14 dagars ångerrätt, kunden betalar returfrakten.
+
+## 22. Ny startsida (användaren, 2026-10-31)
+- **Startsidan ska kännas ren som Louis Vuittons**, utan att kopiera den: ordmärket i mitten på filmen utan bakgrund, meny och sök till vänster, kontakt, konto och väska till höger, texten och två länkar centrerat nertill, pausknapp i hörnet. När man scrollar blir headern svart med vitt ordmärke (inte vit som LV). Filmen fyller skärmen på dator men visas som kvadrat i mobilen.
+- Byggt i ett nytt opublicerat tema, "OBJECT 07 – Startsida helskärm", så att det publicerade temat är orört.
