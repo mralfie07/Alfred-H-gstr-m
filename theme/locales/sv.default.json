@@ -6,7 +6,8 @@
     "close": "Stäng",
     "est": "Est. 2007",
     "page": "Sida {{ page }}",
-    "pagination": "Sidor"
+    "pagination": "Sidor",
+    "official_site": "Officiell webbplats"
   },
   "header": {
     "menu": "Meny",

@@ -6,7 +6,8 @@
     "close": "Close",
     "est": "Est. 2007",
     "page": "Page {{ page }}",
-    "pagination": "Pages"
+    "pagination": "Pages",
+    "official_site": "Official Site"
   },
   "header": {
     "menu": "Menu",

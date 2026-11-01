@@ -12,10 +12,14 @@
     {%- endif -%}
 
     <title>
-      {{- page_title -}}
-      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
-      {%- if current_page != 1 %} &ndash; {{ 'general.page' | t: page: current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if request.page_type == 'index' -%}
+        {{- shop.name }} | {{ 'general.official_site' | t -}}
+      {%- else -%}
+        {{- page_title -}}
+        {%- if current_tags %} | {{ current_tags | join: ', ' }}{% endif -%}
+        {%- if current_page != 1 %} | {{ 'general.page' | t: page: current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
+      {%- endif -%}
     </title>
 
     {%- if page_description -%}
