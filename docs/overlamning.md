@@ -1,12 +1,18 @@
-# Överlämning – läget 2026-10-25
+# Överlämning – läget 2026-11-03
 
-Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (särskilt avsnitt 13–16). Allt arbete ligger på grenen **`claude/fas-2-tema`** (ingen PR gjord, inte ihopslagen med `master`).
+Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (avsnitt 13–22 är de senaste besluten). Allt arbete ligger på grenen **`claude/fas-2-tema`** (ingen PR, inte ihopslagen med `master`).
 
-## Var vi är
-- **Fas 1** (koncept, designsystem, prototyp), **fas 2** (temats grund i Liquid) och **fas 3** (motion i hela sajten, 2026-10-08) är klara.
-- Efter fas 2 ändrade användaren upplägget till **första droppet**, och sajten och heron är omgjorda efter det.
-- **Fas 3:** användaren ville ha rörelse fullt ut, inte lugnt (brief avsnitt 16). Systemet beskrivs i `DESIGN.md` (Rörelse) och `docs/theme.md` (Rörelse). Levererat som ett **nytt opublicerat tema**, se tabellen nedan.
-- **Nästa fas: fas 4**, mobil, finslipning, tillgänglighet och prestanda. Testa fas 3 på riktiga telefoner (iPhone med Safari och Android med Chrome): svep på plaggen, kampanjbandet, sidbytena och filmkornets prestanda.
+## Läget just nu
+- **Butiken är öppen** på object07.com (lösenordsskyddet av). Publicerat tema: **"OBJECT 07 – Startsida (Official Site)"** (207792177500). Användaren publicerar alltid själv; Shopify-kopplingen kan inte skriva till det publicerade temat, så ändringar görs i en kopia (`themeDuplicate` av det publicerade temat, sedan `themeFilesUpsert` på kopian) som användaren publicerar.
+- **Butikens språk är engelska**, planen är **Basic**. OBJECT #001 har lager: S 13, M 20, L 17, XL 0. Produktbeskrivningen finns (100 % ekologisk bomull, 300 gsm, oversized, gjord i Portugal). Alla policyer finns (integritet, retur, frakt, kontakt, villkor).
+- **Det publicerade temat har filer som inte finns i repot.** En annan session byggde om varukorgen och lade till lagerstatus, betalikoner och formuläret för nästa drop direkt i Shopify: `assets/conversion.css`, `conversion.js`, `snippets/next-drop-form`, `payment-icons`, `stock-data`, `stock-note`, och ändrade `layout/theme.liquid`, `config/settings_schema.json`, `cart-drawer`, `main-cart`, `main-product`, `main-password`, `cart-lines`, `perks`. Repot har header, hero, `motion.js`, språkfilerna och `meta-tags` i samma version som butiken. **Hämta in de övriga filerna i `theme/` (läs dem med GraphQL `theme.files { body }` och kontrollera `checksumMd5`) innan något laddas upp från repot igen**, annars skrivs de över. Repots `theme/layout/theme.liquid` har den nya titeln men saknar butikens rader för `conversion.css`, `conversion.js` och lagersträngarna; butikens version är den rätta.
+- **Senaste ändringar (2026-10-31 – 11-01):** startsidan med headern på filmen (blir svart vid scroll), filmen i helskärm på dator, centrerad text och pausknapp (brief avsnitt 22); laddlinjen under headern fastnar inte längre när väskan öppnas; fliknamnet "OBJECT 07 | Official Site" och lodstreck i övriga sidtitlar.
+
+## Nästa steg
+1. **Synka repot med det publicerade temat** (se ovan). Kör sedan `shopify theme check` och den lokala förhandsvisningen (`LOCALE=en node server.mjs` i `scripts/preview`).
+2. **Fas 4:** mobil, finslipning, tillgänglighet och prestanda. Testa på riktiga telefoner (iPhone med Safari, Android med Chrome): headern över filmen, svep på plaggen, kampanjbandet, varukorgen, sidbytena och filmkornets prestanda.
+3. **Kvar för användaren i Shopify:** kassans favicon och Klarna (`docs/kassa.md`), rutan med OBJECT10 i orderbekräftelsen (kontrollera med testmejl), kontaktsidan (tom, men länkad i menyn och headern), en riktig testorder (köp och återbetala), mejla kön (`drop-01-ko`), ta bort gamla teman, byt butikens kontaktadress till object07mail@gmail.com om det inte är gjort.
+4. Gamla teman som kan tas bort (användaren gör det, kopplingen får inte): fas 2 med film, hero v3, Drop 01 (bara #001), Fas 3, Kö (bara e-post), och de mellanliggande startsideskopiorna.
 
 ## Kö-sidan (2026-10-11)
 Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** för droppet och inte kunna handla. Kö-sidan är `sections/main-password.liquid` (brief avsnitt 18). Ett eget tema, **"Kö (bara e-post)"**, visar den på alla adresser; samma sektion är också lösenordssida i butikstemat. Den som skriver in sin e-post blir kund med taggen `drop-01-ko`. Nedräkning visas om Släppdatum fylls i i temaredigeraren. Sidan syns bara när lösenordsskyddet är på och temat som har den är publicerat. Lokalt: `/password` i `scripts/preview`.
@@ -23,12 +29,12 @@ Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** fö
 - **Rabattkoden OBJECT10** (10 %, en gång per kund, bara för kunder som handlat minst en gång, segmentet "Kunder som har handlat minst en gång"). Den skickas i orderbekräftelsen när användaren har klistrat in rutan.
 - Shopify-kopplingen saknar behörighet att skriva policyer (`write_legal_policies`); användaren klistrar in dem. Frakt: "Normal" i Sverige blir gratis från 470 kr (en och samma fraktmetod, inte två).
 
-## Shopify (`egkwr4-wr.myshopify.com`, provperiod, SEK)
+## Shopify (`egkwr4-wr.myshopify.com`, domän object07.com, Basic, SEK)
 | Produkt | id | Handle | Typ | Pris | Kollektion |
 |---|---|---|---|---|---|
 | OBJECT #001 | 15864364237148 | `object-001-svart-camo` | T-shirt | 699 kr | OBJECT #001 (701028172124) |
 | OBJECT #002 (utkast) | 15871757517148 | `object-002-svart-camo` | Långärmad t-shirt | 999 kr | OBJECT #002 (701028237660, tom på sajten) |
-- Båda har bara tillvalet **Storlek** (Färg-tillvalet är borttaget). Lagret är 0 överallt, så allt visas som slutsålt tills användaren fyller på.
+- Båda har bara tillvalet **Storlek** (Färg-tillvalet är borttaget). Lager för #001 (2026-11-03): S 13, M 20, L 17, XL 0.
 - Fem gamla produkter är **utkast**: Sidtryck – Svart / Blå / Svart-camo, Kyss – Svart / Blå (handles `sidtryck-*`, `kyss-*`).
 - Publiceringskanaler: Webbshop `gid://shopify/Publication/371235684700`, Shop `…371235717468`.
 
@@ -43,8 +49,8 @@ Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** fö
 | OBJECT 07 – Kö (bara e-post) | 206212039004 | Opublicerat (var publicerat 2026-10-11 till 2026-10-13, ersatt av den engelska kön). Bara kö-sidan: varje adress (startsida, produkt, kollektion, varukorg …) visar kön, man kan inte handla. Byggs ur `theme/` med `scripts/build-ko-theme.sh` till `theme-ko/` (31 filer). |
 | OBJECT 07 – Kö (engelska) | 206337474908 | Opublicerat sedan 2026-10-25 (var publicerat 2026-10-13 till 2026-10-25). Samma kö-sida på engelska ("Join the queue", pris "699 SEK"), samma taggar `newsletter,drop-01-ko`. Byggs med `scripts/build-ko-theme.sh en` till `theme-ko-en/` (30 filer, bara `en.default.json`: butikens enda språk är svenska och utan svensk fil använder Shopify standardfilen). Checksummor kontrollerade. |
 | OBJECT 07 – Drop #001 + konvertering (ny varukorg) | 207283257692 | Opublicerat sedan 2026-10-31 (var publicerat före Startsida helskärm). Gjort i en annan session, ny varukorg; filerna finns inte i repot. |
-| OBJECT 07 – Startsida (Official Site) | 207792177500 | Opublicerat (2026-11-01). Kopia av det publicerade temat med fliknamnet "OBJECT 07 | Official Site" på startsidan och lodstreck på övriga sidor (`layout/theme.liquid` i butikens version, `snippets/meta-tags`, `locales/*` från commit 0f9987a). Användaren publicerar. |
-| **OBJECT 07 – Startsida - Drop #001** (hette "Startsida (utan linjen)") | **207711240540** | **Publicerat 2026-11-01 (av användaren).** Kopia av "Startsida helskärm" med `assets/motion.js` från commit 552e0da: laddlinjen under headern fastnade efter att man öppnat väskan. Användaren publicerar. |
+| **OBJECT 07 – Startsida (Official Site)** | **207792177500** | **Publicerat (av användaren, efter 2026-11-01).** Kopia av det publicerade temat med fliknamnet "OBJECT 07 | Official Site" på startsidan och lodstreck på övriga sidor (`layout/theme.liquid` i butikens version, `snippets/meta-tags`, `locales/*` från commit 0f9987a). |
+| OBJECT 07 – Startsida - Drop #001 (hette "Startsida (utan linjen)") | 207711240540 | Opublicerat (var publicerat 2026-11-01). Kopia av "Startsida helskärm" med `assets/motion.js` från commit 552e0da: laddlinjen under headern fastnade efter att man öppnat väskan. Användaren publicerar. |
 | OBJECT 07 – Startsida helskärm | 207709864284 | Opublicerat (var publicerat 2026-10-31). Kopia av det publicerade temat (`themeDuplicate`) med ny header och hero från commit 435b7f3 (9 filer, checksummor kontrollerade): headern ligger på filmen utan bakgrund och blir svart vid scroll, Meny + Sök | ordmärket | Kontakt + Konto + Väska, filmen i helskärm på dator, centrerad text och pausknapp. Användaren publicerar själv. Förhandsvisning `?preview_theme_id=207709864284`. |
 | OBJECT 07 – Drop #001 + konvertering | 207245574492 | Opublicerat sedan 2026-10-31 (var publicerat 2026-10-25). Skapat 2026-10-25 i en annan session ur "Drop #001". Skapat 2026-10-25 i en annan session ur "Drop #001" plus egna ändringar som **inte finns i repot**: `assets/conversion.css`, `conversion.js`, `snippets/next-drop-form`, `payment-icons`, `stock-data`, `stock-note`, och ändrade `layout/theme.liquid`, `locales/*`, `config/settings_schema.json`, `cart-drawer`, `main-cart`, `main-product`, `main-password`, `cart-lines`, `perks`. Hämta in dem i `theme/` innan något laddas upp igen, annars skrivs de över. Shopify-kopplingen kan inte skriva till det publicerade temat. |
 Förhandsvisning kö: `https://egkwr4-wr.myshopify.com/?preview_theme_id=206212039004` · kö på engelska: `?preview_theme_id=206337474908` · butik: `?preview_theme_id=206211711324`
@@ -53,8 +59,9 @@ Förhandsvisning kö: `https://egkwr4-wr.myshopify.com/?preview_theme_id=2062120
 1. Ändra i `theme/`, kör `shopify theme check` (CLI installeras med `npm i @shopify/cli` i scratchpad).
 2. Uppdatera grenen som bara innehåller temat: `git branch -f shopify-theme $(git subtree split --prefix theme)` och `git push -f origin shopify-theme`. **Obs:** fråga användaren först, eftersom sessionen bara får pusha till sin egen gren. Uppdaterad 2026-10-11 (fas 3 + bara t-shirten). **Inte** uppdaterad med ändringarna 2026-10-12; de laddades upp med URL:er mot commit 9c467c2 på `claude/fas-2-tema` (`raw.githubusercontent.com/mralfie07/Alfred-H-gstr-m/<commit>/theme/<fil>`), vilket fungerar lika bra.
 3. **Opublicerat tema:** `themeFilesUpsert` med `body: {type: URL, value: "https://raw.githubusercontent.com/mralfie07/Alfred-H-gstr-m/shopify-theme/<fil>"}`, jämför sedan `checksumMd5` med `md5sum` lokalt.
-4. **Nytt tema** (om det senaste är publicerat): zippa `theme/`, `stagedUploadsCreate` (resource FILE, PUT), `curl -X PUT` zipen, sedan `themeCreate(role: UNPUBLISHED)`.
-5. Shopify-kopplingen får **inte** skriva till det publicerade temat. Användaren publicerar själv. Fråga alltid innan något publiceras.
+4. **Ändra det publicerade temat:** `themeDuplicate(id: <publicerat tema>)` ger en opublicerad kopia; ladda upp de ändrade filerna till kopian med `themeFilesUpsert` (URL mot en commit på `claude/fas-2-tema`, eller TEXT), jämför `checksumMd5`, och låt användaren publicera. Kontrollera först att filerna du byter är likadana i butiken och i repot.
+5. **Helt nytt tema ur repot:** zippa `theme/`, `stagedUploadsCreate` (resource FILE, PUT), `curl -X PUT` zipen, sedan `themeCreate(role: UNPUBLISHED)`. Gör inte det förrän repot är synkat med det publicerade temat.
+6. Shopify-kopplingen får **inte** skriva till det publicerade temat. Användaren publicerar själv. Fråga alltid innan något publiceras.
 
 ## Testa utan butiken
 `scripts/preview/` renderar temat lokalt (liquidjs, riktiga produktdata, fungerande varukorg) och innehåller Playwright-skript för skärmbilder, tidslinjer och sidbyten i låg fart. Se `scripts/preview/README.md`. Allt i fas 3 är testat så, i Chromium 141 i mobil- och datorformat.
@@ -81,12 +88,9 @@ Görs i en separat chatt. Underlaget finns i `docs/leverantor-underlag.md` (zip:
 - ffmpeg och ImageMagick finns. Pillow, numpy och scipy installeras med pip.
 
 ## Att göra (användaren)
-1. ~~Publicera "Kö (bara e-post)"~~ (klart 2026-10-11). Koppla domänen (Inställningar → Domäner). **När droppet öppnar:** publicera **"Drop #001"** (id 206211711324) och stäng av lösenordsskyddet. Ta bort de äldre OBJECT-temana (fas 2 med film, hero v3, Drop 01, Fas 3). Drop 01 har köpfelet ovan.
-2. Fyll på **lager**.
-3. **Menyer** (`main-menu`, `footer`), **engelska** under Språk, **favicon** (emblemet).
-4. Uppgradera planen innan försäljning.
+Se "Nästa steg" överst. Klart sedan tidigare: domänen är kopplad, lagret påfyllt, menyerna och språket engelska, favicon i temat, policyerna inlagda.
 
 ## Kvar att bestämma eller ta fram
-- Måttguide, material/gsm och tvättråd (kommer från tillverkaren).
-- Märkets historia, frakt/retur, kontakt, sociala länkar.
+- Måttguide och tvättråd (material och gsm finns nu i produktbeskrivningen).
+- Märkets historia, kontaktsidans text, sociala länkar.
 - Om heron ska uppdateras med den nya trycklooken på den långärmade.
