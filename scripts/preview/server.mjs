@@ -21,10 +21,12 @@ const themeSettings = Object.fromEntries(
     .map((setting) => [setting.id, setting.default]),
 );
 
-/* ---------- data (from Shopify Admin, 2026-10-08) ---------- */
+/* ---------- data (from Shopify Admin, 2026-10-08; #001 updated 2026-11-03) ---------- */
 function makeProduct(id, handle, title, type, price, sizes) {
-  const variants = sizes.map(([size, vid, available]) => ({
+  // [size, variant id, available, quantity left]; inventory is tracked and can't be oversold, as in the store.
+  const variants = sizes.map(([size, vid, available, quantity = available ? 10 : 0]) => ({
     id: vid, title: size, available, price, options: [size], option1: size,
+    inventory_management: 'shopify', inventory_policy: 'deny', inventory_quantity: quantity,
   }));
   return {
     id, handle, title, type, price, description: '', url: `/products/${handle}`,
@@ -35,8 +37,11 @@ function makeProduct(id, handle, title, type, price, sizes) {
     featured_image: null, media: [], collections: [], compare_at_price: null,
   };
 }
-const p1 = makeProduct(15864364237148, 'object-001-svart-camo', 'OBJECT #001', 'T-shirt', 69900, [
-  ['S', 59345392533852, false], ['M', 59353741787484, false], ['L', 59353741820252, false], ['XL', 59353741853020, false],
+// Price and stock from Shopify 2026-11-03 (S 13, M 20, L 17, XL 0). STOCK=1,2,3,0 tries other levels (S, M, L, XL).
+const stock = (process.env.STOCK || '13,20,17,0').split(',').map(Number);
+const p1 = makeProduct(15864364237148, 'object-001-svart-camo', 'OBJECT #001', 'T-shirt', 78000, [
+  ['S', 59345392533852, stock[0] > 0, stock[0]], ['M', 59353741787484, stock[1] > 0, stock[1]],
+  ['L', 59353741820252, stock[2] > 0, stock[2]], ['XL', 59649449460060, stock[3] > 0, stock[3]],
 ]);
 const p2 = makeProduct(15871757517148, 'object-002-svart-camo', 'OBJECT #002', 'Långärmad t-shirt', 99900, [
   ['S', 59388624765276, true], ['M', 59388624798044, false], ['L', 59388624830812, false], ['XL', 59388624863580, false],
@@ -48,6 +53,8 @@ const c2 = { id: 701028237660, handle: 'object-002', title: 'OBJECT #002', url: 
 p1.collections = [c1]; p2.collections = [c2];
 const products = { [p1.handle]: p1, [p2.handle]: p2 };
 const collections = [c1, c2];
+// collections.all = every active product (snippets/stock-data reads it); #002 is a draft.
+collections.all = { handle: 'all', products: [p1] };
 const collectionByHandle = Object.fromEntries(collections.map((c) => [c.handle, c]));
 
 /* ---------- cart ---------- */
