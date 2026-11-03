@@ -30,7 +30,16 @@ if [ "$SPRAK" = en ]; then
 else
   cp "$SRC"/locales/{sv.default,en}.json "$OUT"/locales/
 fi
-cp "$SRC"/config/settings_data.json "$OUT"/config/
+# Bara faviconen från butikstemats inställningar: dess sektioner (t.ex. varukorgslådan) finns inte i kö-temat.
+python3 - "$SRC"/config/settings_data.json "$OUT"/config/settings_data.json <<'PY'
+import json, re, sys
+src, out = sys.argv[1:]
+text = re.sub(r"^\s*/\*.*?\*/", "", open(src, encoding="utf-8").read(), flags=re.S)
+current = json.loads(text).get("current")
+favicon = current.get("favicon") if isinstance(current, dict) else None
+data = {"current": {"favicon": favicon} if favicon else {}, "presets": {"Default": {}}}
+json.dump(data, open(out, "w", encoding="utf-8"), indent=2)
+PY
 cp "$SRC"/assets/{base.css,archivo-variable.woff2,concrete.webp,wordmark.png,hero-poster.webp,hero-720.mp4,hero-1080.mp4} "$OUT"/assets/
 cp "$SRC"/assets/cutout-object-001-svart-camo-{bak,fram}.webp "$OUT"/assets/
 
