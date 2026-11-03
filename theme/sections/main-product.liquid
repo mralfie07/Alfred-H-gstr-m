@@ -166,6 +166,7 @@
             {%- endfor -%}
           </fieldset>
         {%- endif -%}
+        {% render 'stock-note', product: product %}
 
         <div class="product__buy">
           <button class="button button--full" type="submit" {% unless product.available %}disabled{% endunless %}>
@@ -186,6 +187,11 @@
     {%- if product.available -%}
       <div class="product__perks">{% render 'perks', amount: current.price %}</div>
     {%- endif -%}
+
+    {%- liquid
+      assign next_drop_id = 'NextDrop-' | append: section.id
+    -%}
+    {% render 'next-drop-form', product: product, id: next_drop_id %}
 
     <div class="product__details">
       {%- for block in section.blocks -%}

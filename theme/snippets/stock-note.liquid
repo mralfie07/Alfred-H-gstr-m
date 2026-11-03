@@ -1,0 +1,49 @@
+{% doc %}
+  "Last one in L" / "Only 2 left in M": how many are left, read straight from Shopify's inventory.
+  Shows only for sizes that track inventory and can't be oversold, at or under the theme setting
+  "low_stock_from" (0 turns it off). Rendered with the state before a size is picked;
+  assets/conversion.js keeps it in step with the size that is picked.
+
+  @param {object} product - The product whose sizes to check
+
+  @example
+  {% render 'stock-note', product: product %}
+{% enddoc %}
+{%- liquid
+  assign low_from = settings.low_stock_from | default: 0
+  assign text = ''
+  if low_from > 0
+    assign low_count = 0
+    assign low_sizes = ''
+    for v in product.variants
+      if v.available and v.inventory_management == 'shopify' and v.inventory_policy == 'deny' and v.inventory_quantity <= low_from
+        assign low_count = low_count | plus: 1
+        assign low_qty = v.inventory_quantity
+        assign low_size = v.options.last
+        if low_sizes != blank
+          assign low_sizes = low_sizes | append: ', '
+        endif
+        assign low_sizes = low_sizes | append: v.options.last
+      endif
+    endfor
+    if low_count == 1
+      if product.has_only_default_variant
+        if low_qty == 1
+          assign text = 'products.stock_single_last' | t
+        else
+          assign text = 'products.stock_single_few' | t: count: low_qty
+        endif
+      elsif low_qty == 1
+        assign text = 'products.stock_last' | t: size: low_size
+      else
+        assign text = 'products.stock_few' | t: count: low_qty, size: low_size
+      endif
+    elsif low_count > 1
+      assign text = 'products.stock_sizes' | t: sizes: low_sizes
+    endif
+  endif
+-%}
+<p class="stock-note ui ui--small" data-stock-note aria-live="polite"{% if text == blank %} hidden{% endif %}>
+  {%- render 'icon', name: 'star' -%}
+  <span data-stock-text>{{ text }}</span>
+</p>

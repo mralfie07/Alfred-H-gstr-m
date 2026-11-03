@@ -1,0 +1,15 @@
+{% doc %}
+  The payment methods that are switched on in Shopify (Settings → Payments), as their own icons.
+  New methods (Klarna, Swish, Apple Pay …) appear here by themselves once they are on.
+  Hidden with the theme setting "show_payment_icons".
+
+  @example
+  {% render 'payment-icons' %}
+{% enddoc %}
+{%- if settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+  <ul class="payment-icons" role="list" aria-label="{{ 'products.payment_methods' | t }}">
+    {%- for type in shop.enabled_payment_types -%}
+      <li>{{ type | payment_type_svg_tag: class: 'payment-icons__icon' }}</li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

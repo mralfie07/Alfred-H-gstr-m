@@ -1,0 +1,224 @@
+/* OBJECT 07 — buying cues: stock left, payment methods, express checkout, next-drop sign-up.
+   Everything here is driven by real store data; see snippets/stock-note, payment-icons, next-drop-form. */
+
+/* "Last one in L": bone text after the terracotta star, the colour that marks a choice in the cross. */
+.stock-note {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  color: var(--bone);
+
+  & svg {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    color: var(--terra);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.cross__form .stock-note {
+  justify-content: center;
+}
+
+.stock-note--line {
+  margin-top: var(--s-1);
+}
+
+.motion .stock-note[data-fresh] {
+  & svg {
+    animation: o7-stock-star 0.9s var(--ease-out);
+  }
+
+  & span {
+    animation: o7-stock-text 0.5s var(--ease-out);
+  }
+}
+
+@keyframes o7-stock-star {
+  from {
+    opacity: 0;
+    scale: 0.2;
+    rotate: -90deg;
+  }
+}
+
+@keyframes o7-stock-text {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+/* Payment methods: the brands' own icons in one row that never wraps. With many methods enabled
+   the logos shrink to share the width instead of spilling onto a second line. */
+.payment-icons {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & li {
+    display: block;
+    flex: 0 1 38px;
+    min-width: 0;
+  }
+}
+
+.payment-icons__icon {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 38 / 24;
+}
+
+.perks + .payment-icons {
+  margin-top: var(--s-4);
+}
+
+/* Express checkout (Shop Pay, Apple Pay, PayPal, Google Pay): square like every other button on the
+   site, and a step lower than Checkout so the bone button stays first. Shopify puts the wallets side
+   by side when they fit and stacks them otherwise; the height covers both layouts. */
+.cart-express {
+  --shopify-accelerated-checkout-button-block-size: 40px;
+  --shopify-accelerated-checkout-button-inline-size: 40px;
+  --shopify-accelerated-checkout-button-border-radius: 0px;
+  --shopify-accelerated-checkout-row-gap: 6px;
+  --shopify-accelerated-checkout-inline-alignment: center;
+  /* The loading placeholder in the site's dark grey, not Shopify's light one. */
+  --shopify-accelerated-checkout-skeleton-background-color: var(--char);
+
+  &:empty {
+    display: none;
+  }
+}
+
+/* Cart drawer: the garments first. The whole bag scrolls as one; the total, Checkout and the wallets
+   ride along at the bottom edge while the list is longer than the screen, and settle under the last
+   garment when it isn't. The perks, payment methods and the full-bag link follow underneath. */
+.drawer__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  & > .drawer__body {
+    overflow: visible;
+  }
+
+  & > .drawer__foot {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    background: var(--ink);
+  }
+}
+
+.drawer__total {
+  display: grid;
+  gap: 2px;
+
+  & p {
+    font-size: 0.8125rem;
+  }
+}
+
+.drawer__after {
+  display: grid;
+  gap: var(--s-4);
+  padding: 0 var(--gutter) var(--s-6);
+
+  & > .link {
+    justify-self: center;
+  }
+}
+
+.motion .drawer[data-opening] .drawer__after {
+  animation: o7-slide-in 0.8s var(--ease-out) calc(0.18s + 4 * 70ms) backwards;
+}
+
+/* "Sold out in your size? Get the next drop first": folded like the accordions under it. */
+.next-drop {
+  margin-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+
+  & + .product__details {
+    margin-top: 0;
+  }
+}
+
+.next-drop__details {
+  interpolate-size: allow-keywords;
+
+  &::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition: block-size 0.55s var(--ease-out), content-visibility 0.55s allow-discrete;
+  }
+
+  &[open]::details-content {
+    block-size: auto;
+  }
+}
+
+.next-drop__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  min-height: 56px;
+  color: var(--stone);
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.3s;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &::after {
+    content: "+";
+    flex: none;
+    font-size: 1.25rem;
+    font-weight: 300;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  &:hover,
+  .next-drop__details[open] & {
+    color: var(--bone);
+  }
+
+  .next-drop__details[open] &::after {
+    transform: rotate(45deg);
+  }
+}
+
+.next-drop__body {
+  display: grid;
+  gap: var(--s-3);
+  padding-bottom: var(--s-5);
+}
+
+.next-drop__note {
+  font-size: 0.8125rem;
+}
+
+.next-drop__done {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  font-size: 0.875rem;
+
+  & svg {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    margin-top: 5px;
+    color: var(--bone);
+  }
+}

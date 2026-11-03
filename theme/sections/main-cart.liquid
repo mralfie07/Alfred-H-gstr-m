@@ -27,6 +27,9 @@
           {%- endif -%}
           <button class="button button--full" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
         </form>
+        {%- if settings.show_express_checkout and additional_checkout_buttons -%}
+          <div class="cart-express">{{ content_for_additional_checkout_buttons }}</div>
+        {%- endif -%}
         {% render 'perks', amount: cart.total_price %}
       </aside>
     </div>

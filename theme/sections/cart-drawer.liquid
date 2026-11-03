@@ -10,29 +10,44 @@
       </button>
     </div>
 
-    <div class="drawer__body">
-      {%- if cart.item_count > 0 -%}
-        {% render 'cart-lines', compact: true %}
-      {%- else -%}
+    {%- if cart.item_count > 0 -%}
+      {%- comment -%}
+        One scroll for the whole bag: garments, then total, Checkout and the wallets, then the perks,
+        payment methods and the link to the full bag. The foot sticks to the bottom edge only while the
+        list is longer than the screen, so the garments are never squeezed (conversion.css).
+      {%- endcomment -%}
+      <div class="drawer__scroll">
+        <div class="drawer__body">
+          {% render 'cart-lines', compact: true %}
+        </div>
+
+        <div class="drawer__foot">
+          <div class="drawer__total">
+            <div class="cart-summary__row ui">
+              <span>{{ 'cart.subtotal' | t }}</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <p class="muted">{{ 'cart.taxes_shipping' | t }}</p>
+          </div>
+          <form action="{{ routes.cart_url }}" method="post">
+            <button class="button button--full" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
+          </form>
+          {%- if settings.show_express_checkout and additional_checkout_buttons -%}
+            <div class="cart-express cart-express--drawer">{{ content_for_additional_checkout_buttons }}</div>
+          {%- endif -%}
+        </div>
+
+        <div class="drawer__after">
+          {% render 'perks', amount: cart.total_price %}
+          <a class="ui link" href="{{ routes.cart_url }}">{{ 'cart.view_full' | t }}</a>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="drawer__body">
         <div class="cart-empty">
           <p>{{ 'cart.empty' | t }}</p>
           <a class="button button--ghost" href="{{ routes.root_url }}#drop">{{ 'cart.continue' | t }}</a>
         </div>
-      {%- endif -%}
-    </div>
-
-    {%- if cart.item_count > 0 -%}
-      <div class="drawer__foot">
-        <div class="cart-summary__row ui">
-          <span>{{ 'cart.subtotal' | t }}</span>
-          <span>{{ cart.total_price | money }}</span>
-        </div>
-        <p class="muted" style="font-size: 0.875rem">{{ 'cart.taxes_shipping' | t }}</p>
-        <form action="{{ routes.cart_url }}" method="post">
-          <button class="button button--full" type="submit" name="checkout">{{ 'cart.checkout' | t }}</button>
-        </form>
-        {% render 'perks', amount: cart.total_price %}
-        <a class="ui link" href="{{ routes.cart_url }}" style="justify-self: center">{{ 'cart.view_full' | t }}</a>
       </div>
     {%- endif -%}
   </div>

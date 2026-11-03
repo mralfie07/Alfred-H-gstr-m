@@ -1,0 +1,27 @@
+{% doc %}
+  Variant id → quantity left, for every size at or under the theme setting "low_stock_from".
+  Only sizes that track inventory and can't be oversold are listed, so the numbers are always what
+  can actually be bought. assets/conversion.js reads it for the product page, the cross and any
+  other size picker. Nothing is output when the setting is 0.
+
+  @example
+  {% render 'stock-data' %}
+{% enddoc %}
+{%- liquid
+  assign low_from = settings.low_stock_from | default: 0
+-%}
+{%- if low_from > 0 -%}
+  {%- assign first = true -%}
+  <script type="application/json" id="O7Stock">
+    {
+    {%- for product in collections.all.products limit: 50 -%}
+      {%- for v in product.variants -%}
+        {%- if v.available and v.inventory_management == 'shopify' and v.inventory_policy == 'deny' and v.inventory_quantity <= low_from -%}
+          {%- unless first %},{% endunless %}"{{ v.id }}": {{ v.inventory_quantity }}
+          {%- assign first = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+    }
+  </script>
+{%- endif -%}

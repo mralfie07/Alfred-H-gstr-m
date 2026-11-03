@@ -37,6 +37,27 @@
         {%- for discount in item.line_level_discount_allocations -%}
           <span class="cart-line__meta">{{ discount.discount_application.title }} (−{{ discount.amount | money }})</span>
         {%- endfor -%}
+        {%- liquid
+          # How many are left, straight from the inventory (same rule as snippets/stock-note).
+          assign low_from = settings.low_stock_from | default: 0
+          assign variant = item.variant
+          assign left = 0
+          if low_from > 0 and variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny' and variant.inventory_quantity <= low_from
+            assign left = variant.inventory_quantity
+          endif
+        -%}
+        {%- if left > 0 -%}
+          <span class="stock-note stock-note--line ui ui--small">
+            {%- render 'icon', name: 'star' -%}
+            <span>
+              {%- if left == 1 -%}
+                {{- 'products.stock_single_last' | t -}}
+              {%- else -%}
+                {{- 'products.stock_single_few' | t: count: left -}}
+              {%- endif -%}
+            </span>
+          </span>
+        {%- endif -%}
         <div class="cart-line__row">
           <div class="quantity" role="group" aria-label="{{ 'cart.quantity_for' | t: title: item.product.title | escape }}">
             <a

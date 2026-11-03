@@ -44,6 +44,41 @@
         "label": "Visa \"10 % på nästa order\"",
         "default": true,
         "info": "Koden OBJECT10 skickas i orderbekräftelsen."
+      },
+      {
+        "type": "header",
+        "content": "Lagerstatus"
+      },
+      {
+        "type": "number",
+        "id": "low_stock_from",
+        "label": "Visa \"Bara X kvar\" när lagret är högst",
+        "default": 3,
+        "info": "Siffran läses direkt från lagret i Shopify och visas bara för storlekar som inte kan översäljas. 0 döljer raden."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_next_drop",
+        "label": "Visa \"Få nästa drop först\" när en storlek är slutsåld",
+        "default": true,
+        "info": "Anmälningarna sparas som kunder med taggarna newsletter, drop-signup och sold-out- plus produktens webbadress."
+      },
+      {
+        "type": "header",
+        "content": "Betalning"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Visa betalsätten under köpknappen och i varukorgen",
+        "default": true,
+        "info": "Ikonerna följer de betalsätt som är påslagna under Inställningar → Betalningar."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_express_checkout",
+        "label": "Visa snabbkassa (Shop Pay, PayPal, Apple Pay m.fl.) i varukorgen",
+        "default": true
       }
     ]
   }

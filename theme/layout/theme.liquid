@@ -31,6 +31,7 @@
     {{ 'archivo-variable.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'motion.css' | asset_url | stylesheet_tag }}
+    {{ 'conversion.css' | asset_url | stylesheet_tag }}
     {%- if template.name == 'index' or template.name == 'collection' %}
       {%- comment -%} Coming back from a product, the garment needs its card or the cross parsed before the first frame. {%- endcomment %}
       <link rel="expect" href="#MainEnd" blocking="render">
@@ -54,12 +55,18 @@
           soldOut: {{ 'products.sold_out' | t | json }},
           cartError: {{ 'cart.error' | t | json }},
           cartOne: {{ 'cart.label_one' | t | json }},
-          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }}
+          cartMany: {{ 'cart.label_other' | t: count: '__count__' | json }},
+          stockLast: {{ 'products.stock_last' | t: size: '__size__' | json }},
+          stockFew: {{ 'products.stock_few' | t: count: '__count__', size: '__size__' | json }},
+          stockSizes: {{ 'products.stock_sizes' | t: sizes: '__sizes__' | json }},
+          stockSingleLast: {{ 'products.stock_single_last' | t | json }},
+          stockSingleFew: {{ 'products.stock_single_few' | t: count: '__count__' | json }}
         }
       };
     </script>
     <script src="{{ 'motion.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
+    <script src="{{ 'conversion.js' | asset_url }}" defer></script>
 
     {{ content_for_header }}
   </head>
@@ -88,5 +95,7 @@
         {{- 'cart.view' | t -}}
       </button>
     </div>
+
+    {% render 'stock-data' %}
   </body>
 </html>

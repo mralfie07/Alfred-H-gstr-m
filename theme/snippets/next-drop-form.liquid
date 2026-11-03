@@ -1,0 +1,77 @@
+{% doc %}
+  When a size (or the whole object) is sold out: a short sign-up for the next drop, folded like the
+  accordions below it. It never promises a restock, because drops don't come back. Signs up a
+  customer with the same tags as the drop sign-up, plus sold-out-<handle> to see where it came from.
+  Hidden with the theme setting "show_next_drop".
+
+  @param {object} product - The product on the page
+  @param {string} id - A unique id for the form
+
+  @example
+  {% render 'next-drop-form', product: product, id: 'NextDrop-main' %}
+{% enddoc %}
+{%- liquid
+  assign any_sold_out = false
+  for v in product.variants
+    unless v.available
+      assign any_sold_out = true
+      break
+    endunless
+  endfor
+-%}
+{%- if settings.show_next_drop and any_sold_out -%}
+  {%- form 'customer', id: id, class: 'next-drop' -%}
+    {%- liquid
+      assign posted = form.posted_successfully?
+      assign error = false
+      if form.errors
+        assign error = true
+      endif
+      assign source = 'sold-out-' | append: product.handle
+    -%}
+    <input type="hidden" name="contact[tags]" value="newsletter,drop-signup,{{ source }}">
+    <details class="next-drop__details"{% if posted or error %} open{% endif %}>
+      <summary class="next-drop__toggle ui">
+        {%- if product.available -%}
+          {{- 'products.next_drop_toggle' | t -}}
+        {%- else -%}
+          {{- 'products.next_drop_toggle_all' | t -}}
+        {%- endif -%}
+      </summary>
+      <div class="next-drop__body">
+        {%- if posted -%}
+          <p class="next-drop__done" role="status">
+            {%- render 'icon', name: 'star' -%}
+            <span>{{ 'newsletter.success' | t }}</span>
+          </p>
+        {%- else -%}
+          <div class="signup__form">
+            <label class="visually-hidden" for="{{ id }}-email">{{ 'newsletter.label' | t }}</label>
+            <input
+              id="{{ id }}-email"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              inputmode="email"
+              autocomplete="email"
+              autocapitalize="off"
+              spellcheck="false"
+              required
+              placeholder="{{ 'newsletter.placeholder' | t }}"
+              aria-describedby="{{ id }}-note"
+              {% if error %}aria-invalid="true"{% endif %}
+            >
+            <button type="submit" aria-label="{{ 'newsletter.submit' | t }}">{% render 'icon', name: 'arrow' %}</button>
+          </div>
+          <p class="next-drop__note{% unless error %} muted{% endunless %}" id="{{ id }}-note"{% if error %} role="alert"{% endif %}>
+            {%- if error -%}
+              {{- 'newsletter.error' | t -}}
+            {%- else -%}
+              {{- 'products.next_drop_fine' | t -}}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      </div>
+    </details>
+  {%- endform -%}
+{%- endif -%}

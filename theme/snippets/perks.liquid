@@ -2,12 +2,14 @@
   Reassurance under the buy and checkout buttons: free shipping, returns and the next-order code,
   each with the emblem's star. The lines are translations, so they follow the store's language.
   Free shipping shows only when `amount` reaches the theme setting "Fri frakt från" (blank hides it);
-  the other two have their own on/off settings.
+  the other two have their own on/off settings. The payment methods follow underneath (snippets/payment-icons)
+  unless `payment_icons` is false, as in the cart drawer where the wallet buttons already show them.
 
   @param {number} amount - The cart total or the product price, in cents
+  @param {boolean} [payment_icons] - Show the payment method logos underneath (default true)
 
   @example
-  {% render 'perks', amount: cart.total_price %}
+  {% render 'perks', amount: cart.total_price, payment_icons: false %}
 {% enddoc %}
 {%- liquid
   assign free_shipping = false
@@ -31,3 +33,6 @@
     {%- endif -%}
   </ul>
 {%- endif -%}
+{%- unless payment_icons == false -%}
+  {% render 'payment-icons' %}
+{%- endunless -%}
