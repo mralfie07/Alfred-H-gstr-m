@@ -14,6 +14,12 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (av
 3. **Kvar för användaren i Shopify:** kassans favicon och Klarna (`docs/kassa.md`), rutan med OBJECT10 i orderbekräftelsen (kontrollera med testmejl), kontaktsidan (tom, men länkad i menyn och headern), en riktig testorder (köp och återbetala), mejla kön (`drop-01-ko`), ta bort gamla teman, byt butikens kontaktadress till object07mail@gmail.com om det inte är gjort.
 4. Gamla teman som kan tas bort (användaren gör det, kopplingen får inte): fas 2 med film, hero v3, Drop 01 (bara #001), Fas 3, Kö (bara e-post), och de mellanliggande startsideskopiorna.
 
+## Sidan Made in Portugal (2026-11-03)
+- Ny sida i Shopify: **"Made in Portugal"** (`/pages/made-in-portugal`, `gid://shopify/Page/718973665628`), skapad **dold** med temats vanliga sidmall (`main-page`). Texten är godkänd av användaren: Barcelos i norra Portugal, fabriken sedan 1989, allt i egen regi (stickning, färgning, tillskärning, sömnad, tryck), 100 % ekologisk bomull, 300 gsm, acid wash, fabrikens certifieringar (GOTS 6.0, OCS 3.0, OEKO-TEX Standard 100, ISO 45001) och att Balenciaga och Off-White har arbetat med fabriken.
+- **Fabriken nämns inte vid namn** på sajten (användarens beslut, den säljer samma bas-t-shirt öppet). Namnet står inte heller i repot, eftersom repot är publikt.
+- **Obekräftat:** att Balenciaga och Off-White har arbetat med fabriken kommer bara från anonyma omdömen på nätet; fabrikens certifieringar är fabrikens egna uppgifter (inga certifikatnummer hittade, och en äldre sida hos fabriken erbjuder "ekologiskt certifikat utan GOTS"). Användaren har rekommenderats att be fabriken bekräfta kunderna skriftligt och skicka certifikatnummer och GOTS-transaktionscertifikat för ordern innan sidan publiceras. Skriv inte "sustainable"/"eco-friendly" (EU-direktiv 2024/825 gäller sedan 2026-09-27).
+- **Kvar (fråga användaren först):** publicera sidan och lägg den i sidfotsmenyn (`footer`) mellan About och FAQ.
+
 ## Kö-sidan (2026-10-11)
 Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** för droppet och inte kunna handla. Kö-sidan är `sections/main-password.liquid` (brief avsnitt 18). Ett eget tema, **"Kö (bara e-post)"**, visar den på alla adresser; samma sektion är också lösenordssida i butikstemat. Den som skriver in sin e-post blir kund med taggen `drop-01-ko`. Nedräkning visas om Släppdatum fylls i i temaredigeraren. Sidan syns bara när lösenordsskyddet är på och temat som har den är publicerat. Lokalt: `/password` i `scripts/preview`.
 
