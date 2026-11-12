@@ -288,6 +288,17 @@ p {
       animation: o7-sweep 0.75s var(--ease-out);
     }
   }
+
+  /* On touch the tap area reaches 44 px without moving the text. */
+  @media (pointer: coarse) {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -11px -6px;
+    }
+  }
 }
 
 /* The underline leaves to the right and is drawn again from the left. */
@@ -927,6 +938,18 @@ p {
 
     &:hover {
       color: var(--bone);
+    }
+  }
+
+  /* On touch each link is a 44 px row; the rows replace the gap. */
+  @media (pointer: coarse) {
+    gap: 0;
+    margin-block: calc(var(--s-2) * -1);
+
+    & a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
     }
   }
 }

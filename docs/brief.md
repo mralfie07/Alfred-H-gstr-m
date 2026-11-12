@@ -199,3 +199,12 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 ## 22. Ny startsida (användaren, 2026-10-31)
 - **Startsidan ska kännas ren som Louis Vuittons**, utan att kopiera den: ordmärket i mitten på filmen utan bakgrund, meny och sök till vänster, kontakt, konto och väska till höger, texten och två länkar centrerat nertill, pausknapp i hörnet. När man scrollar blir headern svart med vitt ordmärke (inte vit som LV). Filmen fyller skärmen på dator men visas som kvadrat i mobilen.
 - Byggt i ett nytt opublicerat tema, "OBJECT 07 – Startsida helskärm", så att det publicerade temat är orört.
+
+## 23. Pris, sociala kanaler och produkttexter (användaren, 2026-11-12)
+- **OBJECT #001 kostar 780 kr** (inte 699 kr som i avsnitt 15 och 17). Priset i Shopify gäller.
+- **Instagram och TikTok: `wearobject07`.** Länkarna ligger i sidfoten med apparnas märken (`sections/footer.liquid`, inställningarna i `sections/footer-group.json`).
+- **Tvättråd (från fabriken):** 40 °C med liknande färger, ingen torktumlare. Fabrikens rad om ull gäller inte (plagget är bomull) och är struken.
+- **Produktsidan:** "Material and care" har materialet, tvättrådet och en länk till Made in Portugal. "Size and fit" säger bara "Oversized fit. Sizes S to XL." tills måtten finns.
+- **Delningsbild:** sidor utan egen bild (startsidan) delas med `assets/share.jpg` (kampanjbild 04 med ordmärket).
+- Textlänkar och sidfotens länkar har 44 px tryckyta på pekskärm.
+

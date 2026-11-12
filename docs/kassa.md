@@ -5,7 +5,7 @@ Butiken har planen **Basic**. Då kan kassans utseende bara ändras i Shopifys k
 **Klart sedan tidigare (gjort av Claude):**
 - Rabattkoden **OBJECT10**: 10 % på allt, en gång per kund. Den fungerar bara för kunder som redan har handlat minst en gång, så den är värdelös om den sprids. Ingen slutdag. Finns under Rabatter.
 - Menyerna på engelska: Home, Shop, Contact och Search. Kontaktsidan heter Contact.
-- Frakten var redan rätt. Inom Sverige blir "Normal" gratis från 470 kr, så t-shirten (699 kr) skickas alltid fritt. Express kostar 99 kr. EU och övriga länder kostar 299 kr.
+- Frakten var redan rätt. Inom Sverige blir "Normal" gratis från 470 kr, så t-shirten (780 kr) skickas alltid fritt. Express kostar 99 kr. EU och övriga länder kostar 299 kr.
 
 Gör stegen nedan i ordning. Allt görs i Shopify-admin.
 

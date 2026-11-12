@@ -14,14 +14,14 @@
           "type": "accordion",
           "settings": {
             "title": "Size and fit",
-            "content": "<p>Oversized fit. Size guide coming soon.</p>"
+            "content": "<p>Oversized fit. Sizes S to XL.</p>"
           }
         },
         "care": {
           "type": "accordion",
           "settings": {
             "title": "Material and care",
-            "content": "<p>Heavyweight acid-wash t-shirt. Material and care details coming soon.</p>"
+            "content": "<p>100% organic cotton, heavyweight 300 gsm jersey, acid washed. Made in Portugal. <a href=\"/pages/made-in-portugal\">How it's made</a></p><p>Wash at 40°C with similar colours. Do not tumble dry.</p>"
           }
         },
         "shipping": {

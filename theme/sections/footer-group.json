@@ -7,7 +7,9 @@
       "settings": {
         "text": "<p>Numbered objects in limited drops.</p>",
         "menu": "footer",
-        "show_policies": true
+        "show_policies": true,
+        "instagram": "https://www.instagram.com/wearobject07/",
+        "tiktok": "https://www.tiktok.com/@wearobject07"
       }
     }
   },

@@ -29,12 +29,22 @@
         <div>
           {%- if has_social -%}
             <p class="site-footer__heading ui">{{ 'footer.follow' | t }}</p>
-            <ul class="site-footer__list" role="list">
+            <ul class="site-footer__social" role="list">
               {%- if section.settings.instagram != blank -%}
-                <li><a href="{{ section.settings.instagram }}" rel="noopener" target="_blank">Instagram</a></li>
+                <li>
+                  <a href="{{ section.settings.instagram }}" rel="noopener" target="_blank">
+                    {%- render 'icon', name: 'instagram' -%}
+                    <span>Instagram</span>
+                  </a>
+                </li>
               {%- endif -%}
               {%- if section.settings.tiktok != blank -%}
-                <li><a href="{{ section.settings.tiktok }}" rel="noopener" target="_blank">TikTok</a></li>
+                <li>
+                  <a href="{{ section.settings.tiktok }}" rel="noopener" target="_blank">
+                    {%- render 'icon', name: 'tiktok' -%}
+                    <span>TikTok</span>
+                  </a>
+                </li>
               {%- endif -%}
             </ul>
           {%- endif -%}
@@ -64,6 +74,40 @@
 </footer>
 
 {% stylesheet %}
+  /* Instagram and TikTok: the app's mark and its name, each a full 44 px row for the thumb. */
+  .site-footer__social {
+    display: grid;
+    margin: calc(var(--s-2) * -1) 0 0;
+    padding: 0;
+    list-style: none;
+
+    & a {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-3);
+      min-height: 44px;
+      color: var(--bone);
+      text-decoration: none;
+    }
+
+    & .icon {
+      flex: none;
+      width: 22px;
+      height: 22px;
+    }
+
+    & span {
+      background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+      transition: background-size 0.45s var(--ease-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      & a:hover span {
+        background-size: 100% 1px;
+      }
+    }
+  }
+
   .site-footer__mark {
     margin-top: var(--s-7);
     overflow: clip;
