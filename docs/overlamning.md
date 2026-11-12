@@ -14,6 +14,15 @@ Läs detta först i en ny session. Därefter `CLAUDE.md` och `docs/brief.md` (av
 3. **Kvar för användaren i Shopify:** kassans favicon och Klarna (`docs/kassa.md`), rutan med OBJECT10 i orderbekräftelsen (kontrollera med testmejl), kontaktsidan (tom, men länkad i menyn och headern), en riktig testorder (köp och återbetala), mejla kön (`drop-01-ko`), ta bort gamla teman, byt butikens kontaktadress till object07mail@gmail.com om det inte är gjort.
 4. Gamla teman som kan tas bort (användaren gör det, kopplingen får inte): fas 2 med film, hero v3, Drop 01 (bara #001), Fas 3, Kö (bara e-post), och de mellanliggande startsideskopiorna.
 
+## Genomgång 2026-11-12 (kvar att göra)
+Butiken hade 0 ordrar och 5 kunder. Gjort: se temat "Sociala länkar + produkttexter" i tabellen nedan. Kvar, i ordning:
+1. **Kontaktsidan** är tom (text föreslagen för användaren, väntar på okej).
+2. **Måttguide** (mått per storlek saknas; "Size and fit" säger bara "Oversized fit. Sizes S to XL.").
+3. **Fler produktbilder** (modell, tyg, etikett; kampanjbilderna kan läggas i produktgalleriet).
+4. **Ordmärket som SVG** (PNG:n blir suddig stort i sidfoten på dator).
+5. **Mejla kön** (`drop-01-ko`) om att butiken är öppen. **Arkivsida** för alla objekt.
+6. Menyn "Shop" går till `/collections/all`; kontrollera hur den ser ut, eller länka till OBJECT #001. SKU saknas på varianterna.
+
 ## Sidan Made in Portugal (2026-11-03)
 - Ny sida i Shopify: **"Made in Portugal"** (`/pages/made-in-portugal`, `gid://shopify/Page/718973665628`), **publicerad 2026-11-03** och länkad i sidfotsmenyn mellan About och FAQ. Temats vanliga sidmall (`main-page`). Texten är godkänd av användaren: Barcelos i norra Portugal, fabriken sedan 1989, allt i egen regi (stickning, färgning, tillskärning, sömnad, tryck), 100 % ekologisk bomull, 300 gsm, acid wash, fabrikens certifieringar (GOTS 6.0, OCS 3.0, OEKO-TEX Standard 100, ISO 45001) och att fabriken syr åt kända lyx- och streetwearmärken (utan namn).
 - **Fabriken nämns inte vid namn** på sajten (användarens beslut, den säljer samma bas-t-shirt öppet). Namnet står inte heller i repot, eftersom repot är publikt.
@@ -56,6 +65,7 @@ Användaren ska köpa domänen. Besökare ska då komma till en **kö-sida** fö
 | OBJECT 07 – Kö (bara e-post) | 206212039004 | Opublicerat (var publicerat 2026-10-11 till 2026-10-13, ersatt av den engelska kön). Bara kö-sidan: varje adress (startsida, produkt, kollektion, varukorg …) visar kön, man kan inte handla. Byggs ur `theme/` med `scripts/build-ko-theme.sh` till `theme-ko/` (31 filer). |
 | OBJECT 07 – Kö (engelska) | 206337474908 | Opublicerat sedan 2026-10-25 (var publicerat 2026-10-13 till 2026-10-25). Samma kö-sida på engelska ("Join the queue", pris "699 SEK"), samma taggar `newsletter,drop-01-ko`. Byggs med `scripts/build-ko-theme.sh en` till `theme-ko-en/` (30 filer, bara `en.default.json`: butikens enda språk är svenska och utan svensk fil använder Shopify standardfilen). Checksummor kontrollerade. |
 | OBJECT 07 – Drop #001 + konvertering (ny varukorg) | 207283257692 | Opublicerat sedan 2026-10-31 (var publicerat före Startsida helskärm). Gjort i en annan session, ny varukorg; filerna finns i repot sedan 2026-11-03. |
+| OBJECT 07 – Sociala länkar + produkttexter | 208738222428 | **Opublicerat, väntar på att användaren publicerar (2026-11-12).** Kopia av det publicerade temat med 7 filer från commit cfef7b8 (checksummor kontrollerade): Instagram/TikTok med märken i sidfoten (`wearobject07`), delningsbild `assets/share.jpg`, material och tvättråd på produktsidan med länk till Made in Portugal, 44 px tryckytor. Brief avsnitt 23. Förhandsvisning `?preview_theme_id=208738222428`. |
 | **OBJECT 07 – Startsida (Official Site)** | **207792177500** | **Publicerat (av användaren, efter 2026-11-01).** Kopia av det publicerade temat med fliknamnet "OBJECT 07 | Official Site" på startsidan och lodstreck på övriga sidor (`layout/theme.liquid` i butikens version, `snippets/meta-tags`, `locales/*` från commit 0f9987a). |
 | OBJECT 07 – Startsida - Drop #001 (hette "Startsida (utan linjen)") | 207711240540 | Opublicerat (var publicerat 2026-11-01). Kopia av "Startsida helskärm" med `assets/motion.js` från commit 552e0da: laddlinjen under headern fastnade efter att man öppnat väskan. Användaren publicerar. |
 | OBJECT 07 – Startsida helskärm | 207709864284 | Opublicerat (var publicerat 2026-10-31). Kopia av det publicerade temat (`themeDuplicate`) med ny header och hero från commit 435b7f3 (9 filer, checksummor kontrollerade): headern ligger på filmen utan bakgrund och blir svart vid scroll, Meny + Sök | ordmärket | Kontakt + Konto + Väska, filmen i helskärm på dator, centrerad text och pausknapp. Användaren publicerar själv. Förhandsvisning `?preview_theme_id=207709864284`. |
