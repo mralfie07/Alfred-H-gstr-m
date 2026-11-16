@@ -54,6 +54,31 @@
   }
 }
 
+/* "Pre-order · Ships within 4 weeks": the same line as the stock note, by every buy button. */
+.preorder-note {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  color: var(--bone);
+
+  & svg {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    color: var(--terra);
+  }
+}
+
+.cross__form .preorder-note {
+  justify-content: center;
+  margin-bottom: var(--s-3);
+}
+
+.preorder-note--line {
+  margin-top: var(--s-1);
+}
+
 /* Payment methods: the brands' own icons in one row that never wraps. With many methods enabled
    the logos shrink to share the width instead of spilling onto a second line. */
 .payment-icons {

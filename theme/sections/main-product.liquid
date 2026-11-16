@@ -167,12 +167,19 @@
           </fieldset>
         {%- endif -%}
         {% render 'stock-note', product: product %}
+        {%- if product.available -%}
+          {% render 'preorder-note' %}
+        {%- endif -%}
 
         <div class="product__buy">
           <button class="button button--full" type="submit" {% unless product.available %}disabled{% endunless %}>
             {%- if product.available -%}
               {%- if product.has_only_default_variant -%}
-                {{ 'products.add_to_cart' | t }}
+                {%- if settings.preorder_weeks > 0 -%}
+                  {{ 'products.preorder' | t }}
+                {%- else -%}
+                  {{ 'products.add_to_cart' | t }}
+                {%- endif -%}
               {%- else -%}
                 {{ 'products.choose_size' | t }}
               {%- endif -%}

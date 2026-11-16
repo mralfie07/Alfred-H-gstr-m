@@ -1,0 +1,18 @@
+{% doc %}
+  "Pre-order · Ships within 4 weeks": shown wherever the object can be bought while the theme setting
+  "preorder_weeks" is above 0, so the delivery time is clear before the purchase. 0 turns it off.
+
+  @param {boolean} [line] - Smaller, for a line in the bag
+
+  @example
+  {% render 'preorder-note' %}
+{% enddoc %}
+{%- liquid
+  assign preorder_weeks = settings.preorder_weeks | default: 0
+-%}
+{%- if preorder_weeks > 0 -%}
+  <p class="preorder-note{% if line %} preorder-note--line{% endif %} ui ui--small">
+    {%- render 'icon', name: 'star' -%}
+    <span>{{ 'products.preorder_note' | t: weeks: preorder_weeks }}</span>
+  </p>
+{%- endif -%}

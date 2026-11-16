@@ -208,3 +208,8 @@ Produktstatus 2026-10-04 (efter fas 2, ändrat med användarens godkännande): s
 - **Delningsbild:** sidor utan egen bild (startsidan) delas med `assets/share.jpg` (kampanjbild 04 med ordmärket).
 - Textlänkar och sidfotens länkar har 44 px tryckyta på pekskärm.
 
+## 24. Förbeställning (användaren, 2026-11-16)
+- **OBJECT #001 säljs som förbeställning (pre-order) och skickas inom 4 veckor.** Det ska stå före köpet: raden "Pre-order · Ships within 4 weeks" vid köpknappen (korset och produktsidan) och på raden i varukorgen, knappen säger "Pre-order", och "Shipping and returns" på produktsidan och FAQ säger detsamma.
+- Styrs av temainställningen Köp → Förbeställning (`preorder_weeks`, standard 4, 0 stänger av). `snippets/preorder-note.liquid`.
+- Orderbekräftelsen ställer användaren in själv.
+

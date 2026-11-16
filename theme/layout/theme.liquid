@@ -50,7 +50,7 @@
         },
         strings: {
           added: {{ 'cart.added' | t | json }},
-          addToCart: {{ 'products.add_to_cart' | t | json }},
+          addToCart: {% if settings.preorder_weeks > 0 %}{{ 'products.preorder' | t | json }}{% else %}{{ 'products.add_to_cart' | t | json }}{% endif %},
           chooseSize: {{ 'products.choose_size' | t | json }},
           soldOut: {{ 'products.sold_out' | t | json }},
           cartError: {{ 'cart.error' | t | json }},

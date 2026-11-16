@@ -47,6 +47,17 @@
       },
       {
         "type": "header",
+        "content": "Förbeställning"
+      },
+      {
+        "type": "number",
+        "id": "preorder_weeks",
+        "label": "Förbeställning: skickas inom (veckor)",
+        "default": 4,
+        "info": "Visar \"Pre-order · Ships within X weeks\" vid köpknappen och i varukorgen, och knappen säger \"Pre-order\". 0 stänger av."
+      },
+      {
+        "type": "header",
         "content": "Lagerstatus"
       },
       {

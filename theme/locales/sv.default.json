@@ -79,6 +79,8 @@
   },
   "products": {
     "add_to_cart": "Lägg i varukorgen",
+    "preorder": "Förbeställ",
+    "preorder_note": "Förbeställning · Skickas inom {{ weeks }} veckor",
     "choose_size": "Välj storlek",
     "sold_out": "Slutsåld",
     "front": "Framsida",

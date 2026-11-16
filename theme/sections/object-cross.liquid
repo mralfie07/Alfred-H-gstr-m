@@ -230,6 +230,7 @@
                 </label>
               {%- endfor -%}
             </fieldset>
+            {% render 'preorder-note' %}
             <button class="button button--full" type="submit" {% unless start_product.available %}disabled{% endunless %}>
               {%- if start_product.available -%}
                 {{- 'products.choose_size' | t -}}

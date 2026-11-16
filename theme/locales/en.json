@@ -79,6 +79,8 @@
   },
   "products": {
     "add_to_cart": "Add to bag",
+    "preorder": "Pre-order",
+    "preorder_note": "Pre-order · Ships within {{ weeks }} weeks",
     "choose_size": "Choose size",
     "sold_out": "Sold out",
     "front": "Front",

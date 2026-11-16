@@ -58,6 +58,7 @@
             </span>
           </span>
         {%- endif -%}
+        {% render 'preorder-note', line: true %}
         <div class="cart-line__row">
           <div class="quantity" role="group" aria-label="{{ 'cart.quantity_for' | t: title: item.product.title | escape }}">
             <a
